@@ -180,12 +180,12 @@
 <body>
 
 <div class="grid-container">
-    <a href="/mod/quiz/view.php?id=127" class="btn-card">
+    <button class="btn-ava" data-link="/mod/quiz/view.php?id=127"> class="btn-card">
         <div class="icon-container">
             <i class="fa-duotone fa-light fa-user-graduate"></i>
         </div>
         <span class="btn-text">Como Estudar Online?</span>
-    </a>
+    </button>
 
     <a href="#" class="btn-card">
         <div class="icon-container">
@@ -226,5 +226,23 @@
     <a href="#" class="btn-footer">AVALIE AS TUTORIAS ONLINE AQUI</a>
     <a href="#" class="btn-footer">AVALIE O MATERIAL DIDÁTICO AQUI</a>-->
 </div>
+<script>
+document.querySelectorAll(".btn-ava").forEach(botao => {
+
+    botao.addEventListener("click", function() {
+
+        let caminho = this.dataset.link;
+
+        if (typeof M !== "undefined") {
+            window.location.href = M.cfg.wwwroot + caminho;
+        } else {
+            window.location.href = caminho;
+        }
+
+    });
+
+});
+</script>
+    
 </body>
 </html>
