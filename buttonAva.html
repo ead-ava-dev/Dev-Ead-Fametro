@@ -180,69 +180,52 @@
 <body>
 
 <div class="grid-container">
-    <button class="btn-card btn-ava" onclick="window.location.href='/mod/quiz/view.php?id=127';">
+    <button class="btn-card btn-ava" onclick="window.location.href='#';">
         <div class="icon-container">
             <i class="fa-duotone fa-light fa-user-graduate"></i>
         </div>
         <span class="btn-text">Como Estudar Online?</span>
     </button>
 
-    <a href="#" class="btn-card">
+    <button class="btn-card btn-ava" onclick="window.location.href='#';">
         <div class="icon-container">
             <i class="fa-duotone fa-regular fa-file-user"></i>
         </div>
         <span class="btn-text">Extensão Curricularizada</span>
-    </a>
+    </button>
 
-    <a href="#" class="btn-card">
+    <button class="btn-card btn-ava" onclick="window.location.href='#';">
         <div class="icon-container">
             <i class="fa-duotone fa-regular fa-user-magnifying-glass"></i>
         </div>
         <span class="btn-text">Coordenação de Curso</span>
-    </a>
+    </button>
 
-    <a href="#" class="btn-card">
+    <button class="btn-card btn-ava" onclick="window.location.href='#';">
         <div class="icon-container">
             <i class="fa-duotone fa-solid fa-screen-users"></i>
         </div>
         <span class="btn-text">Tutoria Online</span>
-    </a>
+    </button>
 
-    <a href="#" class="btn-card">
+    <button class="btn-card btn-ava" onclick="window.location.href='#';">
         <div class="icon-container">
             <i class="fa-duotone fa-solid fa-handshake"></i>
         </div>
         <span class="btn-text">Apoio ao Discente</span>
-    </a>
+    </button>
 
-    <a href="#" class="btn-card">
+    <button class="btn-card btn-ava" onclick="window.location.href='#';">
         <div class="icon-container">
             <i class="fa-duotone fa-solid fa-books"></i>
         </div>
         <span class="btn-text">Bibliotecas e Periódicos</span>
-    </a>
+    </button>
 <!--
     <a href="#" class="btn-footer">AVALIE O AVA AQUI</a>
     <a href="#" class="btn-footer">AVALIE AS TUTORIAS ONLINE AQUI</a>
     <a href="#" class="btn-footer">AVALIE O MATERIAL DIDÁTICO AQUI</a>-->
 </div>
-<script>
-document.querySelectorAll(".btn-ava").forEach(botao => {
-
-    botao.addEventListener("click", function() {
-
-        let caminho = this.dataset.link;
-
-        if (typeof M !== "undefined") {
-            window.location.href = M.cfg.wwwroot + caminho;
-        } else {
-            window.location.href = caminho;
-        }
-
-    });
-
-});
-</script>
     
 </body>
 </html>
