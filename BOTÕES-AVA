@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!--font-awesome-->
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/fontawesome.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/whiteboard-semibold.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/utility-fill-semibold.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/utility-duo-semibold.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/utility-semibold.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/thumbprint-light.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/slab-press-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/slab-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/sharp-duotone-thin.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/sharp-duotone-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/sharp-duotone-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/sharp-duotone-light.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/sharp-thin.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/sharp-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/sharp-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/sharp-light.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/notdog-duo-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/notdog-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/jelly-fill-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/jelly-duo-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/jelly-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/etch-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/duotone-thin.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/duotone.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/duotone-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/duotone-light.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/thin.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/light.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/brands.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v7.1.0/css/chisel-regular.css">
+    <link href="https://fonts.googleapis.com/css?family=Barlow:400,500,600,700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --hover-blue: #00AFCC;
+            --text-color: #334e68;
+            --bg-card: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Barlow', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .btn-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            border: 1px solid transparent;
+        }
+
+        .btn-card:hover {
+            background: var(--hover-blue);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(0, 175, 204, 0.13);
+        }
+
+        .icon-container {
+            width: 50px;
+            height: 50px;
+            margin-right: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ícones SVG normal = azul | no hover = branco*/
+        .icon-container svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--primary-blue);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.3s;
+        }
+        .btn-card:hover .icon-container svg {
+            stroke: #fff;
+        }
+
+        /* fa icon normal = azul | no hover = branco */
+        .icon-container i {
+            color: var(--primary-blue);
+            font-size: 2.2rem;
+            transition: color 0.3s;
+            font-size: -webkit-xxx-large;
+        }
+
+        .btn-card .icon-container i {
+            color: var(--primary-blue);
+        }
+        .btn-card:hover .icon-container i {
+            color: #fff;
+            font-weight: 300;
+        }
+
+
+        .btn-text {
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            font-weight: 600;
+            line-height: 1.2;
+            transition: color 0.3s;
+            font-family: 'Barlow', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .btn-card:hover .btn-text {
+            color: #fff;
+
+        }
+
+/* Botões de Rodapé */        
+        .footer-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .btn-footer {
+            background: linear-gradient(90deg, #005691, #00acc1);
+            color: white;
+            text-align: center;
+            padding: 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            /*font-size: 0.85rem;*/
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 172, 193, 0.3);
+            transition: 0.3s;
+            top: 15px;
+            position: relative;
+        }
+
+        .btn-footer:hover {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 172, 193, 0.4);
+            background: linear-gradient(90deg, #00AFCC, #00AFCC);
+            color: var(--bg-card);
+            font-weight: 800;
+
+        }
+
+        /* Responsividade para telas pequenas */
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="grid-container">
+    <a href="#" class="btn-card">
+        <div class="icon-container">
+            <i class="fa-duotone fa-light fa-user-graduate"></i>
+        </div>
+        <span class="btn-text">Como Estudar Online?</span>
+    </a>
+
+    <a href="#" class="btn-card">
+        <div class="icon-container">
+            <i class="fa-duotone fa-regular fa-file-user"></i>
+        </div>
+        <span class="btn-text">Extensão Curricularizada</span>
+    </a>
+
+    <a href="#" class="btn-card">
+        <div class="icon-container">
+            <i class="fa-duotone fa-regular fa-user-magnifying-glass"></i>
+        </div>
+        <span class="btn-text">Coordenação de Curso</span>
+    </a>
+
+    <a href="#" class="btn-card">
+        <div class="icon-container">
+            <i class="fa-duotone fa-solid fa-screen-users"></i>
+        </div>
+        <span class="btn-text">Tutoria Online</span>
+    </a>
+
+    <a href="#" class="btn-card">
+        <div class="icon-container">
+            <i class="fa-duotone fa-solid fa-handshake"></i>
+        </div>
+        <span class="btn-text">Apoio ao Discente</span>
+    </a>
+
+    <a href="#" class="btn-card">
+        <div class="icon-container">
+            <i class="fa-duotone fa-solid fa-books"></i>
+        </div>
+        <span class="btn-text">Bibliotecas e Periódicos</span>
+    </a>
+
+
+    <a href="#" class="btn-footer">AVALIE O AVA AQUI</a>
+    <a href="#" class="btn-footer">AVALIE AS TUTORIAS ONLINE AQUI</a>
+    <a href="#" class="btn-footer">AVALIE O MATERIAL DIDÁTICO AQUI</a>
+</div>
+</body>
+</html>
