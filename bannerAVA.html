@@ -20,13 +20,22 @@ img {
     display: block;
 }
 
-.slick-prev:before,
-.slick-next:before {
-    color: #9a17bb !important;
-}
+        .slick-prev:before,
+        .slick-next:before {
+            color: #9a17bb !important;
+        }
 
-.slick-prev { left: 4px !important; }
-.slick-next { right: 4px !important; }
+        .slick-prev,
+        .slick-next {
+            z-index: 3 !important;
+        }
+
+        .slick-prev {left: 4px !important;}
+        .slick-next {right: 4px !important;}
+
+        .slick-slide {
+            height: auto !important;
+        }
 
 </style>
 
