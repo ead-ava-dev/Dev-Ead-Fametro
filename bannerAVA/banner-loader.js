@@ -21,7 +21,7 @@
       #${CONTAINER_ID} .Slick-Principal {
         width: 100% !important;
         max-width: 100% !important;
-        aspect-ratio: 3 / 1;
+        aspect-ratio: auto;
         overflow: hidden;
         box-sizing: border-box !important;
       }
@@ -44,7 +44,7 @@
       #${CONTAINER_ID} .slick-prev { left: 4px !important; }
       #${CONTAINER_ID} .slick-next { right: 4px !important; }
       @media (max-width: 768px) {
-        #${CONTAINER_ID} .Slick-Principal { aspect-ratio: 16 / 9; }
+        #${CONTAINER_ID} .Slick-Principal { aspect-ratio: auto; }
       }
     `;
     document.head.appendChild(style);
@@ -148,3 +148,4 @@
   });
 
 })();
+
