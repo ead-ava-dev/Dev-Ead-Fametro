@@ -1,120 +1,193 @@
 (async function () {
 
-  const CONTAINER_ID = "bannerAVA";
-  const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/bannerAVA";
+const CONTAINER_ID = "bannerAVA";
+const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/bannerAVA";
+const CACHE_KEY = "AVA_BANNERS_CACHE";
 
-  function loadCSS(url) {
+/* =====================
+   LOAD CSS / JS
+===================== */
+
+function loadCSS(url) {
     return new Promise(resolve => {
-      if ([...document.styleSheets].some(s => s.href === url)) return resolve();
-      const l = document.createElement("link");
-      l.rel = "stylesheet";
-      l.href = url;
-      l.onload = resolve;
-      document.head.appendChild(l);
-    });
-  }
+        if ([...document.styleSheets].some(s => s.href === url)) return resolve();
 
-  function loadJS(url) {
+        const l = document.createElement("link");
+        l.rel = "stylesheet";
+        l.href = url;
+        l.onload = resolve;
+        document.head.appendChild(l);
+    });
+}
+
+function loadJS(url) {
     return new Promise(resolve => {
-      if ([...document.scripts].some(s => s.src === url)) return resolve();
-      const s = document.createElement("script");
-      s.src = url;
-      s.onload = resolve;
-      document.body.appendChild(s);
+        if ([...document.scripts].some(s => s.src === url)) return resolve();
+
+        const s = document.createElement("script");
+        s.src = url;
+        s.onload = resolve;
+        document.body.appendChild(s);
     });
-  }
+}
 
-  function imagesLoaded(container) {
+/* =====================
+   CARREGAR LIBS
+===================== */
 
-    const images = container.querySelectorAll("img");
+await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
+await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
 
-    return Promise.all(
-      [...images].map(img => {
+await loadJS("https://code.jquery.com/jquery-3.7.1.min.js");
+await loadJS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js");
+
+/* =====================
+   CONTAINER
+===================== */
+
+const container = document.getElementById(CONTAINER_ID);
+if (!container) return;
+
+/* =====================
+   FETCH COM CACHE
+===================== */
+
+async function loadConfig() {
+
+    try {
+
+        const response = await fetch(`${BASE_URL}/banners.json`);
+        const json = await response.json();
+
+        localStorage.setItem(CACHE_KEY, JSON.stringify(json));
+        return json;
+
+    } catch {
+
+        const cache = localStorage.getItem(CACHE_KEY);
+        if (cache) return JSON.parse(cache);
+
+        throw "Sem banners disponíveis";
+    }
+}
+
+/* =====================
+   FILTRO POR DATA
+===================== */
+
+function isSlideActive(slide) {
+
+    const hoje = new Date();
+
+    const inicio = new Date(slide.inicio);
+    const fim = new Date(slide.fim);
+
+    return hoje >= inicio && hoje <= fim;
+}
+
+/* =====================
+   PRELOAD PRÓXIMA IMAGEM
+===================== */
+
+function preload(src) {
+    const img = new Image();
+    img.src = src;
+}
+
+/* =====================
+   AGUARDAR IMAGENS
+===================== */
+
+function imagesLoaded(container) {
+
+    const imgs = container.querySelectorAll("img");
+
+    return Promise.all([...imgs].map(img => {
+
         if (img.complete) return Promise.resolve();
 
-        return new Promise(resolve => {
-          img.onload = img.onerror = resolve;
+        return new Promise(res => {
+            img.onload = img.onerror = res;
         });
-      })
-    );
-  }
 
-  /* =====================
-     CARREGAR BIBLIOTECAS
-  ===================== */
+    }));
+}
 
-  await loadCSS("https://kenwheeler.github.io/slick/slick/slick.css");
-  await loadCSS("https://kenwheeler.github.io/slick/slick/slick-theme.css");
+/* =====================
+   CARREGAR HTML
+===================== */
 
-  await loadJS("https://code.jquery.com/jquery-1.11.0.min.js");
-  await loadJS("https://code.jquery.com/jquery-migrate-1.2.1.min.js");
-  await loadJS("https://kenwheeler.github.io/slick/slick/slick.min.js");
+const html = await fetch(`${BASE_URL}/bannerAVA.html`).then(r => r.text());
+container.innerHTML = html;
 
-  /* =====================
-     CARREGAR HTML + JSON
-  ===================== */
+const banner = container.querySelector(".Slick-Principal");
 
-  const container = document.getElementById(CONTAINER_ID);
-  if (!container) return;
+/* =====================
+   CARREGAR JSON
+===================== */
 
-  const [html, config] = await Promise.all([
-    fetch("bannerAVA.html").then(r => r.text()),
-    fetch("banners.json").then(r => r.json())
-  ]);
+const config = await loadConfig();
 
-  container.innerHTML = html;
+const slidesAtivos = config.slides.filter(isSlideActive);
 
-  const banner = container.querySelector(".Slick-Principal");
+/* =====================
+   MONTAR SLIDES
+===================== */
 
-  /* =====================
-     MONTAR SLIDES
-  ===================== */
+slidesAtivos.forEach((slide, i) => {
 
-  config.slides.forEach(slide => {
+    if (slidesAtivos[i + 1])
+        preload(slidesAtivos[i + 1].desktop);
 
     const div = document.createElement("div");
 
     div.innerHTML = `
-      <a href="${slide.link}" target="_blank">
-        <picture>
-          <source media="(min-width:600px)" srcset="${slide.desktop}">
-          <img 
-            src="${slide.mobile}" 
-            alt="${slide.alt}"
-            style="width:100%;height:auto;display:block;"
-            loading="lazy"
-          >
-        </picture>
-      </a>
+        <a href="${slide.link}" target="_blank" data-banner="${slide.alt}">
+            <picture>
+                <source media="(min-width:600px)" srcset="${slide.desktop}">
+                <img src="${slide.mobile}" 
+                     alt="${slide.alt}"
+                     style="width:100%;display:block;"
+                     loading="lazy">
+            </picture>
+        </a>
     `;
 
     banner.appendChild(div);
-  });
+});
 
-  /* =====================
-     AGUARDAR IMAGENS
-  ===================== */
+/* =====================
+   ANALYTICS CLIQUE
+===================== */
 
-  await imagesLoaded(banner);
+banner.addEventListener("click", e => {
 
-  /* =====================
-     INICIAR SLICK
-  ===================== */
+    const link = e.target.closest("a");
+    if (!link) return;
 
-  $(banner).slick({
+    console.log("Banner clicado:", link.dataset.banner);
+
+});
+
+/* =====================
+   AGUARDAR IMAGENS
+===================== */
+
+await imagesLoaded(banner);
+
+/* =====================
+   INICIAR SLICK
+===================== */
+
+$(banner).slick({
     dots: true,
     infinite: true,
     speed: 800,
     slidesToShow: 1,
     adaptiveHeight: true,
-    autoplay: config.autoplay,
-    autoplaySpeed: config.tempo,
-    lazyLoad: 'ondemand'
-  });
+    autoplay: config.autoplay ?? true,
+    autoplaySpeed: config.tempo ?? 8000,
+    lazyLoad: "ondemand"
+});
 
 })();
-
-
-
-
-
