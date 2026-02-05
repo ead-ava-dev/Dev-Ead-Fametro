@@ -93,8 +93,8 @@
     slidesToShow: 1,
     adaptiveHeight: true,
     autoplay: config.autoplay ?? true,
-    autoplaySpeed: config.tempo ?? 8000,
-    lazyLoad: "ondemand"
+    autoplaySpeed: config.tempo ?? 8000
   });
 
 })();
+
