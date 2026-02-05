@@ -1,185 +1,92 @@
 (async function () {
 
-const CONTAINER_ID = "bannerAVA";
-const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/bannerAVA";
-const CACHE_KEY = "AVA_BANNERS_CACHE";
+  const CONTAINER_ID = "bannerAVA";
+  const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/bannerAVA";
+  const CACHE_KEY = "AVA_BANNERS_CACHE";
 
-/* =====================
-   LOAD CSS / JS
-===================== */
-
-function loadCSS(url) {
+  // Utilitários simples para carregar CSS e JS dinamicamente
+  function loadCSS(url) {
     return new Promise(resolve => {
-        if ([...document.styleSheets].some(s => s.href === url)) return resolve();
-
-        const l = document.createElement("link");
-        l.rel = "stylesheet";
-        l.href = url;
-        l.onload = resolve;
-        document.head.appendChild(l);
+      if ([...document.styleSheets].some(s => s.href === url)) return resolve();
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = url;
+      link.onload = resolve;
+      document.head.appendChild(link);
     });
-}
+  }
 
-function loadJS(url) {
+  function loadJS(url) {
     return new Promise(resolve => {
-        if ([...document.scripts].some(s => s.src === url)) return resolve();
-
-        const s = document.createElement("script");
-        s.src = url;
-        s.onload = resolve;
-        document.body.appendChild(s);
+      if ([...document.scripts].some(s => s.src === url)) return resolve();
+      const script = document.createElement("script");
+      script.src = url;
+      script.onload = resolve;
+      document.body.appendChild(script);
     });
-}
+  }
 
-/* =====================
-   CARREGAR LIBS
-===================== */
+  // Carrega estilos e scripts do Slick e jQuery
+  await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
+  await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
+  await loadJS("https://code.jquery.com/jquery-3.7.1.min.js");
+  await loadJS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js");
 
-await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
-await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
+  // Container principal
+  const container = document.getElementById(CONTAINER_ID);
+  if (!container) return;
 
-await loadJS("https://code.jquery.com/jquery-3.7.1.min.js");
-await loadJS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js");
-
-/* =====================
-   CONTAINER
-===================== */
-
-const container = document.getElementById(CONTAINER_ID);
-if (!container) return;
-
-/* =====================
-   FETCH COM CACHE
-===================== */
-
-async function loadConfig() {
-
+  // Função simples para tentar carregar banners do cache antes de buscar remoto
+  async function loadConfig() {
     try {
-
-        const response = await fetch(`${BASE_URL}/banners.json`);
-        const json = await response.json();
-
-        localStorage.setItem(CACHE_KEY, JSON.stringify(json));
-        return json;
-
+      const response = await fetch(`${BASE_URL}/banners.json`);
+      const json = await response.json();
+      localStorage.setItem(CACHE_KEY, JSON.stringify(json));
+      return json;
     } catch {
-
-        const cache = localStorage.getItem(CACHE_KEY);
-        if (cache) return JSON.parse(cache);
-
-        throw "Sem banners disponíveis";
+      const cache = localStorage.getItem(CACHE_KEY);
+      if (cache) return JSON.parse(cache);
+      throw "Sem banners disponíveis";
     }
-}
+  }
 
-/* =====================
-   FILTRO POR DATA
-===================== */
-
-function isSlideActive(slide) {
-
+  // Só banners ativos pela data
+  function isSlideActive(slide) {
     const hoje = new Date();
+    return hoje >= new Date(slide.inicio) && hoje <= new Date(slide.fim);
+  }
 
-    const inicio = new Date(slide.inicio);
-    const fim = new Date(slide.fim);
+  // Função para aguardar todas as imagens carregarem
+  function imagesLoaded(ele) {
+    const imgs = ele.querySelectorAll("img");
+    return Promise.all([...imgs].map(img => img.complete ? Promise.resolve() : new Promise(res => img.onload = img.onerror = res)));
+  }
 
-    return hoje >= inicio && hoje <= fim;
-}
+  // Carregar o HTML básico (apenas com .Slick-Principal ou nenhum markup adicional)
+  container.innerHTML = `<div class="Slick-Principal"></div>`;
+  const banner = container.querySelector(".Slick-Principal");
 
-/* =====================
-   PRELOAD PRÓXIMA IMAGEM
-===================== */
+  // Obter config dos slides ativos
+  const config = await loadConfig();
+  const slidesAtivos = config.slides.filter(isSlideActive);
 
-function preload(src) {
-    const img = new Image();
-    img.src = src;
-}
-
-/* =====================
-   AGUARDAR IMAGENS
-===================== */
-
-function imagesLoaded(container) {
-
-    const imgs = container.querySelectorAll("img");
-
-    return Promise.all([...imgs].map(img => {
-
-        if (img.complete) return Promise.resolve();
-
-        return new Promise(res => {
-            img.onload = img.onerror = res;
-        });
-
-    }));
-}
-
-/* =====================
-   CARREGAR HTML
-===================== */
-
-const html = await fetch(`${BASE_URL}/bannerAVA.html`).then(r => r.text());
-container.innerHTML = html;
-
-const banner = container.querySelector(".Slick-Principal");
-
-/* =====================
-   CARREGAR JSON
-===================== */
-
-const config = await loadConfig();
-
-const slidesAtivos = config.slides.filter(isSlideActive);
-
-/* =====================
-   MONTAR SLIDES
-===================== */
-
-slidesAtivos.forEach((slide, i) => {
-
-    if (slidesAtivos[i + 1])
-        preload(slidesAtivos[i + 1].desktop);
-
+  // Montagem dos slides — estrutura simplificada, sem links externos, igual exemplo fornecido
+  slidesAtivos.forEach(slide => {
     const div = document.createElement("div");
-
     div.innerHTML = `
-        <a href="${slide.link}" target="_blank" data-banner="${slide.alt}">
-            <picture>
-                <source media="(min-width:600px)" srcset="${slide.desktop}">
-                <img src="${slide.mobile}" 
-                     alt="${slide.alt}"
-                     style="width:100%;display:block;"
-                     loading="lazy">
-            </picture>
-        </a>
+      <picture>
+        <source media="(min-width: 600px)" srcset="${slide.desktop}">
+        <img src="${slide.mobile}" alt="Banner">
+      </picture>
     `;
-
     banner.appendChild(div);
-});
+  });
 
-/* =====================
-   ANALYTICS CLIQUE
-===================== */
+  // Aguarda todas as imagens
+  await imagesLoaded(banner);
 
-banner.addEventListener("click", e => {
-
-    const link = e.target.closest("a");
-    if (!link) return;
-
-    console.log("Banner clicado:", link.dataset.banner);
-
-});
-
-/* =====================
-   AGUARDAR IMAGENS
-===================== */
-
-await imagesLoaded(banner);
-
-/* =====================
-   INICIAR SLICK
-===================== */
-
-$(banner).slick({
+  // Inicia Slick
+  $(banner).slick({
     dots: true,
     infinite: true,
     speed: 800,
@@ -188,6 +95,6 @@ $(banner).slick({
     autoplay: config.autoplay ?? true,
     autoplaySpeed: config.tempo ?? 8000,
     lazyLoad: "ondemand"
-});
+  });
 
 })();
