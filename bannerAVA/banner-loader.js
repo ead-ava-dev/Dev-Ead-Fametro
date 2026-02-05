@@ -105,7 +105,7 @@
     dots: true,
     infinite: true,
     speed: 800,
-    fade: true,
+    fade: false,
     slidesToShow: 1,
     adaptiveHeight: true,
     autoplay: config.autoplay,
@@ -114,6 +114,7 @@
   });
 
 })();
+
 
 
 
