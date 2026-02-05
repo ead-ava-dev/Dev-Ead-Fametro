@@ -4,6 +4,52 @@
   const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/bannerAVA";
   const CACHE_KEY = "AVA_BANNERS_CACHE";
 
+  // Injeta CSS responsivo (para funcionar quando incorporado em qualquer site)
+  function injectResponsiveStyles() {
+    const styleId = "bannerAVA-styles";
+    if (document.getElementById(styleId)) return;
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      #${CONTAINER_ID} {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0;
+        box-sizing: border-box !important;
+        position: relative;
+      }
+      #${CONTAINER_ID} .Slick-Principal {
+        width: 100% !important;
+        max-width: 100% !important;
+        aspect-ratio: 3 / 1;
+        overflow: hidden;
+        box-sizing: border-box !important;
+      }
+      #${CONTAINER_ID} .slick-slide,
+      #${CONTAINER_ID} .slick-slide > div {
+        height: 100% !important;
+      }
+      #${CONTAINER_ID} picture,
+      #${CONTAINER_ID} img {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        object-fit: cover !important;
+        display: block !important;
+      }
+      #${CONTAINER_ID} .slick-prev:before,
+      #${CONTAINER_ID} .slick-next:before { color: #9a17bb !important; }
+      #${CONTAINER_ID} .slick-prev,
+      #${CONTAINER_ID} .slick-next { z-index: 3 !important; }
+      #${CONTAINER_ID} .slick-prev { left: 4px !important; }
+      #${CONTAINER_ID} .slick-next { right: 4px !important; }
+      @media (max-width: 768px) {
+        #${CONTAINER_ID} .Slick-Principal { aspect-ratio: 16 / 9; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   // Utilitários simples para carregar CSS e JS dinamicamente
   function loadCSS(url) {
     return new Promise(resolve => {
@@ -36,6 +82,8 @@
   const container = document.getElementById(CONTAINER_ID);
   if (!container) return;
 
+  injectResponsiveStyles();
+
   // Função simples para tentar carregar banners do cache antes de buscar remoto
   async function loadConfig() {
     try {
@@ -50,8 +98,9 @@
     }
   }
 
-  // Só banners ativos pela data
+  // Só banners ativos pela data (se não tiver datas, considera ativo)
   function isSlideActive(slide) {
+    if (!slide.inicio || !slide.fim) return true;
     const hoje = new Date();
     return hoje >= new Date(slide.inicio) && hoje <= new Date(slide.fim);
   }
@@ -73,10 +122,11 @@
   // Montagem dos slides — estrutura simplificada, sem links externos, igual exemplo fornecido
   slidesAtivos.forEach(slide => {
     const div = document.createElement("div");
+    const alt = (slide.alt || "Banner").replace(/"/g, "&quot;");
     div.innerHTML = `
       <picture>
         <source media="(min-width: 600px)" srcset="${slide.desktop}">
-        <img src="${slide.mobile}" alt="Banner">
+        <img src="${slide.mobile}" alt="${alt}" loading="lazy">
       </picture>
     `;
     banner.appendChild(div);
@@ -93,8 +143,8 @@
     slidesToShow: 1,
     adaptiveHeight: true,
     autoplay: config.autoplay ?? true,
-    autoplaySpeed: config.tempo ?? 8000
+    autoplaySpeed: config.tempo ?? 8000,
+    lazyLoad: "ondemand"
   });
 
 })();
-
