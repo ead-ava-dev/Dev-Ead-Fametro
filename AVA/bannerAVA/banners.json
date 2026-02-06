@@ -1,0 +1,23 @@
+{
+  "autoplay": true,
+  "tempo": 8000,
+  "slides": [
+    {
+      "desktop": "https://png.pngtree.com/thumb_back/fh260/background/20240522/pngtree-abstract-cloudy-background-beautiful-natural-streaks-of-sky-and-clouds-red-image_15684333.jpg",
+      "mobile": "https://png.pngtree.com/thumb_back/fw800/background/20241016/pngtree-sunset-sky-with-warm-orange-hues-and-sunbeams-breaking-through-clouds-image_16405380.jpg",
+      "link": "https://google.com",
+      "alt": "Banner 1",
+      "inicio": "2025-01-01",
+      "fim": "2030-01-01"
+    },
+    {
+      "desktop": "https://png.pngtree.com/thumb_back/fh260/background/20240522/pngtree-abstract-cloudy-background-beautiful-natural-streaks-of-sky-and-clouds-red-image_15684333.jpg",
+      "mobile": "https://png.pngtree.com/thumb_back/fw800/background/20241016/pngtree-sunset-sky-with-warm-orange-hues-and-sunbeams-breaking-through-clouds-image_16405380.jpg",
+      "link": "https://youtube.com",
+      "alt": "Banner 2",
+      "inicio": "2025-01-01",
+      "fim": "2030-01-01"
+    }
+  ]
+
+}
