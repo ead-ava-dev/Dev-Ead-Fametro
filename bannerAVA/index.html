@@ -5,13 +5,97 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Banner AVA</title>
+
+<!--<script src="banner-loader.js"></script>-->
+
+<link rel="stylesheet" href="https://kenwheeler.github.io/slick/slick/slick.css">
+<link rel="stylesheet" href="https://kenwheeler.github.io/slick/slick/slick-theme.css">
+
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="https://kenwheeler.github.io/slick/slick/slick.min.js"></script>
+
+<style>
+    #bannerAVA img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .slick-prev:before,
+    .slick-next:before {
+        color: #9a17bb !important;
+    }
+
+    .slick-prev,
+    .slick-next {
+        z-index: 3 !important;
+    }
+
+    .slick-prev {left: 4px !important;}
+    .slick-next {right: 4px !important;}
+
+    .slick-slide {
+        height: auto !important;
+    }
+</style>
 </head>
-
 <body>
-
 <div id="bannerAVA"></div>
 
-<script src="banner-loader.js"></script>
+<script>
+
+const htmlURL = "https://raw.githubusercontent.com/ead-ava-dev/Dev-Ead-Fametro/main/bannerAVA.html";
+const jsonURL = "https://raw.githubusercontent.com/ead-ava-dev/Dev-Ead-Fametro/main/banners.json";
+
+Promise.all([
+  fetch(htmlURL).then(r => r.text()),
+  fetch(jsonURL).then(r => r.json())
+])
+
+.then(([html, config]) => {
+
+  document.getElementById("bannerAVA").innerHTML = html;
+
+  const container = document.querySelector(".slick-banner");
+
+  config.slides.forEach(slide => {
+
+    const div = document.createElement("div");
+
+    div.innerHTML = `
+      <a href="${slide.link}" target="_blank">
+        <picture>
+          <source media="(min-width: 600px)" srcset="${slide.desktop}">
+          <img src="${slide.mobile}" alt="${slide.alt}">
+        </picture>
+      </a>
+    `;
+
+    container.appendChild(div);
+
+  });
+
+  $('.slick-banner').slick({
+    lazyLoad: 'ondemand',
+    dots: true,
+    arrows: true,
+    infinite: true,
+    speed: 800,
+    slidesToShow: 1,
+    adaptiveHeight: true,
+    autoplay: config.autoplay,
+    autoplaySpeed: config.tempo,
+  });
+
+})
+
+.catch(err => console.error("Erro banner JSON:", err));
+
+</script>
+
 
 </body>
 </html>
+
+
+
