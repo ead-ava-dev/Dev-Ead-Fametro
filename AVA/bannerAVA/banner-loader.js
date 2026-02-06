@@ -1,7 +1,7 @@
 (async function () {
 
   const CONTAINER_ID = "bannerAVA";
-  const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/bannerAVA";
+  const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/AVA/bannerAVA";
 
   function loadCSS(url) {
     return new Promise(resolve => {
@@ -71,5 +71,6 @@
   });
 
 })();
+
 
 
