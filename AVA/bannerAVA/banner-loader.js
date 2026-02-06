@@ -65,12 +65,13 @@
     infinite: true,
     speed: 800,
     slidesToShow: 1,
-    adaptiveHeight: false,
+    adaptiveHeight: true,
     autoplay: config.autoplay ?? true,
     autoplaySpeed: config.tempo ?? 4000
   });
 
 })();
+
 
 
 
