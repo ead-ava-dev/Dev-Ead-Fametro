@@ -4,8 +4,8 @@
   "tempo": 8000,
   "slides": [
     {
-      "desktop": ""https://lh3.googleusercontent.com/d/1ZfUBGjpmT7-mMrKf81nEFJzRJ6WJh6zW"",
-      "mobile": ""https://lh3.googleusercontent.com/d/1dcizdSRu_yq0riNG0KB43n5lCCeDU2Jo"",
+      "desktop": "https://lh3.googleusercontent.com/d/1ZfUBGjpmT7-mMrKf81nEFJzRJ6WJh6zW",
+      "mobile": "https://lh3.googleusercontent.com/d/1dcizdSRu_yq0riNG0KB43n5lCCeDU2Jo",
       "link": "https://google.com",
       "alt": "Banner 1",
       "inicio": "2026-02-06",
@@ -22,5 +22,6 @@
   ]
 
 }
+
 
 
