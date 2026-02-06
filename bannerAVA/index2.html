@@ -1,0 +1,66 @@
+<style>
+#bannerAVA img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: #9a17bb !important;
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 3 !important;
+}
+
+.slick-prev { left: 4px !important; }
+.slick-next { right: 4px !important; }
+
+.slick-slide {
+  height: auto !important;
+}
+button.slick-arrow {
+  height: 100%;
+  width: 30px;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
+
+.slick-track {
+  display: flex !important;
+  align-items: stretch;
+}
+
+.slick-slide img {
+  width: 100%;
+  height: auto;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bannerAVA"></div>
+
+<script>
+  $('.slick-banner').slick({
+    dots: true,
+    arrows: true,
+    infinite: true,
+    speed: 800,
+    slidesToShow: 1,
+    adaptiveHeight: false,
+    autoplay: config.autoplay ?? true,
+    autoplaySpeed: config.tempo ?? 4000
+  });
+</script>
+
+</body>
+</html>
+
+
+
