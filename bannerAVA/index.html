@@ -83,8 +83,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       div.innerHTML = `
         <a href="${slide.link}" target="_blank">
           <picture>
-            <source media="(min-width: 600px)" data-lazy="${slide.desktop}">
-            <img data-lazy="${slide.mobile}" alt="${slide.alt || ''}">
+            <source media="(min-width: 600px)" srcset="${slide.desktop}">
+            <img src="${slide.mobile}" loading="lazy" alt="${slide.alt || ''}">
           </picture>
         </a>
       `;
@@ -114,4 +114,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 </body>
 </html>
+
 
