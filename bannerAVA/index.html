@@ -45,7 +45,7 @@
 <script>
 
 const htmlURL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/bannerAVA/bannerAVA.html";
-const jsonURL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/bannerAVA/banners.json";
+const jsonURL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/bannerAVA/banners.json?v=" + Date.now()";
 
 Promise.all([
   fetch(htmlURL).then(r => r.text()),
@@ -96,6 +96,7 @@ Promise.all([
 
 </body>
 </html>
+
 
 
 
