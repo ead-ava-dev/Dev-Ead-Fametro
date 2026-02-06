@@ -59,16 +59,17 @@
     banner.appendChild(div);
   });
 
-  $(banner).slick({
+  $('.slick-banner').slick({
     dots: true,
+    arrows: true,
     infinite: true,
     speed: 800,
     slidesToShow: 1,
-    adaptiveHeight: true,
-    autoplay: config.autoplay,
-    autoplaySpeed: config.tempo,
-    lazyLoad: 'ondemand'
+    adaptiveHeight: false,
+    autoplay: config.autoplay ?? true,
+    autoplaySpeed: config.tempo ?? 4000
   });
 
 })();
+
 
