@@ -16,7 +16,7 @@
     display: flex;
     justify-content: center;
     margin: 0;
-    padding: 2%;
+    padding: 15px;
     width: 100%;
 }
 
@@ -162,4 +162,5 @@
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     }
 }
+
 
