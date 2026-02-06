@@ -36,6 +36,24 @@
 .slick-slide {
   height: auto !important;
 }
+button.slick-arrow {
+  height: 100%;
+  width: 30px;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
+
+.slick-track {
+  display: flex !important;
+  align-items: stretch;
+}
+
+.slick-slide img {
+  width: 100%;
+  height: auto;
+}
 </style>
 </head>
 
@@ -94,13 +112,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Inicializar Slick
     $('.slick-banner').slick({
-      lazyLoad: 'ondemand',
       dots: true,
       arrows: true,
       infinite: true,
       speed: 800,
       slidesToShow: 1,
-      adaptiveHeight: true,
+      adaptiveHeight: false,
       autoplay: config.autoplay ?? true,
       autoplaySpeed: config.tempo ?? 4000
     });
@@ -114,5 +131,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 </body>
 </html>
+
 
 
