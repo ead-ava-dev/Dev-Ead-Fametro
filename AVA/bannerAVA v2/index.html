@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banner AVA</title>
+<style>
+#bannerAVA {
+  width: 100%;
+  max-width: 100%;
+}
+#bannerAVA img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: #9a17bb !important;
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 3 !important;
+}
+
+.slick-prev { left: 4px !important; }
+.slick-next { right: 4px !important; }
+
+.slick-slide {
+  height: auto !important;
+}
+button.slick-arrow {
+  height: 100%;
+  width: 30px;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
+
+.slick-track {
+  display: flex !important;
+  align-items: stretch;
+}
+
+.slick-slide img {
+  width: 100%;
+  height: auto;
+}
+</style>
+</head>
+<body>
+
+<div id="bannerAVA" data-ajax="EAD"></div>
+
+<script src="banner-loader.js"></script>
+
+</body>
+</html>
+
