@@ -42,56 +42,28 @@
     console.error("[Banner AVA] Erro ao carregar dependências:", e);
     return;
   }
-  
-  const container = document.getElementById(CONTAINER_ID);
-  if (!container) {
-    console.error("[Banner AVA] Container #" + CONTAINER_ID + " não encontrado.");
+
+  const containers = document.querySelectorAll('#' + CONTAINER_ID);
+  if (!containers.length) {
+    console.error("[Banner AVA] Nenhum container #" + CONTAINER_ID + " encontrado.");
     return;
   }
 
-  const ajaxName = container.dataset.ajax || "EAD";
   const base = BASE_URL ? BASE_URL.replace(/\/?$/, '') + '/' : '';
 
-  let html, config;
+  // Carrega o HTML base uma vez só
+  let html;
   try {
-    const [htmlRes, configRes] = await Promise.all([
-      fetch(`${base}bannerAVA.html`),
-      fetch(`${base}${ajaxName}.json`)
-    ]);
+    const htmlRes = await fetch(`${base}bannerAVA.html`);
     if (!htmlRes.ok) throw new Error("bannerAVA.html: " + htmlRes.status);
-    if (!configRes.ok) throw new Error(ajaxName + ".json: " + configRes.status);
     html = await htmlRes.text();
-    config = await configRes.json();
   } catch (e) {
-    console.error("[Banner AVA] Erro ao carregar dados. Use um servidor HTTP (Laragon). file:// não funciona.", e);
-    container.innerHTML = '<p style="padding:20px;color:#c00;">Banner: erro ao carregar. Abra via servidor</p>';
+    console.error("[Banner AVA] Erro ao carregar bannerAVA.html. Use um servidor HTTP (Laragon). file:// não funciona.", e);
+    containers.forEach(c => {
+      c.innerHTML = '<p style="padding:20px;color:#c00;">Banner: erro ao carregar. Abra via servidor</p>';
+    });
     return;
   }
-
-  if (!config.slides || !Array.isArray(config.slides)) {
-    console.error("[Banner AVA] JSON inválido: falta 'slides'.");
-    return;
-  }
-
-  container.innerHTML = html;
-  const banner = container.querySelector(".Slick-Principal");
-  if (!banner) {
-    console.error("[Banner AVA] Elemento .Slick-Principal não encontrado no HTML.");
-    return;
-  }
-
-  config.slides.forEach(slide => {
-    const div = document.createElement("div");
-    div.innerHTML = `
-      <a href="${slide.link}" target="_blank">
-        <picture>
-          <source media="(min-width:600px)" srcset="${slide.desktop}">
-          <img src="${slide.mobile}" alt="${slide.alt}" style="width:100%;height:auto;display:block;">
-        </picture>
-      </a>
-    `;
-    banner.appendChild(div);
-  });
 
   const jq = window.jQuery || window.$;
   if (typeof jq === 'undefined') {
@@ -99,18 +71,65 @@
     return;
   }
 
-  jq('.slick-banner').slick({
-    dots: true,
-    arrows: true,
-    infinite: true,
-    speed: 800,
-    slidesToShow: 1,
-    adaptiveHeight: true,
-    autoplay: config.autoplay ?? true,
-    autoplaySpeed: config.tempo ?? 4000
-  });
+  // Função auxiliar para inicializar cada container individualmente
+  async function initContainer(container) {
+    const ajaxName = container.dataset.ajax || "EAD";
 
+    let config;
+    try {
+      const configRes = await fetch(`${base}${ajaxName}.json`);
+      if (!configRes.ok) throw new Error(ajaxName + ".json: " + configRes.status);
+      config = await configRes.json();
+    } catch (e) {
+      console.error("[Banner AVA] Erro ao carregar dados para", ajaxName, e);
+      container.innerHTML = '<p style="padding:20px;color:#c00;">Banner: erro ao carregar (' + ajaxName + ')</p>';
+      return;
+    }
+
+    if (!config.slides || !Array.isArray(config.slides)) {
+      console.error("[Banner AVA] JSON inválido: falta 'slides' para", ajaxName);
+      return;
+    }
+
+    container.innerHTML = html;
+    const banner = container.querySelector(".Slick-Principal");
+    if (!banner) {
+      console.error("[Banner AVA] Elemento .Slick-Principal não encontrado no HTML para", ajaxName);
+      return;
+    }
+
+    config.slides.forEach(slide => {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <a href="${slide.link}" target="_blank">
+          <picture>
+            <source media="(min-width:600px)" srcset="${slide.desktop}">
+            <img src="${slide.mobile}" alt="${slide.alt}" style="width:100%;height:auto;display:block;">
+          </picture>
+        </a>
+      `;
+      banner.appendChild(div);
+    });
+
+    // Inicializa o slick apenas dentro deste container
+    const slickElem = container.querySelector('.slick-banner');
+    if (slickElem) {
+      jq(slickElem).slick({
+        dots: true,
+        arrows: true,
+        infinite: true,
+        speed: 800,
+        slidesToShow: 1,
+        adaptiveHeight: true,
+        autoplay: config.autoplay ?? true,
+        autoplaySpeed: config.tempo ?? 4000
+      });
+    } else {
+      console.error("[Banner AVA] .slick-banner não encontrada dentro do container para", ajaxName);
+    }
+  }
+
+  // Inicializa todos os containers em paralelo
+  await Promise.all(Array.from(containers).map(initContainer));
 
 })();
-
-
