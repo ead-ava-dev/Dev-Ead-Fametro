@@ -35,63 +35,68 @@
   function injectLocalStyles() {
     if (document.getElementById('bannerAVA-styles')) return;
 
-    const css = `
-#bannerAVA {
-  width: 100%;
-  max-width: 100%;
-}
-#bannerAVA img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.slick-prev:before,
-.slick-next:before {
-  color: #9a17bb !important;
-}
-
-.slick-prev,
-.slick-next {
-  z-index: 3 !important;
-}
-
-.slick-prev { left: 4px !important; }
-.slick-next { right: 4px !important; }
-
-.slick-slide {
-  height: auto !important;
-}
-button.slick-arrow {
-  height: 100%;
-  width: 30px;
-}
-
-.slick-slide > div {
-  height: 100%;
-}
-
-.slick-track {
-  display: flex !important;
-  align-items: stretch;
-}
-
-.slick-slide img {
-  width: 100%;
-  height: auto;
-}
-`;
-
-    const style = document.createElement('style');
-    style.id = 'bannerAVA-styles';
-    style.type = 'text/css';
-    style.appendChild(document.createTextNode(css));
-    document.head.appendChild(style);
+      const css = `
+  #bannerAVA {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  #bannerAVA img {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
   }
   
-  try {
-    await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
-    await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
+  .slick-prev:before,
+  .slick-next:before {
+    color: #9a17bb !important;
+  }
+  
+  .slick-prev,
+  .slick-next {
+    z-index: 3 !important;
+  }
+  
+  .slick-prev { left: 4px !important; }
+  .slick-next { right: 4px !important; }
+  
+  .slick-slide {
+    height: auto !important;
+  }
+  button.slick-arrow {
+    height: 100% !important;
+    width: 30px !important;
+  }
+  
+  .slick-slide > div {
+    height: 100% !important;
+  }
+  
+  .slick-track {
+    display: flex !important;
+    align-items: stretch !important;
+  }
+  
+  .slick-slide img {
+    width: 100% !important;
+    height: auto !important;
+  }
+  `;
+
+      const style = document.createElement('style');
+      style.id = 'bannerAVA-styles';
+      style.type = 'text/css';
+      style.setAttribute('data-priority', 'high');
+      style.appendChild(document.createTextNode(css));
+      // Insere no final do head para ter maior precedência
+      document.head.appendChild(style);
+    }
+    
+    try {
+      await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
+      await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
+
+      // Injetar estilos locais após os CSS externos para garantir prioridade
+      injectLocalStyles();
 
     // Em ambientes como o Moodle, o jQuery normalmente já está carregado.
     // Para evitar conflitos (como botões exibindo [object Promise] ao sobrescrever o $),
@@ -209,6 +214,7 @@ button.slick-arrow {
   await Promise.all(Array.from(containers).map(initContainer));
 
 })();
+
 
 
 
