@@ -1,7 +1,7 @@
 (async function () {
 
   const CONTAINER_ID = "bannerAVA";
-  const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/DEV/BannerAVA";
+  const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/AVA/bannerAVAv2";
   //const BASE_URL = "";
 
   function loadCSS(url) {
@@ -105,3 +105,4 @@
 
 
 })();
+
