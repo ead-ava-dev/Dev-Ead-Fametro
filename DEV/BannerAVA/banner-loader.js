@@ -1,8 +1,8 @@
 (async function () {
 
   const CONTAINER_ID = "bannerAVA";
-  //const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/AVA/bannerAVA";
-  const BASE_URL = "";
+  const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/AVA/bannerAVA";
+  //const BASE_URL = "";
 
   function loadCSS(url) {
     return new Promise((resolve, reject) => {
@@ -102,5 +102,6 @@
     autoplay: config.autoplay ?? true,
     autoplaySpeed: config.tempo ?? 4000
   });
+
 
 })();
