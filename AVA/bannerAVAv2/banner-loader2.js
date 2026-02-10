@@ -1,9 +1,15 @@
 (async function () {
 
   const CONTAINER_ID = "bannerAVA";
-  const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/AVA/bannerAVAv2";
+  //const BASE_URL = "https://ead-ava-dev.github.io/Dev-Ead-Fametro/AVA/bannerAVAv2";
   //const BASE_URL = "";
+  // URL base dos arquivos do banner (bannerAVA.html, EAD.json, etc).
+  // Pode ser sobrescrita definindo window.bannerAVA_BASE_URL antes de carregar este script.
+  const BASE_URL = (typeof window !== 'undefined' && window.bannerAVA_BASE_URL)
+    ? window.bannerAVA_BASE_URL
+    : "https://ead-ava-dev.github.io/Dev-Ead-Fametro/AVA/bannerAVAv2/";
 
+  
   function loadCSS(url) {
     return new Promise((resolve, reject) => {
       const l = document.createElement("link");
@@ -203,5 +209,6 @@ button.slick-arrow {
   await Promise.all(Array.from(containers).map(initContainer));
 
 })();
+
 
 
