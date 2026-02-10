@@ -29,14 +29,20 @@
     await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
     await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
 
-    await loadJS("https://code.jquery.com/jquery-1.11.0.min.js");
-    await loadJS("https://code.jquery.com/jquery-migrate-1.2.1.min.js");
+    // Em ambientes como o Moodle, o jQuery normalmente já está carregado.
+    // Para evitar conflitos (como botões exibindo [object Promise] ao sobrescrever o $),
+    // só carregamos nossa própria versão se NÃO existir jQuery na página.
+    if (typeof window.jQuery === "undefined" && typeof window.$ === "undefined") {
+      await loadJS("https://code.jquery.com/jquery-1.11.0.min.js");
+      await loadJS("https://code.jquery.com/jquery-migrate-1.2.1.min.js");
+    }
+
     await loadJS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js");
   } catch (e) {
     console.error("[Banner AVA] Erro ao carregar dependências:", e);
     return;
   }
-
+  
   const container = document.getElementById(CONTAINER_ID);
   if (!container) {
     console.error("[Banner AVA] Container #" + CONTAINER_ID + " não encontrado.");
@@ -87,12 +93,13 @@
     banner.appendChild(div);
   });
 
-  if (typeof $ === 'undefined') {
+  const jq = window.jQuery || window.$;
+  if (typeof jq === 'undefined') {
     console.error("[Banner AVA] jQuery não disponível.");
     return;
   }
 
-  $('.slick-banner').slick({
+  jq('.slick-banner').slick({
     dots: true,
     arrows: true,
     infinite: true,
@@ -105,4 +112,5 @@
 
 
 })();
+
 
