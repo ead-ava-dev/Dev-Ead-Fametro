@@ -43,6 +43,18 @@
     return;
   }
 
+  // Suporte a marcadores de texto como {{data-ajax-EAD}} no HTML.
+  // Qualquer ocorrência de {{data-ajax-NOME}} será substituída por
+  // <div id="bannerAVA" data-ajax="NOME"></div> antes de inicializar os banners.
+  if (document.body && document.body.innerHTML) {
+    document.body.innerHTML = document.body.innerHTML.replace(
+      /{{\s*data-ajax-([A-Za-z0-9_-]+)\s*}}/g,
+      function (_match, nome) {
+        return '<div id="bannerAVA" data-ajax="' + nome + '"></div>';
+      }
+    );
+  }
+
   const containers = document.querySelectorAll('#' + CONTAINER_ID);
   if (!containers.length) {
     console.error("[Banner AVA] Nenhum container #" + CONTAINER_ID + " encontrado.");
@@ -133,3 +145,4 @@
   await Promise.all(Array.from(containers).map(initContainer));
 
 })();
+
