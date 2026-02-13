@@ -1,0 +1,166 @@
+:root {
+    --primary-blue: #0056b3;
+    --hover-blue: #00AFCC;
+    --text-color: #334e68;
+    --bg-card: #f0f4f8;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.ava-component {
+    width: 100%;
+    text-align: -webkit-center;
+    display: flex;
+    justify-content: center;
+}
+
+
+.buttonava-wrapper {
+    display: block !important;
+    width: 100% !important;
+    max-width: 95%;
+    flex-basis: 100% !important; /* em container flex, ocupa a linha toda e manda o próximo para baixo */
+    margin-bottom: 1rem;
+}
+
+.buttonava-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 10px;
+    width: 100%;
+}
+
+.btn-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    border: 1px solid transparent;
+}
+
+.btn-card:hover {
+    background: var(--hover-blue);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(0, 175, 204, 0.13);
+}
+
+.icon-container {
+    width: 12%;
+    min-width: 40px;
+    aspect-ratio: 1;
+    margin-right: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-container svg {
+    width: 100%;
+    height: 100%;
+    stroke: var(--primary-blue);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.3s;
+}
+.btn-card:hover .icon-container svg {
+    stroke: #fff;
+}
+
+.icon-container i {
+    color: var(--primary-blue);
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    transition: color 0.3s;
+}
+
+.btn-card .icon-container i {
+    color: var(--primary-blue);
+}
+.btn-card:hover .icon-container i {
+    color: #fff;
+    font-weight: 300;
+}
+
+.btn-text {
+    color: var(--primary-blue);
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+    font-weight: 600;
+    line-height: 1.2;
+    transition: color 0.3s;
+    font-family: 'Barlow', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: left;
+}
+.btn-card:hover .btn-text {
+    color: #fff;
+}
+
+/* Footer */
+.footer-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 10px;
+}
+
+.btn-footer {
+    background: linear-gradient(90deg, #005691, #00acc1);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: clamp(0.8rem, 2vw, 0.95rem);
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(0, 172, 193, 0.3);
+    transition: 0.3s;
+    margin-top: 2%;
+}
+
+.btn-footer:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 172, 193, 0.4);
+    background: linear-gradient(90deg, #00AFCC, #00AFCC);
+    color: var(--bg-card);
+    font-weight: 800;
+}
+
+/* Celular */
+@media (max-width: 480px) {
+    .buttonava-wrapper {
+        max-width: 100%;
+        padding: 15px;
+    }
+    .buttonava-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .btn-card {
+        padding: 15px;
+    }
+}
+
+/* Tablet */
+@media (min-width: 481px) and (max-width: 768px) {
+    .buttonava-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Computador */
+@media (min-width: 769px) {
+    .buttonava-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    }
+}

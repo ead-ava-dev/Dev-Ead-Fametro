@@ -1,0 +1,36 @@
+{
+  "botoes": [
+    {
+      "titulo": "Conheça o EaD Fametro",
+      "url": "#",
+      "icone": "fa-duotone fa-regular fa-map"
+    },
+    {
+      "titulo": "Como Estudar Online?",
+      "url": "#",
+      "icone": "fa-duotone fa-light fa-user-graduate"
+    },
+    {
+      "titulo": "Tutoria Online",
+      "url": "#",
+      "icone": "fa-duotone fa-solid fa-screen-users"
+    },
+    {
+      "titulo": "Apoio ao Discente",
+      "url": "#",
+      "icone": "fa-duotone fa-solid fa-handshake"
+    },
+    {
+      "titulo": "Coordenação de Curso",
+      "url": "#",
+      "icone": "fa-duotone fa-regular fa-user-magnifying-glass"
+    },
+    {
+      "titulo": "Bibliotecas e Periódicos",
+      "url": "#",
+      "icone": "fa-duotone fa-solid fa-books"
+    }
+
+    
+  ]
+}

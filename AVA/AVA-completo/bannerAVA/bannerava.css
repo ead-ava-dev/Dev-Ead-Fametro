@@ -1,0 +1,60 @@
+/* Container do banner - ocupa 100% da largura */
+.ava-component[data-component="bannerAVA"],
+.ava-component[data-component="bannerAVA"] .slick-banner,
+.ava-component[data-component="bannerAVA"] .Slick-Principal {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* Slides e links ocupam 100% */
+.ava-component[data-component="bannerAVA"] .slick-slide,
+.ava-component[data-component="bannerAVA"] .slick-slide > div,
+.ava-component[data-component="bannerAVA"] .slick-slide a {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+}
+
+/* Imagem responsiva - escala com a tela */
+.ava-component[data-component="bannerAVA"] .slick-slide img,
+.ava-component[data-component="bannerAVA"] picture,
+.ava-component[data-component="bannerAVA"] picture img {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}
+
+/* Slick track e list - full width */
+.ava-component[data-component="bannerAVA"] .slick-list,
+.ava-component[data-component="bannerAVA"] .slick-track {
+  width: 100% !important;
+}
+
+.ava-component[data-component="bannerAVA"] .slick-slide {
+  height: auto !important;
+}
+
+.ava-component[data-component="bannerAVA"] .slick-slide > div {
+  height: 100%;
+}
+
+/* Setas */
+.slick-prev:before,
+.slick-next:before {
+  color: #9a17bb !important;
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 3 !important;
+}
+
+.slick-prev { left: 4px !important; }
+.slick-next { right: 4px !important; }
+
+button.slick-arrow {
+  height: 100%;
+  width: 30px;
+}
