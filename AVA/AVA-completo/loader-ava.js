@@ -24,7 +24,7 @@
       if (typeof document !== 'undefined' && document.location) {
           const href = document.location.href;
           const path = document.location.pathname || '';
-          if (/\/buttonAVA\/|\/buttonava\//.test(path)) {
+          if (/\/buttonAVA\/|\/buttonAVA\//.test(path)) {
               return href.replace(/\/[^/]*$/, '/').replace(/[^/]+\/$/, '../');
           }
           return href.replace(/\/[^/]*$/, '/');
@@ -209,56 +209,111 @@
 
   async function initBanner(container, configName) {
 
-      if (!BASE_URL) {
-          console.error("AVA Loader: BASE_URL vazia, não foi possível carregar o banner.");
-          return;
-      }
+    if (!BASE_URL) {
+        console.error("AVA Loader: BASE_URL vazia.");
+        return;
+    }
 
-      const componentPath = BASE_URL + "bannerAVA/";
+    const componentPath = BASE_URL + "bannerAVA/";
 
-      await loadCSS(componentPath + "bannerava.css");
-      await ensureSlickLoaded();
+    await loadCSS(componentPath + "bannerava.css");
+    await ensureSlickLoaded();
 
-      const template = await fetchText(componentPath + "bannerAVA.html");
-      const config = await fetchJSON(componentPath + configName + ".json");
+    const template = `
+        <div class="slick-banner"> 
+            <div class="Slick-Principal"></div>
+        </div>
+    `;
 
-      container.innerHTML = template;
+    const config = await fetchJSON(
+        componentPath + configName + ".json?v=" + Date.now()
+    );
 
-      const slickEl = container.querySelector(".Slick-Principal");
-      if (!slickEl) {
-          console.error("AVA Loader: .Slick-Principal não encontrado no template do banner.");
-          return;
-      }
+    container.innerHTML = template;
 
-      if (slickEl.classList.contains("slick-initialized")) {
-          return;
-      }
+    const slickEl = container.querySelector(".Slick-Principal");
+    if (!slickEl) {
+        console.error("AVA Loader: .Slick-Principal não encontrado.");
+        return;
+    }
 
-      const slides = config.slides || [];
+    /* ================= FUNÇÃO DE PARSE INTELIGENTE ================= */
 
-      slides.forEach(function (slide) {
-          var link = escapeUrl(slide.link);
-          var desktop = escapeSrc(slide.desktop) || "";
-          var mobile = escapeSrc(slide.mobile) || desktop;
-          var alt = escapeHtml(slide.alt || "");
-          slickEl.insertAdjacentHTML("beforeend",
-              '<div><a href="' + link + '" target="_blank" rel="noopener">' +
-              '<picture><source media="(min-width:600px)" srcset="' + desktop + '">' +
-              '<img src="' + mobile + '" alt="' + alt + '"></picture></a></div>'
-          );
-      });
+    function parseDateFlexible(dateStr, endOfDay = false) {
 
-      window.jQuery(slickEl).slick({
-          dots: true,
-          arrows: true,
-          infinite: true,
-          speed: 800,
-          slidesToShow: 1,
-          adaptiveHeight: true,
-          autoplay: config.autoplay !== false,
-          autoplaySpeed: config.tempo || 4000
-      });
-  }
+        if (!dateStr) return null;
+
+        // Formato brasileiro dd/mm/aaaa
+        if (dateStr.includes("/")) {
+            const [day, month, year] = dateStr.split("/").map(Number);
+            return endOfDay
+                ? new Date(year, month - 1, day, 23, 59, 59)
+                : new Date(year, month - 1, day, 0, 0, 0);
+        }
+
+        // Formato ISO aaaa-mm-dd
+        if (dateStr.includes("-")) {
+            return endOfDay
+                ? new Date(dateStr + "T23:59:59")
+                : new Date(dateStr + "T00:00:00");
+        }
+
+        return null;
+    }
+
+    /* ================= FILTRO POR DATA ================= */
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const slides = (config.slides || []).filter(slide => {
+
+        if (!slide.inicio || !slide.fim) return true;
+
+        const inicio = parseDateFlexible(slide.inicio, false);
+        const fim = parseDateFlexible(slide.fim, true);
+
+        if (!inicio || !fim) return true;
+
+        return hoje >= inicio && hoje <= fim;
+    });
+
+    if (slides.length === 0) {
+        container.innerHTML = "";
+        return;
+    }
+
+    /* ================= MONTA SLIDES ================= */
+
+    slides.forEach(function (slide) {
+
+        const link = escapeUrl(slide.link);
+        const desktop = escapeSrc(slide.desktop) || "";
+        const mobile = escapeSrc(slide.mobile) || desktop;
+        const alt = escapeHtml(slide.alt || "");
+
+        slickEl.insertAdjacentHTML("beforeend",
+            '<div><a href="' + link + '" target="_blank" rel="noopener">' +
+            '<picture>' +
+            '<source media="(min-width:600px)" srcset="' + desktop + '">' +
+            '<img src="' + mobile + '" alt="' + alt + '">' +
+            '</picture></a></div>'
+        );
+    });
+
+    /* ================= INICIA SLICK ================= */
+
+    window.jQuery(slickEl).slick({
+        dots: true,
+        arrows: true,
+        infinite: slides.length > 1,
+        speed: 800,
+        slidesToShow: 1,
+        adaptiveHeight: true,
+        autoplay: config.autoplay !== false,
+        autoplaySpeed: config.tempo || 4000
+    });
+}
 
   /* ================= BUTTONS ================= */
 
