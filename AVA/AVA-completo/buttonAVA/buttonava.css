@@ -11,6 +11,11 @@
     box-sizing: border-box;
 }
 
+.ava-component[data-component="buttonAVA"] {
+    text-align: -webkit-center;
+    justify-items: center;
+}
+
 .ava-component {
     width: 100%;
     text-align: -webkit-center;
