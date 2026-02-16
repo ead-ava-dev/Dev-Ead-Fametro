@@ -1,4 +1,5 @@
 (function (root, factory) {
+  // Universal Module Definition (AMD/CommonJS/Global)
   if (typeof define === 'function' && define.amd) {
     define([], factory);
   } else {
@@ -7,7 +8,7 @@
 }(this, function () {
   'use strict';
 
-  // ================= BASE URL ================= //
+  // ================ BASE URL ===================
   function detectBaseURL() {
     let script = document.currentScript;
     if (!script) {
@@ -27,10 +28,9 @@
     }
     return '';
   }
-
   const BASE_URL = detectBaseURL();
 
-  // ================= UTIL ================= //
+  // ================ UTILITÁRIOS ===================
   function escapeHtml(text) {
     if (text == null || text === '') return '';
     const div = document.createElement("div");
@@ -60,7 +60,16 @@
       if (document.querySelector(`style[data-inline-css="${url}"]`)) return;
       const response = await fetch(url, { cache: "reload" });
       if (!response.ok) throw new Error('Erro ao carregar CSS: ' + url);
-      const css = await response.text();
+      let css = await response.text();
+
+      // CORRIGE FONT URL: Sobrescreve o font-face do slick-carousel
+      if (url.includes('slick-theme.css')) {
+        css = css.replaceAll(
+          './fonts/',
+          'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/fonts/'
+        );
+      }
+
       const style = document.createElement('style');
       style.setAttribute('data-inline-css', url);
       style.textContent = css;
@@ -73,7 +82,6 @@
         l.href = url;
         target.appendChild(l);
       }
-      // Opcional: console.warn("Não foi possível aplicar CSS inline, usando <link> fallback", url, e);
     }
   }
 
@@ -107,7 +115,7 @@
     return r.text();
   }
 
-  // ================= PLACEHOLDER PARSER ================= //
+  // ================ PARSE DE PLACEHOLDER ===================
   function parsePlaceholders() {
     const walker = document.createTreeWalker(
       document.body,
@@ -130,11 +138,11 @@
       let match;
       while ((match = regex.exec(text)) !== null) {
         const [full, component, config] = match;
-        // texto antes
+        // Texto antes do placeholder
         frag.appendChild(
           document.createTextNode(text.substring(lastIndex, match.index))
         );
-        // cria container do componente
+        // Cria container para o componente
         const div = document.createElement("div");
         div.className = "ava-component";
         div.dataset.component = component;
@@ -151,12 +159,8 @@
     });
   }
 
-  // ================= COMPONENT INIT ================= //
+  // ================ INICIALIZAÇÃO DE COMPONENTES ===================
   async function initComponents() {
-    // Sempre injeta o CSS dos botões (inline) ao iniciar qualquer componente,
-    // para garantir que o layout dos botões AVA funcione, independente da ordem.
-    await loadCSS(BASE_URL + "buttonAVA/buttonava.css");
-
     const components = document.querySelectorAll(".ava-component");
     for (const comp of components) {
       const component = comp.dataset.component;
@@ -173,7 +177,7 @@
     }
   }
 
-  // ================= BANNER (Slick carregado 1x) ================= //
+  // ================ BANNER (Slick carregado 1x) ===================
   let _slickLoaded = false;
   async function ensureSlickLoaded() {
     if (_slickLoaded) return;
@@ -191,14 +195,16 @@
   }
 
   async function initBanner(container, configName) {
+    // Valida BASE_URL
     if (!BASE_URL) {
       console.error("AVA Loader: BASE_URL vazia.");
       return;
     }
     const componentPath = BASE_URL + "bannerAVA/";
 
-    // Mudança para injetar CSS inline pois <link rel="stylesheet"> geralmente não funciona no Moodle
+    // Carrega CSS customizado do banner
     await loadCSS(componentPath + "bannerava.css");
+    // Garante slick carregado 1x
     await ensureSlickLoaded();
 
     const template = `
@@ -226,7 +232,7 @@
       return;
     }
 
-    // ================= FUNÇÃO DE PARSE INTELIGENTE ================= //
+    // ---------- Função parsing de datas flexível ----------
     function parseDateFlexible(dateStr, endOfDay = false) {
       if (!dateStr) return null;
       // Formato brasileiro dd/mm/aaaa
@@ -245,7 +251,7 @@
       return null;
     }
 
-    // ================= FILTRO POR DATA ================= //
+    // ---------- Filtra slides por período ----------
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
 
@@ -262,7 +268,7 @@
       return;
     }
 
-    // ================= MONTA SLIDES ================= //
+    // ---------- Monta os slides ----------
     slides.forEach(slide => {
       const link = escapeUrl(slide.link);
       const desktop = escapeSrc(slide.desktop) || "";
@@ -270,14 +276,15 @@
       const alt = escapeHtml(slide.alt || "");
       slickEl.insertAdjacentHTML("beforeend",
         '<div><a href="' + link + '" target="_blank" rel="noopener">' +
-        '<picture>' +
-        '<source media="(min-width:600px)" srcset="' + desktop + '">' +
-        '<img src="' + mobile + '" alt="' + alt + '">' +
-        '</picture></a></div>'
+          '<picture>' +
+            '<source media="(min-width:600px)" srcset="' + desktop + '">' +
+            '<img src="' + mobile + '" alt="' + alt + '">' +
+          '</picture>' +
+        '</a></div>'
       );
     });
 
-    // ================= INICIA SLICK ================= //
+    // ---------- Inicializa Slick ----------
     window.jQuery(slickEl).slick({
       dots: true,
       arrows: true,
@@ -290,13 +297,31 @@
     });
   }
 
-  // ================= BUTTONS ================= //
+  // ================ BUTTONS (Botões customizados) ===================
+  // Carrega e injeta o CSS customizado dos botões do AVA
+  async function ensureButtonAVACssLoaded() {
+    if (!BASE_URL) {
+      console.error("AVA Loader: BASE_URL vazia.");
+      return;
+    }
+    await loadCSS(BASE_URL + "buttonAVA/buttonava.css");
+  }
+
+  // Inicializa botões customizados
   async function initButtons(container, configName) {
+    if (!BASE_URL) {
+      console.error("AVA Loader: BASE_URL vazia.");
+      return;
+    }
     const componentPath = BASE_URL + "buttonAVA/";
+
+    // Certifica-se de carregar o CSS (carrega apenas uma vez)
+    await ensureButtonAVACssLoaded();
 
     let data;
     try {
       data = await fetchJSON(componentPath + configName + ".json");
+      if (!data) throw new Error("JSON vazio");
     } catch (e) {
       console.error("Erro ao carregar config dos botões:", e);
       container.innerHTML = "";
@@ -307,17 +332,17 @@
 
     const buttonsHtml = botoes.map(btn => `
       <a href="${escapeUrl(btn.url)}" class="btn-card btn-ava">
-          <div class="icon-container">
-              <i class="${escapeHtml(btn.icone)}"></i>
-          </div>
-          <span class="btn-text">${escapeHtml(btn.titulo)}</span>
+        <div class="icon-container">
+          <i class="${escapeHtml(btn.icone)}"></i>
+        </div>
+        <span class="btn-text">${escapeHtml(btn.titulo)}</span>
       </a>
     `).join("");
 
     container.innerHTML = `<div class="buttonava-wrapper"><div class="buttonava-grid">${buttonsHtml}</div></div>`;
   }
 
-  // ================= INIT ================= //
+  // ================ INICIALIZAÇÃO GERAL ===================
   let _initDone = false;
 
   async function init() {
@@ -331,7 +356,7 @@
     _initDone = false;
   }
 
-  // ================= AUTO START (apenas se não AMD) ================= //
+  // ================ AUTO-START (se não for AMD) ===================
   if (typeof define !== "function" || !define.amd) {
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", init);
