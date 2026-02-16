@@ -153,6 +153,10 @@
 
   // ================= COMPONENT INIT ================= //
   async function initComponents() {
+    // Sempre injeta o CSS dos botões (inline) ao iniciar qualquer componente,
+    // para garantir que o layout dos botões AVA funcione, independente da ordem.
+    await loadCSS(BASE_URL + "buttonAVA/buttonava.css");
+
     const components = document.querySelectorAll(".ava-component");
     for (const comp of components) {
       const component = comp.dataset.component;
