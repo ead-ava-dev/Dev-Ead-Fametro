@@ -177,32 +177,67 @@
     }
   }
 
-  // ================ BANNER (Slick carregado 1x) ===================
-  let _slickLoaded = false;
-  async function ensureSlickLoaded() {
-    if (_slickLoaded) return;
-    await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
-    await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
-    // Espera o jQuery do Moodle ficar disponível
-    await new Promise(resolve => {
-        if (window.jQuery) return resolve();
+/* ================= UNIVERSAL JQUERY ================= */
 
-        if (typeof require !== "undefined") {
-        require(['jquery'], function($) {
-            window.jQuery = $;
-            window.$ = $;
-            resolve();
-        });
-        }
-    });
+let _jqueryReady = null;
 
-    await loadJS(
-        "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js",
-        () => window.jQuery?.fn?.slick
-    );
+function ensureJQuery() {
+  if (_jqueryReady) return _jqueryReady;
 
-    _slickLoaded = true;
+  _jqueryReady = new Promise((resolve) => {
+
+    // 1️⃣ Já existe jQuery
+    if (window.jQuery && window.jQuery.fn) {
+      return resolve(window.jQuery);
     }
+
+    // 2️⃣ Moodle / RequireJS
+    if (typeof require === 'function') {
+      try {
+        require(['jquery'], function ($) {
+          resolve($);
+        });
+        return;
+      } catch (e) {}
+    }
+
+    // 3️⃣ Fallback universal
+    const script = document.createElement("script");
+    script.src = "https://code.jquery.com/jquery-3.6.0.min.js";
+    script.onload = () => resolve(window.jQuery);
+    document.head.appendChild(script);
+  });
+
+  return _jqueryReady;
+}
+
+/* ================= UNIVERSAL SLICK ================= */
+
+let _slickLoaded = false;
+
+async function ensureSlickLoaded() {
+  if (_slickLoaded) return;
+
+  await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
+  await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
+
+  const $ = await ensureJQuery();
+
+  if ($.fn && $.fn.slick) {
+    _slickLoaded = true;
+    return;
+  }
+
+  await new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js";
+    s.onload = resolve;
+    s.onerror = reject;
+    document.body.appendChild(s);
+  });
+
+  _slickLoaded = true;
+}
 
   async function initBanner(container, configName) {
     // Valida BASE_URL
