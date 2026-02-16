@@ -183,16 +183,26 @@
     if (_slickLoaded) return;
     await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
     await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
+    // Espera o jQuery do Moodle ficar disponível
+    await new Promise(resolve => {
+        if (window.jQuery) return resolve();
+
+        if (typeof require !== "undefined") {
+        require(['jquery'], function($) {
+            window.jQuery = $;
+            window.$ = $;
+            resolve();
+        });
+        }
+    });
+
     await loadJS(
-      "https://code.jquery.com/jquery-3.6.0.min.js",
-      () => window.jQuery
+        "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js",
+        () => window.jQuery?.fn?.slick
     );
-    await loadJS(
-      "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js",
-      () => window.jQuery?.fn?.slick
-    );
+
     _slickLoaded = true;
-  }
+    }
 
   async function initBanner(container, configName) {
     // Valida BASE_URL
