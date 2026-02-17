@@ -177,113 +177,21 @@
     }
   }
 
-  /* ================= JQUERY/SLICK para MOODLE 4.5 ================= */
-
-  let _envJQuery = null;
+  // ================ BANNER (Slick carregado 1x) ===================
   let _slickLoaded = false;
-
-  function ensureJQuery() {
-    if (_envJQuery) return _envJQuery;
-
-    // 1. Preferência por jQuery nativo do Moodle
-    _envJQuery = new Promise((resolve, reject) => {
-      function checkAndResolve() {
-        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.jquery) {
-          return resolve(window.jQuery);
-        }
-        reject(new Error("jQuery não encontrado."));
-      }
-
-      // Caso o Moodle tenha jQuery já carregado
-      if (window.jQuery && window.jQuery.fn && window.jQuery.fn.jquery) {
-        return resolve(window.jQuery);
-      }
-
-      // Como fallback, tenta injetar normalmente (mas no Moodle 4.5 pode bloquear)
-      const script = document.createElement("script");
-      script.src = "https://code.jquery.com/jquery-3.6.0.min.js";
-      script.onload = checkAndResolve;
-      script.onerror = function() {
-        // Falhou, tenta novamente ou desiste
-        reject(new Error("Falha ao carregar jQuery externamente."));
-      };
-      document.head.appendChild(script);
-
-      // Vamos aguardar alguns ciclos para ver se o Moodle carrega o jQuery
-      setTimeout(function() {
-        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.jquery) {
-          resolve(window.jQuery);
-        }
-      }, 1000);
-    });
-
-    return _envJQuery;
-  }
-
   async function ensureSlickLoaded() {
     if (_slickLoaded) return;
-
     await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
     await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
-
-    let $ = null;
-    try {
-      $ = await ensureJQuery();
-    } catch(e) {
-      console.error('jQuery não disponível no ambiente Moodle. Slick não será carregado.', e);
-      return;
-    }
-
-    // Verifica se Slick já está disponível
-    if ($.fn && $.fn.slick) {
-      _slickLoaded = true;
-      return;
-    }
-
-    // Em plataformas restritas como Moodle, criar Script pode ser bloqueado!
-    try {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js";
-        script.onload = resolve;
-        script.onerror = () => {
-          reject("Falha ao carregar slick-carousel via CDN.");
-        };
-        // O Moodle pode impedir adição de scripts -- tente, mas espere fallback.
-        document.body.appendChild(script);
-
-        // Fallback: verifica manualmente após 2 segundos se slick está presente
-        setTimeout(() => {
-          if ($.fn && $.fn.slick) resolve();
-        }, 2000);
-      });
-    } catch (e) {
-      // Se caímos aqui, slick não carregou
-      console.error(
-        "Não foi possível carregar o slick-carousel no seu ambiente.\n" +
-        "No Moodle 4.5+, a política de segurança pode bloquear scripts CDN. " +
-        "Solução possível: peça para o administrador instalar o slick-carousel nos seus temas/plugins."
-      );
-      return;
-    }
-
-    // Fallback via verificação retardada (pode já ter sido carregado por outro plugin ou inclusão manual)
-    if ($.fn && $.fn.slick) {
-      _slickLoaded = true;
-      return;
-    }
-    // Última tentativa - espera mais um pouco
-    await new Promise(resolve => setTimeout(resolve, 800));
-    if ($.fn && $.fn.slick) {
-      _slickLoaded = true;
-      return;
-    }
-
-    // Se chegou aqui, não carregou. Reporta erro!
-    console.error(
-      "Slick-carousel NÃO disponível. Não foi possível inicializar banners dinâmicos."
+    await loadJS(
+      "https://code.jquery.com/jquery-3.6.0.min.js",
+      () => window.jQuery
     );
-    // Não lança error para não quebrar página.
+    await loadJS(
+      "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js",
+      () => window.jQuery?.fn?.slick
+    );
+    _slickLoaded = true;
   }
 
   async function initBanner(container, configName) {
@@ -377,27 +285,7 @@
     });
 
     // ---------- Inicializa Slick ----------
-    let $;
-    try {
-      $ = await ensureJQuery();
-    } catch (e) {
-      container.innerHTML =
-        '<div style="color:red; font-weight:bold;">' +
-        'Não foi possível carregar o carrossel do banner porque o jQuery não está disponível neste site.' +
-        '</div>';
-      return;
-    }
-    if (!$ || !($.fn && $.fn.slick)) {
-      container.innerHTML =
-        '<div style="color:red; font-weight:bold;">' +
-        'Não foi possível carregar o carrossel do banner porque o slick-carousel não está disponível neste site.<br>' +
-        'Solicite ao administrador que adicione o slick-carousel ao tema ou permita scripts de terceiros.' +
-        '</div>';
-      return;
-    }
-
-    // Inicializa slick normalmente!
-    $(slickEl).slick({
+    window.jQuery(slickEl).slick({
       dots: true,
       arrows: true,
       infinite: slides.length > 1,
