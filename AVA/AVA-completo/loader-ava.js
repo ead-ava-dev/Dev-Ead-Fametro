@@ -177,22 +177,46 @@
     }
   }
 
-/* ================= UNIVERSAL JQUERY ================= */
+/* ================= HÍBRIDO INTELIGENTE ================= */
 
-let _jqueryReady = null;
+// Função para carregar múltiplos scripts na ordem correta
+function loadScriptSequential(urls) {
+  return urls.reduce((promise, src) => {
+    return promise.then(() => new Promise((resolve, reject) => {
+      if (document.querySelector(`script[src="${src}"]`)) {
+        resolve();
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    }));
+  }, Promise.resolve());
+}
+
+let _envJQuery = null;
+let _slickLoaded = false;
+
+function detectMoodle() {
+  return typeof require === "function" &&
+         typeof require.s === "object";
+}
 
 function ensureJQuery() {
-  if (_jqueryReady) return _jqueryReady;
 
-  _jqueryReady = new Promise((resolve) => {
+  if (_envJQuery) return _envJQuery;
 
-    // 1️⃣ Já existe jQuery
+  _envJQuery = new Promise((resolve) => {
+
+    // 1️⃣ Já existe jQuery global
     if (window.jQuery && window.jQuery.fn) {
       return resolve(window.jQuery);
     }
 
-    // 2️⃣ Moodle / RequireJS
-    if (typeof require === 'function') {
+    // 2️⃣ Ambiente Moodle (RequireJS)
+    if (detectMoodle()) {
       try {
         require(['jquery'], function ($) {
           resolve($);
@@ -201,21 +225,21 @@ function ensureJQuery() {
       } catch (e) {}
     }
 
-    // 3️⃣ Fallback universal
-    const script = document.createElement("script");
-    script.src = "https://code.jquery.com/jquery-3.6.0.min.js";
-    script.onload = () => resolve(window.jQuery);
-    document.head.appendChild(script);
+    // 3️⃣ Ambiente comum (Carrega jQuery 1.11 + migrate + slick antigo)
+    loadScriptSequential([
+      "https://code.jquery.com/jquery-3.6.0.min.js",
+      "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
+    ]).then(() => {
+      resolve(window.jQuery);
+    });
+
   });
 
-  return _jqueryReady;
+  return _envJQuery;
 }
 
-/* ================= UNIVERSAL SLICK ================= */
-
-let _slickLoaded = false;
-
 async function ensureSlickLoaded() {
+
   if (_slickLoaded) return;
 
   await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
@@ -223,19 +247,12 @@ async function ensureSlickLoaded() {
 
   const $ = await ensureJQuery();
 
+  // Já carregado?
   if ($.fn && $.fn.slick) {
     _slickLoaded = true;
     return;
   }
-
-  await new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js";
-    s.onload = resolve;
-    s.onerror = reject;
-    document.body.appendChild(s);
-  });
-
+  // Garantido acima por loadScriptSequential
   _slickLoaded = true;
 }
 
