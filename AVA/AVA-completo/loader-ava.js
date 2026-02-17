@@ -177,62 +177,27 @@
     }
   }
 
-/* ================= HÍBRIDO INTELIGENTE ================= */
-
-// Função para carregar múltiplos scripts na ordem correta
-function loadScriptSequential(urls) {
-  return urls.reduce((promise, src) => {
-    return promise.then(() => new Promise((resolve, reject) => {
-      if (document.querySelector(`script[src="${src}"]`)) {
-        resolve();
-        return;
-      }
-      const script = document.createElement("script");
-      script.src = src;
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head.appendChild(script);
-    }));
-  }, Promise.resolve());
-}
+/* ================= JQUERY 3.6 FIXO + SLICK CONTROLADO ================= */
 
 let _envJQuery = null;
 let _slickLoaded = false;
-
-function detectMoodle() {
-  return typeof require === "function" &&
-         typeof require.s === "object";
-}
 
 function ensureJQuery() {
 
   if (_envJQuery) return _envJQuery;
 
-  _envJQuery = new Promise((resolve) => {
+  _envJQuery = new Promise((resolve, reject) => {
 
-    // 1️⃣ Já existe jQuery global
-    if (window.jQuery && window.jQuery.fn) {
+    // Se já for 3.6, reutiliza
+    if (window.jQuery && window.jQuery.fn && window.jQuery.fn.jquery === "3.6.0") {
       return resolve(window.jQuery);
     }
 
-    // 2️⃣ Ambiente Moodle (RequireJS)
-    if (detectMoodle()) {
-      try {
-        require(['jquery'], function ($) {
-          resolve($);
-        });
-        return;
-      } catch (e) {}
-    }
-
-    // 3️⃣ Ambiente comum (Carrega jQuery 1.11 + migrate + slick antigo)
-    loadScriptSequential([
-      "https://code.jquery.com/jquery-3.6.0.min.js",
-      "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
-    ]).then(() => {
-      resolve(window.jQuery);
-    });
-
+    const script = document.createElement("script");
+    script.src = "https://code.jquery.com/jquery-3.6.0.min.js";
+    script.onload = () => resolve(window.jQuery);
+    script.onerror = reject;
+    document.head.appendChild(script);
   });
 
   return _envJQuery;
@@ -247,15 +212,21 @@ async function ensureSlickLoaded() {
 
   const $ = await ensureJQuery();
 
-  // Já carregado?
   if ($.fn && $.fn.slick) {
     _slickLoaded = true;
     return;
   }
-  // Garantido acima por loadScriptSequential
+
+  await new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js";
+    script.onload = resolve;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+
   _slickLoaded = true;
 }
-
   async function initBanner(container, configName) {
     // Valida BASE_URL
     if (!BASE_URL) {
@@ -347,7 +318,8 @@ async function ensureSlickLoaded() {
     });
 
     // ---------- Inicializa Slick ----------
-    window.jQuery(slickEl).slick({
+    const $ = await ensureJQuery();
+    $(slickEl).slick({
       dots: true,
       arrows: true,
       infinite: slides.length > 1,
