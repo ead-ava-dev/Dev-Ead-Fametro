@@ -1,42 +1,47 @@
 (function (root, factory) {
+  // Universal Module Definition (AMD/CommonJS/Global)
   if (typeof define === 'function' && define.amd) {
-    // AMD: Exporta como módulo AMD para requireJS/etc
-    // Corrigir: definir um nome para o módulo anônimo para evitar mismatched anonymous define()
-    define("ava-loader", [], factory);
+    // Define compatível com RequireJS/Moodle/YUI e outros loaders
+    define('loader-ava', [], factory);
   } else {
-    // Standalone: Exporta global
     root.AVA_LOADER = factory();
   }
 }(this, function () {
   'use strict';
 
-  /* ================= BASE URL ================= */
-
+  // ================ BASE URL ===================
+  // Detecta a base do script mesmo em contextos embarcados (ex: script no Github, em CDN, no Moodle)
   function detectBaseURL() {
+    // Tentativa com currentScript
     let script = document.currentScript;
     if (!script) {
+      // Busca o último src que contenha "loader-ava" (ajuda quando importado em Moodle, Github...)
       const scripts = document.querySelectorAll('script[src*="loader-ava"]');
       script = scripts[scripts.length - 1];
     }
     if (script && script.src) {
+      // Suporta caminhos absolutos/relativos/Github/CMS/Moodle
       return script.src.split('/').slice(0, -1).join('/') + '/';
+    }
+    if (typeof document !== 'undefined' && document.location) {
+      // Fallback "relativo", nunca ideal, mas mantém algum funcionamento
+      return (document.location.href || '').replace(/\/[^/]*$/, '/');
     }
     return '';
   }
 
   const BASE_URL = detectBaseURL();
 
-  /* ================= UTIL ================= */
-
+  // ================ UTILITÁRIOS ===================
   function escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
+    if (text == null || text === '') return '';
+    const div = document.createElement("div");
     div.textContent = String(text);
     return div.innerHTML;
   }
 
   function escapeUrl(url) {
-    if (!url) return '#';
+    if (url == null || url === '') return '#';
     const s = String(url).trim();
     if (/^(https?|mailto|tel):/i.test(s)) return s;
     if (/^#[a-z0-9\-_]*$/i.test(s)) return s;
@@ -44,32 +49,53 @@
   }
 
   function escapeSrc(url) {
-    if (!url) return '';
+    if (url == null || url === '') return '';
     const s = String(url).trim();
+    // Bloqueia javascript, data e fontes potencialmente perigosas
     if (/^\s*(javascript|data:text\/html|data:application)/i.test(s)) return '';
     return s;
   }
 
-  async function loadCSS(url) {
-    if (document.querySelector(`link[href="${url}"]`)) return;
-    const l = document.createElement("link");
-    l.rel = "stylesheet";
-    l.href = url;
-    document.head.appendChild(l);
+  // Função para inline de CSS visando máxima compatibilidade com Moodle (filtros, CSP, etc)
+  async function inlineCSS(url, target) {
+    // target = elemento para inserir o <style>, default: <head>
+    target = target || document.head;
+    try {
+      if (document.querySelector(`style[data-inline-css="${url}"]`)) return;
+      const response = await fetch(url, { cache: "reload" }); // cache reload para Moodle não usar CSS antigo
+      if (!response.ok) throw new Error('Erro ao carregar CSS: ' + url);
+      let css = await response.text();
+      // Ajusta fontes do slick, sempre força path CDN para evitar erros no Moodle
+      if (url.includes('slick-theme.css')) {
+        css = css.replace(/\.\/fonts\//g,
+          'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/fonts/');
+      }
+      const style = document.createElement('style');
+      style.setAttribute('data-inline-css', url);
+      style.textContent = css;
+      target.appendChild(style);
+    } catch (e) {
+      // Fallback: tenta <link>, caso fetch falhar (ex: CSP moodle, CORS...)
+      if (!document.querySelector(`link[href="${url}"]`)) {
+        const l = document.createElement('link');
+        l.rel = "stylesheet";
+        l.href = url;
+        target.appendChild(l);
+      }
+    }
   }
 
+  function loadCSS(url) {
+    // Sempre prioriza inline para evitar problemas com Moodle e CSP
+    return inlineCSS(url);
+  }
+
+  // Carregador universal de JS (evita duplicação, checks, etc)
   function loadJS(url, checkFn) {
     if (checkFn && checkFn()) return Promise.resolve();
-    // Corrigir: caso AMD, NÃO injetar loader externo para slick (para evitar conflito de define)
-    if (
-      document.querySelector(`script[src="${url}"]`) ||
-      (typeof define === 'function' && define.amd && /slick\.min\.js/.test(url))
-    ) {
-      return Promise.resolve();
-    }
-
+    if (document.querySelector(`script[src="${url}"]`)) return Promise.resolve();
     return new Promise((resolve, reject) => {
-      const s = document.createElement("script");
+      const s = document.createElement('script');
       s.src = url;
       s.defer = true;
       s.onload = resolve;
@@ -78,66 +104,25 @@
     });
   }
 
+  // Suporte fetch para JSON (moodles antigos/muito customizados podem precisar polyfill)
   async function fetchJSON(url) {
-    // CORS error handling
-    try {
-      const r = await fetch(url, { credentials: 'same-origin' });
-      if (!r.ok) throw new Error("Erro JSON: " + url + " [" + r.status + "]");
-      return r.json();
-    } catch (error) {
-      if (location.hostname === 'localhost' || location.protocol === 'file:') {
-        alert('[AVA] Falha ao carregar configuração: ' + url + "\n" +
-              'Motivo provável: o navegador bloqueou por CORS ou o arquivo não existe.\n' +
-              'Contate o responsável do AVA para ajustar a configuração do servidor ou habilitar CORS.\n\n' +
-              'Erro: ' + (error && error.message ? error.message : error)
-        );
-      }
-      throw error;
-    }
+    const r = await fetch(url, { cache: "reload" }); // força reload por cache agressivo de proxy Moodle
+    if (!r.ok) throw new Error("Erro ao carregar JSON: " + url);
+    return r.json();
   }
 
-  /* =============== Espera pelo jQuery se necessário =============== */
-  function ensureJQueryLoaded() {
-    return new Promise(async (resolve, reject) => {
-      if (window.jQuery && window.jQuery.fn) return resolve();
-      // Para AMD (requirejs), jQuery pode ser definido como 'define.amd.jQuery'
-      if (typeof define === 'function' && define.amd && typeof require === 'function') {
-        // se usar requirejs e jQuery já está registrado lá
-        try {
-          require(['jquery'], function($) {
-            if ($) {
-              window.jQuery = $;
-              resolve();
-            } else {
-              reject('jQuery não encontrado via requirejs');
-            }
-          });
-          return;
-        } catch(e) { /* Fallback para injeção normal */ }
-      }
-      // Fallback: Injetar via CDN
-      if (!document.querySelector('script[src*="code.jquery.com/jquery"]')) {
-        await loadJS("https://code.jquery.com/jquery-3.7.1.min.js", () => window.jQuery && window.jQuery.fn);
-      }
-      // Espera até realmente estar disponível (máx 3s)
-      let tries = 0;
-      function check() {
-        tries++;
-        if (window.jQuery && window.jQuery.fn) return resolve();
-        if (tries >= 60) return reject("jQuery não carregou");
-        setTimeout(check, 50);
-      }
-      check();
-    });
+  // Suporte fetch para HTML/textos (fallback não necessário ao menos em Moodle 3.0+)
+  async function fetchText(url) {
+    const r = await fetch(url, { cache: "reload" });
+    if (!r.ok) throw new Error("Erro ao carregar HTML: " + url);
+    return r.text();
   }
 
-  /* ================= PLACEHOLDER ================= */
-
+  // ================ PARSE DE PLACEHOLDER ===================
   function parsePlaceholders() {
-    if (document.querySelector('.ava-component')) return;
-    const scope = document.querySelector('.course-content') || document.body;
+    // Percorre todo o corpo do DOM (apenas após DOM pronto), substitui {{ava:component:config}}
     const walker = document.createTreeWalker(
-      scope,
+      document.body,
       NodeFilter.SHOW_TEXT,
       null,
       false
@@ -146,6 +131,7 @@
     while (walker.nextNode()) {
       nodes.push(walker.currentNode);
     }
+
     nodes.forEach(node => {
       const text = node.nodeValue;
       if (!text.includes('{{')) return;
@@ -158,8 +144,10 @@
         frag.appendChild(
           document.createTextNode(text.substring(lastIndex, match.index))
         );
+        // Usa <div> para content filtering do Moodle, nunca <script/template>
         const div = document.createElement("div");
         div.className = "ava-component";
+        // dataset é compatível mesmo em Moodle antigo
         div.dataset.component = component;
         div.dataset.config = config;
         frag.appendChild(div);
@@ -174,14 +162,12 @@
     });
   }
 
-  /* ================= INIT COMPONENTS ================= */
-
+  // ================ INICIALIZAÇÃO DE COMPONENTES ===================
   async function initComponents() {
     const components = document.querySelectorAll(".ava-component");
     for (const comp of components) {
       const component = comp.dataset.component;
       const config = comp.dataset.config;
-
       try {
         if (component === "bannerAVA") {
           await initBanner(comp, config);
@@ -189,9 +175,10 @@
           await initButtons(comp, config);
         }
       } catch (e) {
+        // Mais detalhes para debugging em Moodle
         let extraMsg = "";
-        if (e && (e.message || "").includes("Failed to fetch")) {
-          extraMsg = "\nPossível erro de CORS (a origem do servidor não permite requisições deste domínio).";
+        if (e && (e.message || '').includes("Failed to fetch")) {
+          extraMsg = "\nPossível erro de CORS (verifique se o arquivo está público no Github ou CDN).";
         }
         console.error("Erro componente:", component, e, extraMsg);
         if ((location.hostname === 'localhost' || location.protocol === 'file:') && component) {
@@ -201,27 +188,45 @@
     }
   }
 
-  /* ================= SLICK ================= */
-
+  // ================ SLICK ===================
+  // Carrega slick-carousel e jQuery de CDN, mas nunca duplica, compatível com AMD/Moodle/RequireJS
   let _slickLoaded = false;
+
+  async function ensureJQueryLoaded() {
+    if (window.jQuery) return;
+    // Tenta pegar jQuery via requirejs (usado pelo Moodle/YUI)
+    if (typeof define === "function" && define.amd && typeof require === "function") {
+      return new Promise((resolve, reject) => {
+        try {
+          require(['jquery'], function ($) {
+            window.jQuery = $;
+            resolve();
+          }, reject);
+        } catch (e) { reject(e); }
+      });
+    }
+    // Se não, carrega CDN
+    await loadJS(
+      "https://code.jquery.com/jquery-3.6.0.min.js",
+      () => window.jQuery
+    );
+  }
 
   async function ensureSlickLoaded() {
     if (_slickLoaded) return;
-    // Aguarda jQuery para evitar erro (slick depende dele)
     await ensureJQueryLoaded();
-
     await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
     await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
 
-    // Evite carregar via script quando em AMD/RequireJS, use require if present
-    if (typeof define === 'function' && define.amd && typeof require === 'function') {
-      // Se slick já está registrado no require, use pelo requirejs
+    // AMD: use requirejs se disponível (compatível com Moodle + CDN fallback p/ github/raw)
+    if (typeof define === 'function' && define.amd && typeof require === "function") {
       return new Promise((resolve, reject) => {
+        // Só tenta se slick-carousel já registrado (caso YUI do Moodle)
         require(['slick-carousel'], function () {
           _slickLoaded = true;
           resolve();
         }, function(err) {
-          // fallback: ao falhar tente CDN mesmo na AMD, mas não carregue de novo se já houve erro!
+          // Fallback: tenta CDN se falhar
           loadJS(
             "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js",
             () => window.jQuery && window.jQuery.fn && window.jQuery.fn.slick
@@ -231,27 +236,28 @@
           }).catch(reject);
         });
       });
-    } else {
-      await loadJS(
-        "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js",
-        () => window.jQuery && window.jQuery.fn && window.jQuery.fn.slick
-      );
-      _slickLoaded = true;
     }
+    await loadJS(
+      "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js",
+      () => window.jQuery && window.jQuery.fn && window.jQuery.fn.slick
+    );
+    _slickLoaded = true;
   }
 
-  /* ================= BANNER ================= */
-
+  // ================ BANNER ===================
   async function initBanner(container, configName) {
     if (!BASE_URL) return;
     const componentPath = BASE_URL + "bannerAVA/";
 
+    // Carrega CSS separado (de preferência inline - compatível com filtro HTML Moodle)
     await loadCSS(componentPath + "bannerava.css");
     await ensureSlickLoaded();
 
     let config;
     try {
-      config = await fetchJSON(componentPath + configName + ".json?v=1");
+      config = await fetchJSON(
+        componentPath + configName + ".json?v=1"
+      );
     } catch (e) {
       container.innerHTML = '<div style="color:red;font-size:14px;">Erro ao carregar os banners.<br>' +
         'Verifique se o arquivo JSON está acessível para este domínio.<br>' +
@@ -259,18 +265,22 @@
       return;
     }
 
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
+    // Ajuste: template HTML compatível com edição online do Moodle (sem <script>, só <div>)
+    container.innerHTML = '<div class="slick-banner"><div class="Slick-Principal"></div></div>';
 
-    function parseDateFlexible(dateStr, endOfDay = false) {
+    const slickEl = container.querySelector(".Slick-Principal");
+    if (!slickEl) return;
+
+    // Função robusta para data (aceita BR e ISO)
+    function parseDateFlexible(dateStr, endOfDay) {
       if (!dateStr) return null;
-      if (dateStr.includes("/")) {
-        const [day, month, year] = dateStr.split("/").map(Number);
+      if (dateStr.includes('/')) {
+        const [day, month, year] = dateStr.split('/').map(Number);
         return endOfDay
           ? new Date(year, month - 1, day, 23, 59, 59)
-          : new Date(year, month - 1, day);
+          : new Date(year, month - 1, day, 0, 0, 0);
       }
-      if (dateStr.includes("-")) {
+      if (dateStr.includes('-')) {
         return endOfDay
           ? new Date(dateStr + "T23:59:59")
           : new Date(dateStr + "T00:00:00");
@@ -278,6 +288,10 @@
       return null;
     }
 
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    // Filtro de disponibilidade (corte por data inicio/fim)
     const slides = (config.slides || []).filter(slide => {
       if (!slide.inicio || !slide.fim) return true;
       const inicio = parseDateFlexible(slide.inicio, false);
@@ -287,64 +301,66 @@
     });
 
     if (!slides.length) {
-      container.innerHTML = "";
+      container.innerHTML = '';
       return;
     }
 
-    container.innerHTML = `
-      <div class="slick-banner">
-        <div class="Slick-Principal"></div>
-      </div>
-    `;
-
-    const slickEl = container.querySelector(".Slick-Principal");
+    // Monta os slides (no DOM, nunca via innerHTML vazio para evitar filtros do Moodle)
     slides.forEach(slide => {
+      const link = escapeUrl(slide.link);
+      const desktop = escapeSrc(slide.desktop) || "";
+      const mobile = escapeSrc(slide.mobile) || desktop;
+      const alt = escapeHtml(slide.alt || "");
       slickEl.insertAdjacentHTML("beforeend",
-        `<div>
-          <a href="${escapeUrl(slide.link)}" target="_blank" rel="noopener">
-            <picture>
-              <source media="(min-width:600px)" srcset="${escapeSrc(slide.desktop)}">
-              <img src="${escapeSrc(slide.mobile || slide.desktop)}" alt="${escapeHtml(slide.alt)}">
-            </picture>
-          </a>
-        </div>`
+        '<div><a href="' + link + '" target="_blank" rel="noopener">' +
+        '<picture>' +
+        '<source media="(min-width:600px)" srcset="' + desktop + '">' +
+        '<img src="' + mobile + '" alt="' + alt + '">' +
+        '</picture>' +
+        '</a></div>'
       );
     });
 
-    // Usa jQuery explicitamente, não $
-    window.jQuery(slickEl).slick({
-      dots: true,
-      arrows: true,
-      infinite: slides.length > 1,
-      speed: 600,
-      slidesToShow: 1,
-      adaptiveHeight: true,
-      autoplay: config.autoplay !== false,
-      autoplaySpeed: config.tempo || 4000
-    });
+    // Inicializa slick (jQuery já garantida!)
+    if (window.jQuery && window.jQuery.fn && window.jQuery.fn.slick) {
+      window.jQuery(slickEl).slick({
+        dots: true,
+        arrows: true,
+        infinite: slides.length > 1,
+        speed: 800,
+        slidesToShow: 1,
+        adaptiveHeight: true,
+        autoplay: config.autoplay !== false,
+        autoplaySpeed: config.tempo || 4000
+      });
+    }
   }
 
-  /* ================= BUTTONS ================= */
+  // ================ BUTTONS (Botões customizados) ===================
+  async function ensureButtonAVACssLoaded() {
+    if (!BASE_URL) return;
+    await loadCSS(BASE_URL + "buttonAVA/buttonava.css");
+  }
 
   async function initButtons(container, configName) {
     if (!BASE_URL) return;
     const componentPath = BASE_URL + "buttonAVA/";
-
-    await loadCSS(BASE_URL + "buttonAVA/buttonava.css");
+    await ensureButtonAVACssLoaded();
 
     let data;
     try {
-      data = await fetchJSON(componentPath + configName + ".json?v=1");
-    } catch(e) {
+      data = await fetchJSON(componentPath + configName + ".json");
+      if (!data) throw new Error("JSON vazio");
+    } catch (e) {
       container.innerHTML = '<div style="color:red;font-size:14px;">Erro ao carregar botões.<br>' +
-        'Verifique se o arquivo JSON está acessível para este domínio.<br>' +
+        'Verifique se o arquivo .json está público e correto.<br>' +
         'Erro: ' + (e && e.message ? e.message : e) + '</div>';
       return;
     }
 
     const botoes = data.botoes || [];
-
-    const html = botoes.map(btn => `
+    // Lista SEM scripts, icons seguros para Moodle (ex: fontawesome ou similar)
+    const buttonsHtml = botoes.map(btn => `
       <a href="${escapeUrl(btn.url)}" class="btn-card btn-ava">
         <div class="icon-container">
           <i class="${escapeHtml(btn.icone)}"></i>
@@ -353,53 +369,32 @@
       </a>
     `).join("");
 
-    container.innerHTML =
-      `<div class="buttonava-wrapper">
-        <div class="buttonava-grid">${html}</div>
-      </div>`;
+    container.innerHTML = `<div class="buttonava-wrapper"><div class="buttonava-grid">${buttonsHtml}</div></div>`;
   }
 
-  /* ================= INIT ================= */
-
+  // ================ INICIALIZAÇÃO GERAL ===================
   let _initDone = false;
 
-  async function startStandalone() {
+  async function init() {
     if (_initDone) return;
     _initDone = true;
-    await ensureJQueryLoaded();
     parsePlaceholders();
     await initComponents();
-  }
-
-  async function startAmd(require, exports, module) {
-    // AMD: carrega jQuery nativamente via require
-    if (typeof require === 'function') {
-      require(['jquery'], function($) {
-        window.jQuery = $;
-        parsePlaceholders();
-        initComponents();
-      });
-    }
   }
 
   function resetInit() {
     _initDone = false;
   }
 
-  // Detecção: executa de acordo com ambiente (AMD/requirejs/etc ou standalone)
-  if (typeof define === 'function' && define.amd) {
-    // Em ambiente requirejs/AMD: exporta init próprio via módulo nomeado
-    return {
-      init: startAmd,
-      resetInit
-    };
-  } else {
-    // Standalone/browser comum
+  // ================ AUTO-START ===================
+  // Não tenta iniciar automaticamente caso seja AMD em uso (ex: RequireJS do Moodle)
+  if (typeof define !== "function" || !define.amd) {
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", startStandalone);
+      document.addEventListener("DOMContentLoaded", init);
     } else {
-      startStandalone();
+      init();
     }
-    return { init: startStandalone, resetInit };
   }
+
+  return { init, resetInit };
 }));
