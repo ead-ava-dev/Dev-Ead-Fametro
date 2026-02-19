@@ -1,7 +1,8 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD: Exporta como módulo AMD para requireJS/etc
-    define([], factory);
+    // Corrigir: definir um nome para o módulo anônimo para evitar mismatched anonymous define()
+    define("ava-loader", [], factory);
   } else {
     // Standalone: Exporta global
     root.AVA_LOADER = factory();
@@ -59,7 +60,13 @@
 
   function loadJS(url, checkFn) {
     if (checkFn && checkFn()) return Promise.resolve();
-    if (document.querySelector(`script[src="${url}"]`)) return Promise.resolve();
+    // Corrigir: caso AMD, NÃO injetar loader externo para slick (para evitar conflito de define)
+    if (
+      document.querySelector(`script[src="${url}"]`) ||
+      (typeof define === 'function' && define.amd && /slick\.min\.js/.test(url))
+    ) {
+      return Promise.resolve();
+    }
 
     return new Promise((resolve, reject) => {
       const s = document.createElement("script");
@@ -205,11 +212,32 @@
 
     await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css");
     await loadCSS("https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css");
-    await loadJS(
-      "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js",
-      () => window.jQuery && window.jQuery.fn && window.jQuery.fn.slick
-    );
-    _slickLoaded = true;
+
+    // Evite carregar via script quando em AMD/RequireJS, use require if present
+    if (typeof define === 'function' && define.amd && typeof require === 'function') {
+      // Se slick já está registrado no require, use pelo requirejs
+      return new Promise((resolve, reject) => {
+        require(['slick-carousel'], function () {
+          _slickLoaded = true;
+          resolve();
+        }, function(err) {
+          // fallback: ao falhar tente CDN mesmo na AMD, mas não carregue de novo se já houve erro!
+          loadJS(
+            "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js",
+            () => window.jQuery && window.jQuery.fn && window.jQuery.fn.slick
+          ).then(() => {
+            _slickLoaded = true;
+            resolve();
+          }).catch(reject);
+        });
+      });
+    } else {
+      await loadJS(
+        "https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js",
+        () => window.jQuery && window.jQuery.fn && window.jQuery.fn.slick
+      );
+      _slickLoaded = true;
+    }
   }
 
   /* ================= BANNER ================= */
@@ -360,7 +388,7 @@
 
   // Detecção: executa de acordo com ambiente (AMD/requirejs/etc ou standalone)
   if (typeof define === 'function' && define.amd) {
-    // Em ambiente requirejs/AMD: exporta init próprio via módulo
+    // Em ambiente requirejs/AMD: exporta init próprio via módulo nomeado
     return {
       init: startAmd,
       resetInit
