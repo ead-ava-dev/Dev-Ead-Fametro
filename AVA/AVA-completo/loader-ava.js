@@ -320,7 +320,7 @@
 
     let data;
     try {
-      data = await fetchJSON(componentPath + configName + ".json");
+      data = await fetchJSON(componentPath + configName + ".json?v=" + Date.now());
       if (!data) throw new Error("JSON vazio");
     } catch (e) {
       console.error("Erro ao carregar config dos botões:", e);
