@@ -12,7 +12,7 @@
     },
     {
       "titulo": "Tutoria Online",
-      "url": "#",
+      "url": "/course/view.php?id=570",
       "icone": "fa-duotone fa-solid fa-screen-users"
     },
     {
@@ -34,3 +34,4 @@
     
   ]
 }
+
