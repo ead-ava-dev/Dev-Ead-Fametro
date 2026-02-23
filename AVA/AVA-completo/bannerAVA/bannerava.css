@@ -36,8 +36,8 @@
   z-index: 3 !important;
 }
 
-.slick-prev { left: 4px !important; }
-.slick-next { right: 4px !important; }
+.slick-prev { left: 0px !important; }
+.slick-next { right: 0px !important; }
 
 button.slick-arrow {
   height: 100%;
