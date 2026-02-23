@@ -269,7 +269,7 @@
     }
 
     // ---------- Monta os slides ----------
-    slides.forEach(slide => {
+    /*slides.forEach(slide => {
       const link = escapeUrl(slide.link);
       const desktop = escapeSrc(slide.desktop) || "";
       const mobile = escapeSrc(slide.mobile) || desktop;
@@ -282,10 +282,41 @@
           '</picture>' +
         '</a></div>'
       );
+    });*/
+    slides.forEach((slide, index) => {
+      const link = escapeUrl(slide.link);
+      const desktop = escapeSrc(slide.desktop) || "";
+      const mobile = escapeSrc(slide.mobile) || desktop;
+      const alt = escapeHtml(slide.alt || "");
+    
+      const isFirst = index === 0;
+    
+      slickEl.insertAdjacentHTML("beforeend",
+        '<div><a href="' + link + '" target="_blank" rel="noopener">' +
+          '<picture>' +
+            '<source media="(min-width:600px)" srcset="' + desktop + '" type="image/webp">' +
+            '<img ' +
+              'src="' + mobile + '" ' +
+              'alt="' + alt + '" ' +
+              'loading="' + (isFirst ? 'eager' : 'lazy') + '" ' +
+              'decoding="async" ' +
+              (isFirst ? 'fetchpriority="high"' : '') +
+            '>' +
+          '</picture>' +
+        '</a></div>'
+      );
+    
+      // Preload da primeira imagem
+      if (isFirst) {
+        const preload = document.createElement("link");
+        preload.rel = "preload";
+        preload.as = "image";
+        preload.href = mobile;
+        document.head.appendChild(preload);
+      }
     });
-
     // ---------- Inicializa Slick ----------
-    window.jQuery(slickEl).slick({
+   /* window.jQuery(slickEl).slick({
       dots: true,
       arrows: true,
       infinite: slides.length > 1,
@@ -295,7 +326,20 @@
       autoplay: config.autoplay !== false,
       autoplaySpeed: config.tempo || 4000
     });
-  }
+  }*/
+    const firstImg = slickEl.querySelector("img");
+    firstImg.addEventListener("load", () => {
+      window.jQuery(slickEl).slick({
+        dots: true,
+        arrows: true,
+        infinite: slides.length > 1,
+        speed: 800,
+        slidesToShow: 1,
+        adaptiveHeight: true,
+        autoplay: config.autoplay !== false,
+        autoplaySpeed: config.tempo || 4000
+      });
+    });
 
   // ================ BUTTONS (Botões customizados) ===================
   // Carrega e injeta o CSS customizado dos botões do AVA
