@@ -284,7 +284,7 @@
       );
     });
     // ---------- Inicializa Slick ----------
-    /*window.jQuery(slickEl).slick({
+    window.jQuery(slickEl).slick({
         dots: true,
         arrows: true,
         infinite: slides.length > 1,
@@ -295,37 +295,6 @@
         autoplaySpeed: config.tempo || 4000
       });
     }
-    const firstImg = slickEl.querySelector("img");
-    firstImg.addEventListener("load", () => {
-      window.jQuery(slickEl).slick({
-        dots: true,
-        arrows: true,
-        infinite: slides.length > 1,
-        speed: 800,
-        slidesToShow: 1,
-        adaptiveHeight: true,
-        autoplay: config.autoplay !== false,
-        autoplaySpeed: config.tempo || 4000
-      });
-    });*/
-var firstImg = slickEl.querySelector("img");
-
-if (firstImg) {
-  firstImg.addEventListener("load", function() {
-    if (window.jQuery && window.jQuery.fn && window.jQuery.fn.slick) {
-      window.jQuery(slickEl).slick({
-        dots: true,
-        arrows: true,
-        infinite: slides.length > 1,
-        speed: 600,
-        slidesToShow: 1,
-        adaptiveHeight: true,
-        autoplay: config.autoplay !== false,
-        autoplaySpeed: config.tempo || 4000
-      });
-    }
-  });
-}
 
   // ================ BUTTONS (Botões customizados) ===================
   // Carrega e injeta o CSS customizado dos botões do AVA
