@@ -269,7 +269,7 @@
     }
 
     // ---------- Monta os slides ----------
-    /*slides.forEach(slide => {
+    slides.forEach(slide => {
       const link = escapeUrl(slide.link);
       const desktop = escapeSrc(slide.desktop) || "";
       const mobile = escapeSrc(slide.mobile) || desktop;
@@ -282,38 +282,7 @@
           '</picture>' +
         '</a></div>'
       );
-    });*/
-if (!slickEl || !Array.isArray(slides)) {
-  console.error("Erro: slickEl ou slides inválido");
-  return;
-}
-
-slides.forEach(function(slide, index) {
-
-  var link = escapeUrl(slide.link);
-  var desktop = escapeSrc(slide.desktop) || "";
-  var mobile = escapeSrc(slide.mobile) || desktop;
-  var alt = escapeHtml(slide.alt || "");
-  var isFirst = index === 0;
-
-  var imgHtml =
-    '<div>' +
-      '<a href="' + link + '" target="_blank" rel="noopener">' +
-        '<picture>' +
-          '<source media="(min-width:600px)" srcset="' + desktop + '">' +
-          '<img ' +
-            'src="' + mobile + '" ' +
-            'alt="' + alt + '" ' +
-            'loading="' + (isFirst ? 'eager' : 'lazy') + '" ' +
-            'decoding="async"' +
-          '>' +
-        '</picture>' +
-      '</a>' +
-    '</div>';
-
-  slickEl.insertAdjacentHTML("beforeend", imgHtml);
-
-});
+    });
     // ---------- Inicializa Slick ----------
     /*window.jQuery(slickEl).slick({
         dots: true,
@@ -339,21 +308,24 @@ slides.forEach(function(slide, index) {
         autoplaySpeed: config.tempo || 4000
       });
     });*/
-  setTimeout(() => {
-  if (window.jQuery && window.jQuery.fn && window.jQuery.fn.slick) {
-    window.jQuery(slickEl).slick({
-      dots: true,
-      arrows: true,
-      infinite: slides.length > 1,
-      speed: 800,
-      slidesToShow: 1,
-      adaptiveHeight: true,
-      autoplay: config.autoplay !== false,
-      autoplaySpeed: config.tempo || 4000
-    });
-  }
-  }, 50);
-  }
+var firstImg = slickEl.querySelector("img");
+
+if (firstImg) {
+  firstImg.addEventListener("load", function() {
+    if (window.jQuery && window.jQuery.fn && window.jQuery.fn.slick) {
+      window.jQuery(slickEl).slick({
+        dots: true,
+        arrows: true,
+        infinite: slides.length > 1,
+        speed: 600,
+        slidesToShow: 1,
+        adaptiveHeight: true,
+        autoplay: config.autoplay !== false,
+        autoplaySpeed: config.tempo || 4000
+      });
+    }
+  });
+}
 
   // ================ BUTTONS (Botões customizados) ===================
   // Carrega e injeta o CSS customizado dos botões do AVA
