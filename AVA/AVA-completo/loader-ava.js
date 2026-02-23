@@ -349,7 +349,8 @@ slides.forEach(function(slide, index) {
       autoplaySpeed: config.tempo || 4000
     });
   }
-}, 50);
+  }, 50);
+  }
 
   // ================ BUTTONS (Botões customizados) ===================
   // Carrega e injeta o CSS customizado dos botões do AVA
