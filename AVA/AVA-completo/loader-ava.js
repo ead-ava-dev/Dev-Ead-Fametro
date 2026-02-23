@@ -269,7 +269,7 @@
     }
 
     // ---------- Monta os slides ----------
-    /*slides.forEach(slide => {
+    slides.forEach(slide => {
       const link = escapeUrl(slide.link);
       const desktop = escapeSrc(slide.desktop) || "";
       const mobile = escapeSrc(slide.mobile) || desktop;
@@ -282,7 +282,7 @@
           '</picture>' +
         '</a></div>'
       );
-    });*/
+    });/*
     slides.forEach((slide, index) => {
       const link = escapeUrl(slide.link);
       const desktop = escapeSrc(slide.desktop) || "";
@@ -314,9 +314,9 @@
         preload.href = mobile;
         document.head.appendChild(preload);
       }
-    });
+    });*/
     // ---------- Inicializa Slick ----------
-   /* window.jQuery(slickEl).slick({
+    window.jQuery(slickEl).slick({
       dots: true,
       arrows: true,
       infinite: slides.length > 1,
@@ -326,7 +326,7 @@
       autoplay: config.autoplay !== false,
       autoplaySpeed: config.tempo || 4000
     });
-  }*/
+  }/*
     const firstImg = slickEl.querySelector("img");
     firstImg.addEventListener("load", () => {
       window.jQuery(slickEl).slick({
@@ -339,7 +339,7 @@
         autoplay: config.autoplay !== false,
         autoplaySpeed: config.tempo || 4000
       });
-    });
+    });*/
 
   // ================ BUTTONS (Botões customizados) ===================
   // Carrega e injeta o CSS customizado dos botões do AVA
