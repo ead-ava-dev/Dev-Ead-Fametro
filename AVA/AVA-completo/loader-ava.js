@@ -283,38 +283,34 @@
         '</a></div>'
       );
     });*/
-    slides.forEach((slide, index) => {
-      const link = escapeUrl(slide.link);
-      const desktop = escapeSrc(slide.desktop) || "";
-      const mobile = escapeSrc(slide.mobile) || desktop;
-      const alt = escapeHtml(slide.alt || "");
-    
-      const isFirst = index === 0;
-    
-      slickEl.insertAdjacentHTML("beforeend",
-        '<div><a href="' + link + '" target="_blank" rel="noopener">' +
-          '<picture>' +
-            '<source media="(min-width:600px)" srcset="' + desktop + '" type="image/webp">' +
-            '<img ' +
-              'src="' + mobile + '" ' +
-              'alt="' + alt + '" ' +
-              'loading="' + (isFirst ? 'eager' : 'lazy') + '" ' +
-              'decoding="async" ' +
-              (isFirst ? 'fetchpriority="high"' : '') +
-            '>' +
-          '</picture>' +
-        '</a></div>'
-      );
-    
-      // Preload da primeira imagem
-      if (isFirst) {
-        const preload = document.createElement("link");
-        preload.rel = "preload";
-        preload.as = "image";
-        preload.href = mobile;
-        document.head.appendChild(preload);
-      }
-    });
+    if (!slickEl || !Array.isArray(slides)) {
+  console.error("Erro: slickEl ou slides inválido");
+  return;
+}
+
+slides.forEach(function(slide, index) {
+
+  var link = escapeUrl(slide.link);
+  var desktop = escapeSrc(slide.desktop) || "";
+  var mobile = escapeSrc(slide.mobile) || desktop;
+  var alt = escapeHtml(slide.alt || "");
+  var isFirst = index === 0;
+
+  var imgHtml =
+    '<div>' +
+      '<a href="' + link + '" target="_blank" rel="noopener">' +
+        '<img ' +
+          'src="' + mobile + '" ' +
+          'alt="' + alt + '" ' +
+          'loading="' + (isFirst ? 'eager' : 'lazy') + '" ' +
+          'decoding="async"' +
+        '>' +
+      '</a>' +
+    '</div>';
+
+  slickEl.insertAdjacentHTML("beforeend", imgHtml);
+
+});
     // ---------- Inicializa Slick ----------
     /*window.jQuery(slickEl).slick({
         dots: true,
