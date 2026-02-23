@@ -294,7 +294,7 @@
       slickEl.insertAdjacentHTML("beforeend",
         '<div><a href="' + link + '" target="_blank" rel="noopener">' +
           '<picture>' +
-            '<source media="(min-width:600px)" srcset="' + desktop + '" type="image/webp">' +
+            '<source media="(min-width:600px)" srcset="' + desktop + '">' +
             '<img ' +
               'src="' + mobile + '" ' +
               'alt="' + alt + '" ' +
