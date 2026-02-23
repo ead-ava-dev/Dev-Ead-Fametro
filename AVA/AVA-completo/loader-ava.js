@@ -269,7 +269,7 @@
     }
 
     // ---------- Monta os slides ----------
-    slides.forEach(slide => {
+    /*slides.forEach(slide => {
       const link = escapeUrl(slide.link);
       const desktop = escapeSrc(slide.desktop) || "";
       const mobile = escapeSrc(slide.mobile) || desktop;
@@ -279,6 +279,27 @@
           '<picture>' +
             '<source media="(min-width:600px)" srcset="' + desktop + '">' +
             '<img src="' + mobile + '" alt="' + alt + '">' +
+          '</picture>' +
+        '</a></div>'
+      );
+    });*/
+        // ---------- Monta os slides com prioridade de carregamento ----------
+    slides.forEach((slide, index) => {
+      const link = escapeUrl(slide.link);
+      const desktop = escapeSrc(slide.desktop) || "";
+      const mobile = escapeSrc(slide.mobile) || desktop;
+      const alt = escapeHtml(slide.alt || "");
+
+      // Primeira imagem com maior prioridade, demais em lazy
+      const isFirst = index === 0;
+      const loadingAttr = isFirst ? 'eager' : 'lazy';
+      const fetchPriorityAttr = isFirst ? 'high' : 'low';
+
+      slickEl.insertAdjacentHTML("beforeend",
+        '<div><a href="' + link + '" target="_blank" rel="noopener">' +
+          '<picture>' +
+            '<source media="(min-width:600px)" srcset="' + desktop + '">' +
+            '<img src="' + mobile + '" alt="' + alt + '" loading="' + loadingAttr + '" fetchpriority="' + fetchPriorityAttr + '" decoding="async">' +
           '</picture>' +
         '</a></div>'
       );
