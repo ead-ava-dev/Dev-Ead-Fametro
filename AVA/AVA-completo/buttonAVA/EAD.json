@@ -8,16 +8,6 @@
   },
   "botoes": [
     {
-      "titulo": "Conheça o EaD Fametro",
-      "url": "#",
-      "icone": "fa-duotone fa-regular fa-map"
-    },
-    {
-      "titulo": "Como Estudar Online?",
-      "url": "#",
-      "icone": "fa-duotone fa-light fa-user-graduate"
-    },
-    {
       "titulo": "Tutoria Online",
       "url": "https://ava.fametro.edu.br/course/view.php?id=570",
       "icone": "fa-duotone fa-solid fa-screen-users"
@@ -29,7 +19,7 @@
     },
     {
       "titulo": "Coordenação de Curso",
-      "url": "#",
+      "url": "https://ava.fametro.edu.br/course/view.php?id=645",
       "icone": "fa-duotone fa-regular fa-user-magnifying-glass"
     },
     {
@@ -41,6 +31,7 @@
     
   ]
 }
+
 
 
 
