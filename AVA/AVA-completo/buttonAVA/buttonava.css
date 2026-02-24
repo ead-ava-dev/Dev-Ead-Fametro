@@ -2,6 +2,7 @@
     --primary-blue: #0056b3;
     --hover-blue: #00AFCC;
     --text-color: #334e68;
+    --text-color-hover: #ffffff ;
     --bg-card: #f0f4f8;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -9,11 +10,6 @@
 
 * {
     box-sizing: border-box;
-}
-
-.ava-component[data-component="buttonAVA"] {
-    text-align: -webkit-center;
-    justify-items: center;
 }
 
 .ava-component {
@@ -72,7 +68,7 @@
 .icon-container svg {
     width: 100%;
     height: 100%;
-    stroke: var(--primary-blue);
+    stroke: var(--text-color);
     fill: none;
     stroke-width: 1.5;
     stroke-linecap: round;
@@ -80,17 +76,17 @@
     transition: stroke 0.3s;
 }
 .btn-card:hover .icon-container svg {
-    stroke: #fff;
+    stroke: var(--text-color-hover);
 }
 
 .icon-container i {
-    color: var(--primary-blue);
+    color: var(--text-color);
     font-size: clamp(1.5rem, 4vw, 2.2rem);
     transition: color 0.3s;
 }
 
 .btn-card .icon-container i {
-    color: var(--primary-blue);
+    color: var(--text-color);
 }
 .btn-card:hover .icon-container i {
     color: #fff;
@@ -98,7 +94,7 @@
 }
 
 .btn-text {
-    color: var(--primary-blue);
+    color: var(--text-color);
     font-size: clamp(0.95rem, 2.5vw, 1.2rem);
     font-weight: 600;
     line-height: 1.2;
@@ -107,7 +103,7 @@
     text-align: left;
 }
 .btn-card:hover .btn-text {
-    color: #fff;
+    color: var(--text-color-hover);
 }
 
 /* Footer */
@@ -119,7 +115,7 @@
 
 .btn-footer {
     background: linear-gradient(90deg, #005691, #00acc1);
-    color: white;
+    color:  var(--text-color-hover);
     text-align: center;
     padding: 15px;
     border-radius: 50px;
