@@ -307,39 +307,56 @@
   }
 
   // Inicializa botões customizados
-  async function initButtons(container, configName) {
-    if (!BASE_URL) {
-      console.error("AVA Loader: BASE_URL vazia.");
-      return;
-    }
-    const componentPath = BASE_URL + "buttonAVA/";
-
-    // Certifica-se de carregar o CSS (carrega apenas uma vez)
-    await ensureButtonAVACssLoaded();
-
-    let data;
-    try {
-      data = await fetchJSON(componentPath + configName + ".json?v=" + Date.now());
-      if (!data) throw new Error("JSON vazio");
-    } catch (e) {
-      console.error("Erro ao carregar config dos botões:", e);
-      container.innerHTML = "";
-      return;
-    }
-
-    const botoes = data.botoes || [];
-
-    const buttonsHtml = botoes.map(btn => `
-      <a href="${escapeUrl(btn.url)}" class="btn-card btn-ava">
-        <div class="icon-container">
-          <i class="${escapeHtml(btn.icone)}"></i>
-        </div>
-        <span class="btn-text">${escapeHtml(btn.titulo)}</span>
-      </a>
-    `).join("");
-
-    container.innerHTML = `<div class="buttonava-wrapper"><div class="buttonava-grid">${buttonsHtml}</div></div>`;
+// Inicializa botões customizados
+async function initButtons(container, configName) {
+  if (!BASE_URL) {
+    console.error("AVA Loader: BASE_URL vazia.");
+    return;
   }
+
+  const componentPath = BASE_URL + "buttonAVA/";
+
+  // Carrega CSS
+  await ensureButtonAVACssLoaded();
+
+  let data;
+  try {
+    data = await fetchJSON(componentPath + configName + ".json?v=" + Date.now());
+    if (!data) throw new Error("JSON vazio");
+  } catch (e) {
+    console.error("Erro ao carregar config dos botões:", e);
+    container.innerHTML = "";
+    return;
+  }
+
+  // ================= APLICA TEMA DINÂMICO =================
+  if (data.theme && typeof data.theme === "object") {
+    Object.entries(data.theme).forEach(([key, value]) => {
+      if (key.startsWith("--")) {
+        container.style.setProperty(key, value);
+      }
+    });
+  }
+  // ========================================================
+
+  const botoes = data.botoes || [];
+
+  const buttonsHtml = botoes.map(btn => `
+    <a href="${escapeUrl(btn.url)}" class="btn-card btn-ava">
+      <div class="icon-container">
+        <i class="${escapeHtml(btn.icone)}"></i>
+      </div>
+      <span class="btn-text">${escapeHtml(btn.titulo)}</span>
+    </a>
+  `).join("");
+
+  container.innerHTML =
+    `<div class="buttonava-wrapper">
+      <div class="buttonava-grid">
+        ${buttonsHtml}
+      </div>
+    </div>`;
+}
 
   // ================ INICIALIZAÇÃO GERAL ===================
   let _initDone = false;
