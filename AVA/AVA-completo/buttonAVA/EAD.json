@@ -1,4 +1,11 @@
 {
+  "theme": {
+      "--primary-blue": "#0056b3",
+      "--hover-blue": "#00AFCC",
+      "--text-color": "#0056b3",
+      "--text-color-hover": "#ffffff",
+      "--bg-card": "#f0f4f8"
+  },
   "botoes": [
     {
       "titulo": "Conheça o EaD Fametro",
@@ -34,5 +41,6 @@
     
   ]
 }
+
 
 
