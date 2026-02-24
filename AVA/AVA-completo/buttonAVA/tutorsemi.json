@@ -1,0 +1,21 @@
+{
+  "theme": {
+  "--primary-blue": "#ff00ff",
+  "--hover-blue": "#238049",
+  "--text-color": "#276942",
+  "--text-color-hover": "#ffffff",
+  "--bg-card": "#e7e7e7"
+  },
+  "botoes": [
+    {
+      "titulo": "Minhas Disciplinas",
+      "url": "#",
+      "icone": "fa-duotone fa-regular fa-book-open-reader"
+    },
+    {
+      "titulo": "Interação Pedagógica",
+      "url": "#",
+      "icone": "fa-duotone fa-regular fa-chalkboard-user"
+    }
+  ]
+}
