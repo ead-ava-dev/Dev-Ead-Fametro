@@ -9,13 +9,14 @@
   "botoes": [
     {
       "titulo": "Minhas Disciplinas",
-      "url": "#",
+      "url": "https://ava.fametro.edu.br/my/courses.php",
       "icone": "fa-duotone fa-regular fa-book-open-reader"
     },
     {
       "titulo": "Interação Pedagógica",
-      "url": "#",
+      "url": "https://ava.fametro.edu.br/course/view.php?id=650",
       "icone": "fa-duotone fa-regular fa-chalkboard-user"
     }
   ]
 }
+
