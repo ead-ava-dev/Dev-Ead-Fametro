@@ -204,8 +204,6 @@
 
     // Carrega CSS customizado do banner
     await loadCSS(componentPath + "bannerava.css");
-    // Garante slick carregado 1x
-    await ensureSlickLoaded();
 
     const template = `
       <div class="slick-banner"> 
@@ -221,14 +219,6 @@
     } catch (e) {
       console.error("Erro ao carregar config do banner:", e);
       container.innerHTML = "";
-      return;
-    }
-
-    container.innerHTML = template;
-
-    const slickEl = container.querySelector(".Slick-Principal");
-    if (!slickEl) {
-      console.error("AVA Loader: .Slick-Principal não encontrado.");
       return;
     }
 
@@ -268,8 +258,16 @@
       return;
     }
 
+    container.innerHTML = template;
+
+    const slickEl = container.querySelector(".Slick-Principal");
+    if (!slickEl) {
+      console.error("AVA Loader: .Slick-Principal não encontrado.");
+      return;
+    }
+
     // ---------- Monta os slides ----------
-    slides.forEach(slide => {
+    const renderSlide = (slide) => {
       const link = escapeUrl(slide.link);
       const desktop = escapeSrc(slide.desktop) || "";
       const mobile = escapeSrc(slide.mobile) || desktop;
@@ -282,19 +280,32 @@
           '</picture>' +
         '</a></div>'
       );
-    });
+    };
+
+    // Se houver apenas um slide, não carrega slick/jQuery: banner estático
+    if (slides.length === 1) {
+      renderSlide(slides[0]);
+      return;
+    }
+
+    // Múltiplos slides: monta e inicializa slick
+    slides.forEach(renderSlide);
+
+    // Garante slick carregado 1x (somente quando precisa)
+    await ensureSlickLoaded();
+
     // ---------- Inicializa Slick ----------
     window.jQuery(slickEl).slick({
-        dots: true,
-        arrows: true,
-        infinite: slides.length > 1,
-        speed: 800,
-        slidesToShow: 1,
-        adaptiveHeight: true,
-        autoplay: config.autoplay !== false,
-        autoplaySpeed: config.tempo || 4000
-      });
-    }
+      dots: true,
+      arrows: true,
+      infinite: true,
+      speed: 800,
+      slidesToShow: 1,
+      adaptiveHeight: true,
+      autoplay: config.autoplay !== true,
+      autoplaySpeed: config.tempo || 4000
+    });
+  }
 
   // ================ BUTTONS (Botões customizados) ===================
   // Carrega e injeta o CSS customizado dos botões do AVA
