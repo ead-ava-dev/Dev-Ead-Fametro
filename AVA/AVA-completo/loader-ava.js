@@ -294,6 +294,13 @@
     // Garante slick carregado 1x (somente quando precisa)
     await ensureSlickLoaded();
 
+    // Define autoplay: por padrão true, mas respeita config.autoplay === false
+    const autoplay = (config.autoplay === undefined)
+      ? true
+      : !!config.autoplay;
+
+    const autoplaySpeed = Number(config.tempo) || 4000;
+
     // ---------- Inicializa Slick ----------
     window.jQuery(slickEl).slick({
       dots: true,
@@ -302,8 +309,8 @@
       speed: 800,
       slidesToShow: 1,
       adaptiveHeight: true,
-      autoplay: config.autoplay !== false,
-      autoplaySpeed: config.tempo || 4000
+      autoplay,
+      autoplaySpeed
     });
   }
 
