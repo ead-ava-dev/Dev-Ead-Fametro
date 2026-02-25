@@ -302,7 +302,7 @@
       speed: 800,
       slidesToShow: 1,
       adaptiveHeight: true,
-      autoplay: config.autoplay !== true,
+      autoplay: config.autoplay !== false,
       autoplaySpeed: config.tempo || 4000
     });
   }
