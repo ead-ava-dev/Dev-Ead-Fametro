@@ -1,10 +1,10 @@
 {
   "theme": {
   "--primary-blue": "#ff00ff",
-  "--hover-blue": "#238049",
-  "--text-color": "#276942",
+  "--hover-blue": "#2f7a7d",
+  "--text-color": "#2f7a7d",
   "--text-color-hover": "#ffffff",
-  "--bg-card": "linear-gradient(135deg, #1f4d4f 0%, #2f7a7d 100%)"
+  "--bg-card": "#c8fef2"
   },
   "botoes": [
     {
