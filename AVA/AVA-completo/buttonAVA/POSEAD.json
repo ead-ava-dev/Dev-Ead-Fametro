@@ -1,0 +1,21 @@
+{
+  "theme": {
+  "--primary-blue": "#ff00ff",
+  "--hover-blue": "#238049",
+  "--text-color": "#276942",
+  "--text-color-hover": "#ffffff",
+  "--bg-card": "linear-gradient(135deg, #1f4d4f 0%, #2f7a7d 100%)"
+  },
+  "botoes": [
+    {
+      "titulo": "Minhas Disciplinas",
+      "url": "https://ava.fametro.edu.br/my/courses.php",
+      "icone": "fa-duotone fa-regular fa-book-open-reader"
+    },
+    {
+      "titulo": "Tutoria Online",
+      "url": "https://ava.fametro.edu.br/course/view.php?id=650",
+      "icone": "fa-duotone fa-regular fa-chalkboard-user"
+    }
+  ]
+}
