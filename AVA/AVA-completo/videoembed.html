@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Embed Dinâmico</title>
+
+<style>
+body{
+    margin:0;
+    background:#000;
+}
+
+.video-container{
+    width:100%;
+    aspect-ratio:16/9;
+    position:relative;
+    background:#000;
+}
+
+.video-container iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="video-container" id="video-embed"></div>
+
+<script>
+
+// ===============================
+// CAPTURA ID OU URL DA BARRA
+// ===============================
+function getVideoInput(){
+
+    const fullUrl = window.location.href;
+
+    // 1️⃣ videoembed.html?=ID
+    let ampMatch = fullUrl.match(/\.html&=?([^&#]+)/i);
+    if(ampMatch && ampMatch[1]){
+        return decodeURIComponent(ampMatch[1]);
+    }
+
+    // 2️⃣ /videoembed.html/ID
+    const pathMatch = window.location.pathname.match(/\.html\/(.+)/i);
+    if(pathMatch && pathMatch[1]){
+        return decodeURIComponent(pathMatch[1]);
+    }
+
+    // 3️⃣ formato ?id= ou ?video= ou ?url=
+    const params = new URLSearchParams(window.location.search);
+
+    if(params.has('id')) return params.get('id');
+    if(params.has('video')) return params.get('video');
+    if(params.has('url')) return params.get('url');
+
+    return null;
+}
+
+
+// ===============================
+// IDENTIFICA PLATAFORMA E ID
+// ===============================
+function extractVideoData(input){
+
+    if(!input) return null;
+
+    // ID puro YouTube
+    if(/^[\w-]{11}$/.test(input)){
+        return {type:'youtube', id:input};
+    }
+
+    // ===== YOUTUBE
+    let ytMatch = input.match(
+        /(?:youtube\.com.*(?:v=|embed\/)|youtu\.be\/)([\w-]{11})/
+    );
+    if(ytMatch){
+        return {type:'youtube', id:ytMatch[1]};
+    }
+
+    // ===== VIMEO
+    let vimeoMatch = input.match(
+        /vimeo\.com\/(?:video\/)?(\d+)/
+    );
+    if(vimeoMatch){
+        return {type:'vimeo', id:vimeoMatch[1]};
+    }
+
+    // ===== DAILYMOTION
+    let dmMatch = input.match(
+        /dailymotion\.com\/video\/([a-zA-Z0-9]+)/
+    );
+    if(dmMatch){
+        return {type:'dailymotion', id:dmMatch[1]};
+    }
+
+    // ===== GOOGLE DRIVE
+    let driveMatch = input.match(
+        /drive\.google\.com\/file\/d\/([\w-]+)/
+    );
+    if(driveMatch){
+        return {type:'drive', id:driveMatch[1]};
+    }
+
+    // ID longo pode ser Drive
+    if(/^[\w-]{25,}$/.test(input)){
+        return {type:'drive', id:input};
+    }
+
+    return null;
+}
+
+
+// ===============================
+// GERA O IFRAME
+// ===============================
+function generateEmbed(data){
+
+    if(!data) return null;
+
+    switch(data.type){
+
+        case 'youtube':
+            return `
+            <iframe 
+                src="https://www.youtube.com/embed/${data.id}?rel=0&modestbranding=1&playsinline=1"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>`;
+
+        case 'vimeo':
+            return `
+            <iframe 
+                src="https://player.vimeo.com/video/${data.id}"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen>
+            </iframe>`;
+
+        case 'dailymotion':
+            return `
+            <iframe 
+                src="https://www.dailymotion.com/embed/video/${data.id}"
+                allow="autoplay"
+                allowfullscreen>
+            </iframe>`;
+
+        case 'drive':
+            return `
+            <iframe 
+                src="https://drive.google.com/file/d/${data.id}/preview"
+                allow="autoplay"
+                allowfullscreen>
+            </iframe>`;
+    }
+
+    return null;
+}
+
+
+// ===============================
+// EXECUÇÃO
+// ===============================
+(function(){
+
+    const input = getVideoInput();
+    const data = extractVideoData(input);
+    const container = document.getElementById('video-embed');
+
+    if(data){
+        container.innerHTML = generateEmbed(data);
+    }else{
+        container.innerHTML = `
+        <div style="color:#fff;text-align:center;padding:40px;font-family:sans-serif">
+        ID ou URL inválido.<br><br>
+        Exemplos:<br>
+        videoembed.html?id=...<br>
+        </div>`;
+    }
+
+})();
+
+</script>
+
+</body>
+</html>
