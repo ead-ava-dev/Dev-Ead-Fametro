@@ -2,6 +2,15 @@
   "autoplay": true,
   "tempo": 8000,
   "slides": [
+        {
+      "desktop": "https://lh3.googleusercontent.com/d/1O_KBa_x4FYmaVmw19PB6NDsf8G54oy0M",
+      "mobile": "https://lh3.googleusercontent.com/d/12fPTKgdyiADSbOoqBHNfkGa7jkT3bUYZ",
+      "link": "https://www.youtube.com/live/vBnoPXrtXOo",
+      "alt": "Banner 1",
+      "inicio": "2026-03-03",
+      "fim": "2026-03-09"
+    },
+    
     {
       "desktop": "https://lh3.googleusercontent.com/d/1PR25Qy3V947DloACBmeikX6v5bXpL2m4=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1p-11J5El8MincOngXbrlnSQycyjXffus=s1500-rw",
