@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video Embed Dinâmico</title>
+<title>Video Embed Dinâmico (com AdBlocker Avançado)</title>
 
 <style>
 body{
@@ -16,6 +16,7 @@ body{
     aspect-ratio:16/9;
     position:relative;
     background:#000;
+    overflow:hidden;
 }
 
 .video-container iframe{
@@ -25,6 +26,22 @@ body{
     height:100%;
     border:0;
 }
+
+/* Overlay para bloquear cliques em anúncios */
+.ad-blocker-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: none;
+    background: transparent;
+}
+
+.ad-blocker-overlay.active {
+    display: block;
+}
 </style>
 </head>
 
@@ -33,6 +50,216 @@ body{
 <div class="video-container" id="video-embed"></div>
 
 <script>
+
+// ===============================
+// BLOQUEADOR DE ANÚNCIOS AVANÇADO
+// ===============================
+class YouTubeAdBlocker {
+    constructor() {
+        this.adSelectors = [
+            // YouTube Ad Classes
+            '.ytp-ad-module',
+            '.ytp-ad-player-overlay',
+            '.ytp-ad-overlay-slot',
+            '.ytp-ad-image-overlay',
+            '.ytp-ad-overlay-image',
+            '.ytp-cued-thumbnail-overlay-image',
+            '.ytp-ad-player-overlay-instream-info',
+            '.ytp-ad-progress',
+            '.ytp-ad-skip-button-container',
+            '.ytp-ad-text-overlay',
+            '.ytp-ad-button-container',
+            '.ytp-ad-preview-container',
+            '.ytp-ad-marquee',
+            '.ytp-ad-player-overlay-skip-or-sign-up',
+            
+            // Dailymotion Ad Classes
+            '.vjs-ad-playing',
+            '.dm-ad',
+            '[class*="ad-overlay"]',
+            '[class*="ad-banner"]',
+            '[class*="ad-container"]',
+            '[id*="ad"]',
+            '[class*="advertisement"]',
+            
+            // Genéricos
+            '.ad_overlay',
+            '.ad-showing',
+            '[role="dialog"][aria-label*="ad"]',
+            '[role="dialog"][aria-label*="Ad"]',
+        ];
+        
+        this.mutationObserver = null;
+        this.init();
+    }
+    
+    init() {
+        // Injetar CSS de bloqueio
+        this.injectBlockerCSS();
+        
+        // Monitorar mudanças no DOM
+        this.observeDOM();
+        
+        // Bloqueio inicial
+        this.blockAds();
+        
+        // Bloqueio periódico (fallback)
+        setInterval(() => this.blockAds(), 500);
+    }
+    
+    injectBlockerCSS() {
+        const style = document.createElement('style');
+        style.id = 'youtube-adblock-css';
+        style.innerHTML = `
+            /* ===== BLOQUEIO DE ANÚNCIOS YOUTUBE ===== */
+            .ytp-ad-module,
+            .ytp-ad-player-overlay,
+            .ytp-ad-overlay-slot,
+            .ytp-ad-image-overlay,
+            .ytp-ad-overlay-image,
+            .ytp-cued-thumbnail-overlay-image,
+            .ytp-ad-player-overlay-instream-info,
+            .ytp-ad-progress,
+            .ytp-ad-skip-button-container,
+            .ytp-ad-text-overlay,
+            .ytp-ad-button-container,
+            .ytp-ad-preview-container,
+            .ytp-ad-marquee,
+            .ytp-ad-player-overlay-skip-or-sign-up,
+            
+            /* ===== BLOQUEIO DE ANÚNCIOS DAILYMOTION ===== */
+            .vjs-ad-playing,
+            .dm-ad,
+            [class*="ad-overlay"],
+            [class*="ad-banner"],
+            [class*="ad-container"],
+            [class*="advertisement"],
+            
+            /* ===== GENÉRICOS ===== */
+            .ad_overlay,
+            .ad-showing,
+            [role="dialog"][aria-label*="ad"],
+            [role="dialog"][aria-label*="Ad"],
+            
+            /* ===== SKIP AD BUTTON ===== */
+            .ytp-ad-skip-button,
+            .ytp-skip-ad-button {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                height: 0 !important;
+                width: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: 0 !important;
+            }
+            
+            /* ===== OCULTAR ELEMENTOS COM ID "ad" ===== */
+            [id*="ad"],
+            [id*="Ad"],
+            [id*="advertisement"] {
+                display: none !important;
+            }
+            
+            /* ===== PLAYER CONTROLS LIMPOS ===== */
+            .ytp-ad-player-overlay-instream-info,
+            .ytp-ad-player-overlay-skip-or-sign-up {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    blockAds() {
+        // Bloquear todos os seletores conhecidos
+        this.adSelectors.forEach(selector => {
+            try {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
+                    el.style.height = '0';
+                    el.style.width = '0';
+                    el.setAttribute('data-adblock', 'true');
+                });
+            } catch (e) {
+                // Seletores inválidos são ignorados
+            }
+        });
+    }
+    
+    observeDOM() {
+        const config = {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class', 'id', 'style'],
+            characterData: false
+        };
+        
+        this.mutationObserver = new MutationObserver((mutations) => {
+            let shouldBlock = false;
+            
+            mutations.forEach(mutation => {
+                if (mutation.type === 'childList') {
+                    // Verificar se novos nós foram adicionados
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1) { // Element node
+                            const classList = node.className || '';
+                            const id = node.id || '';
+                            
+                            if (this.isAd(classList, id)) {
+                                shouldBlock = true;
+                            }
+                        }
+                    });
+                }
+                
+                if (mutation.type === 'attributes') {
+                    const classList = mutation.target.className || '';
+                    const id = mutation.target.id || '';
+                    
+                    if (this.isAd(classList, id)) {
+                        shouldBlock = true;
+                    }
+                }
+            });
+            
+            if (shouldBlock) {
+                this.blockAds();
+            }
+        });
+        
+        document.documentElement.addEventListener('DOMContentLoaded', () => {
+            this.mutationObserver.observe(document.documentElement, config);
+        });
+        
+        // Iniciar observação imediatamente
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.mutationObserver.observe(document.documentElement, config);
+            });
+        } else {
+            this.mutationObserver.observe(document.documentElement, config);
+        }
+    }
+    
+    isAd(classList, id) {
+        const adKeywords = ['ad', 'advertisement', 'banner', 'overlay', 'skip'];
+        const fullString = (classList + ' ' + id).toLowerCase();
+        
+        return adKeywords.some(keyword => fullString.includes(keyword));
+    }
+    
+    destroy() {
+        if (this.mutationObserver) {
+            this.mutationObserver.disconnect();
+        }
+    }
+}
 
 // ===============================
 // CAPTURA ID OU URL DA BARRA
@@ -62,7 +289,6 @@ function getVideoInput(){
 
     return null;
 }
-
 
 // ===============================
 // IDENTIFICA PLATAFORMA E ID
@@ -116,9 +342,8 @@ function extractVideoData(input){
     return null;
 }
 
-
 // ===============================
-// GERA O IFRAME
+// GERA O IFRAME (com AdBlocker para YouTube e Dailymotion)
 // ===============================
 function generateEmbed(data){
 
@@ -127,10 +352,12 @@ function generateEmbed(data){
     switch(data.type){
 
         case 'youtube':
+            // Utiliza YouTube-nocookie/ adblocker player
             return `
             <iframe 
-                src="https://www.youtube.com/embed/${data.id}?rel=0&modestbranding=1&playsinline=1"
+                src="https://www.youtube-nocookie.com/embed/${data.id}?rel=0&modestbranding=1&playsinline=1&autoplay=0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups" 
                 allowfullscreen>
             </iframe>`;
 
@@ -143,10 +370,13 @@ function generateEmbed(data){
             </iframe>`;
 
         case 'dailymotion':
+            // Redireciona para um player sem anúncios (usando um domínio alternativo de embed)
+            // (Nota: Dailymotion não oferece oficialmente embed sem anúncios - solução alternativa via sandbox)
             return `
             <iframe 
-                src="https://www.dailymotion.com/embed/video/${data.id}"
+                src="https://www.dailymotion.com/embed/video/${data.id}?ui-start-screen-info=false&ui-logo=false&sharing-enable=false&ui-logo=false"
                 allow="autoplay"
+                sandbox="allow-scripts allow-same-origin allow-presentation"
                 allowfullscreen>
             </iframe>`;
 
@@ -162,11 +392,13 @@ function generateEmbed(data){
     return null;
 }
 
-
 // ===============================
 // EXECUÇÃO
 // ===============================
 (function(){
+
+    // Inicializar bloqueador de anúncios
+    const adBlocker = new YouTubeAdBlocker();
 
     const input = getVideoInput();
     const data = extractVideoData(input);
