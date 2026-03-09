@@ -2,6 +2,14 @@
   "autoplay": true,
   "tempo": 8000,
   "slides": [
+    {
+      "desktop": "https://lh3.googleusercontent.com/d/1CoxdZTt25KIRFsSfuIImpNYdjjcwcEMt",
+      "mobile": "https://lh3.googleusercontent.com/d/1bsjpZbTxtWdDF-yQfVeDtQPhEiXPTIt_",
+      "link": "https://ava.fametro.edu.br/mod/page/view.php?id=18348",
+      "alt": "Banner 1",
+      "inicio": "2026-03-03",
+      "fim": "2026-03-09"
+    },
      {
       "desktop": "https://lh3.googleusercontent.com/d/19IMDq7a4tQejYI8P1yywGET5-Aq3xaWm",
       "mobile": "https://lh3.googleusercontent.com/d/17lsObS5Uc0EW_R9iV11NC67PvB-dis8Q",
