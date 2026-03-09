@@ -355,7 +355,7 @@ function generateEmbed(data){
             // Utiliza YouTube-nocookie/ adblocker player
             return `
             <iframe 
-                src="https://www.youtube-nocookie.com/embed/${data.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1"
+                src="https://www.youtube-nocookie.com/embed/${data.id}?rel=0&modestbranding=1&playsinline=1&autoplay=0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 sandbox="allow-scripts allow-same-origin allow-presentation allow-popups" 
                 allowfullscreen>
@@ -421,4 +421,5 @@ function generateEmbed(data){
 
 </body>
 </html>
+
 
