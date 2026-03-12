@@ -379,17 +379,28 @@ async function initButtons(container, configName) {
   // ================ INICIALIZAÇÃO GERAL ===================
   let _initDone = false;
 
-  async function init() {
-    document.querySelectorAll('a[href="/#"]').forEach(link => {
-        link.style.pointerEvents = 'none';
-        link.style.cursor = 'default';
-    });
-    
-    if (_initDone) return;
-    _initDone = true;
-    parsePlaceholders();
-    await initComponents();
-  }
+async function init() {
+
+  document.addEventListener("click", function(e) {
+    const link = e.target.closest("a");
+
+    if (!link) return;
+
+    const href = (link.getAttribute("href") || "").toLowerCase();
+
+    if (href.includes("/#")) {
+      e.preventDefault();
+      e.stopPropagation();
+      link.style.cursor = "default";
+    }
+  });
+
+  if (_initDone) return;
+  _initDone = true;
+
+  parsePlaceholders();
+  await initComponents();
+}
 
   function resetInit() {
     _initDone = false;
