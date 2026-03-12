@@ -25,6 +25,10 @@
   display: block;
 }
 
+a[href*="/#"] {
+    pointer-events: none !important;
+}
+
 /* Setas */
 .slick-prev:before,
 .slick-next:before {
