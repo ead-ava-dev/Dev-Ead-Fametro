@@ -8,6 +8,13 @@
 }(this, function () {
   'use strict';
 
+  document.querySelectorAll('a').forEach(link => {
+    if (link.getAttribute('href') === '/#') {
+        link.style.pointerEvents = 'none';
+    }
+});
+
+  
   // ================ BASE URL ===================
   function detectBaseURL() {
     let script = document.currentScript;
