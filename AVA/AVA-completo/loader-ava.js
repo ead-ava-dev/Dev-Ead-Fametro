@@ -7,13 +7,6 @@
   }
 }(this, function () {
   'use strict';
-
-  document.querySelectorAll('a').forEach(link => {
-    if (link.getAttribute('href') === '/#') {
-        link.style.pointerEvents = 'none';
-    }
-});
-
   
   // ================ BASE URL ===================
   function detectBaseURL() {
@@ -387,6 +380,11 @@ async function initButtons(container, configName) {
   let _initDone = false;
 
   async function init() {
+    document.querySelectorAll('a[href="/#"]').forEach(link => {
+        link.style.pointerEvents = 'none';
+        link.style.cursor = 'default';
+    });
+    
     if (_initDone) return;
     _initDone = true;
     parsePlaceholders();
