@@ -1,0 +1,53 @@
+/*!
+ * Font Awesome Pro 7.1.0 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license (Commercial License)
+ * Copyright 2025 Fonticons, Inc.
+ */
+:host,
+:root {
+    --fa-family-sharp: "Font Awesome 7 Sharp";
+    --fa-font-sharp-solid: normal 900 1em/1 var(--fa-family-sharp);
+    --fa-style-family-sharp: var(--fa-family-sharp)
+}
+
+@font-face {
+    font-family: "Font Awesome 7 Sharp";
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url(../webfonts/fa-sharp-solid-900.woff2)
+}
+
+.fass {
+    --fa-style: 900
+}
+
+.fa-sharp,
+.fass {
+    --fa-family: var(--fa-family-sharp)
+}
+
+.fa-solid {
+    --fa-style: 900
+}
+
+/*
+     FILE ARCHIVED ON 06:54:28 Mar 11, 2026 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 19:48:26 Mar 13, 2026.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  capture_cache.get: 0.505
+  captures_list: 1.155
+  exclusion.robots: 0.018
+  exclusion.robots.policy: 0.007
+  esindex: 0.012
+  cdx.remote: 37.288
+  LoadShardBlock: 241.691 (6)
+  PetaboxLoader3.datanode: 235.045 (7)
+  load_resource: 23.737
+*/

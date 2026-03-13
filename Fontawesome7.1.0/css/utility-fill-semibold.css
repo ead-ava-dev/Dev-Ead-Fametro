@@ -1,0 +1,54 @@
+/*!
+ * Font Awesome Pro 7.1.0 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license (Commercial License)
+ * Copyright 2025 Fonticons, Inc.
+ */
+:host,
+:root {
+    --fa-family-utility-fill: "Font Awesome 7 Utility Fill";
+    --fa-font-utility-fill-semibold: normal 600 1em/1 var(--fa-family-utility-fill);
+    --fa-style-family-utility-fill: var(--fa-family-utility-fill)
+}
+
+@font-face {
+    font-family: "Font Awesome 7 Utility Fill";
+    font-style: normal;
+    font-weight: 600;
+    font-display: block;
+    src: url(../webfonts/fa-utility-fill-semibold-600.woff2)
+}
+
+.faufsb {
+    --fa-style: 600
+}
+
+.fa-utility-fill,
+.faufsb {
+    --fa-family: var(--fa-family-utility-fill)
+}
+
+.fa-semibold {
+    --fa-style: 600
+}
+
+/*
+     FILE ARCHIVED ON 06:19:58 Feb 11, 2026 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 19:55:28 Mar 13, 2026.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  capture_cache.get: 2.751
+  captures_list: 0.756
+  exclusion.robots: 0.02
+  exclusion.robots.policy: 0.009
+  esindex: 0.01
+  cdx.remote: 34.801
+  LoadShardBlock: 140.984 (6)
+  PetaboxLoader3.datanode: 104.986 (7)
+  PetaboxLoader3.resolve: 58.412 (2)
+  load_resource: 50.54
+*/

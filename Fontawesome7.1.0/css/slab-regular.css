@@ -1,0 +1,54 @@
+/*!
+ * Font Awesome Pro 7.1.0 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license (Commercial License)
+ * Copyright 2025 Fonticons, Inc.
+ */
+:host,
+:root {
+    --fa-family-slab: "Font Awesome 7 Slab";
+    --fa-font-slab-regular: normal 400 1em/1 var(--fa-family-slab);
+    --fa-style-family-slab: var(--fa-family-slab)
+}
+
+@font-face {
+    font-family: "Font Awesome 7 Slab";
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url(../webfonts/fa-slab-regular-400.woff2)
+}
+
+.faslr {
+    --fa-style: 400
+}
+
+.fa-slab,
+.faslr {
+    --fa-family: var(--fa-family-slab)
+}
+
+.fa-regular {
+    --fa-style: 400
+}
+
+/*
+     FILE ARCHIVED ON 06:19:56 Feb 11, 2026 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 19:51:59 Mar 13, 2026.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  capture_cache.get: 0.472
+  captures_list: 0.576
+  exclusion.robots: 0.018
+  exclusion.robots.policy: 0.008
+  esindex: 0.01
+  cdx.remote: 9.562
+  LoadShardBlock: 118.113 (6)
+  PetaboxLoader3.datanode: 122.879 (7)
+  load_resource: 45.98
+  PetaboxLoader3.resolve: 33.453
+*/

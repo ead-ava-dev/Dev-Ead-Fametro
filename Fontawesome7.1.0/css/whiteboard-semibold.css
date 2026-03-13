@@ -1,0 +1,54 @@
+/*!
+ * Font Awesome Pro 7.1.0 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license (Commercial License)
+ * Copyright 2025 Fonticons, Inc.
+ */
+:host,
+:root {
+    --fa-family-whiteboard: "Font Awesome 7 Whiteboard";
+    --fa-font-whiteboard-semibold: normal 600 1em/1 var(--fa-family-whiteboard);
+    --fa-style-family-whiteboard: var(--fa-family-whiteboard)
+}
+
+@font-face {
+    font-family: "Font Awesome 7 Whiteboard";
+    font-style: normal;
+    font-weight: 600;
+    font-display: block;
+    src: url(../webfonts/fa-whiteboard-semibold-600.woff2)
+}
+
+.fawsb {
+    --fa-style: 600
+}
+
+.fa-whiteboard,
+.fawsb {
+    --fa-family: var(--fa-family-whiteboard)
+}
+
+.fa-semibold {
+    --fa-style: 600
+}
+
+/*
+     FILE ARCHIVED ON 00:54:56 Feb 18, 2026 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 19:57:41 Mar 13, 2026.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  capture_cache.get: 0.942
+  captures_list: 1.866
+  exclusion.robots: 0.024
+  exclusion.robots.policy: 0.01
+  esindex: 0.017
+  cdx.remote: 36.688
+  LoadShardBlock: 188.725 (6)
+  PetaboxLoader3.datanode: 140.507 (7)
+  PetaboxLoader3.resolve: 266.19 (2)
+  load_resource: 283.048
+*/
