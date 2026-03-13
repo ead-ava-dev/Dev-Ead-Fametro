@@ -444,44 +444,53 @@
     `;
     }).join("");
 
-    // ================ INICIALIZAÇÃO GERAL ===================
-    let _initDone = false;
 
-    async function init() {
+    container.innerHTML =
+      `<div class="buttonava-wrapper">
+      <div class="buttonava-grid">
+        ${buttonsHtml}
+      </div>
+    </div>`;
+  }
 
-      document.addEventListener("click", function (e) {
-        const link = e.target.closest("a");
+  // ================ INICIALIZAÇÃO GERAL ===================
+  let _initDone = false;
 
-        if (!link) return;
+  async function init() {
 
-        const href = (link.getAttribute("href") || "").toLowerCase();
+    document.addEventListener("click", function (e) {
+      const link = e.target.closest("a");
 
-        if (href.includes("/#")) {
-          e.preventDefault();
-          e.stopPropagation();
-          link.style.cursor = "default";
-        }
-      });
+      if (!link) return;
 
-      if (_initDone) return;
-      _initDone = true;
+      const href = (link.getAttribute("href") || "").toLowerCase();
 
-      parsePlaceholders();
-      await initComponents();
-    }
-
-    function resetInit() {
-      _initDone = false;
-    }
-
-    // ================ AUTO-START (se não for AMD) ===================
-    if (typeof define !== "function" || !define.amd) {
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init);
-      } else {
-        init();
+      if (href.includes("/#")) {
+        e.preventDefault();
+        e.stopPropagation();
+        link.style.cursor = "default";
       }
-    }
+    });
 
-    return { init, resetInit };
-  }));
+    if (_initDone) return;
+    _initDone = true;
+
+    parsePlaceholders();
+    await initComponents();
+  }
+
+  function resetInit() {
+    _initDone = false;
+  }
+
+  // ================ AUTO-START (se não for AMD) ===================
+  if (typeof define !== "function" || !define.amd) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  }
+
+  return { init, resetInit };
+}));
