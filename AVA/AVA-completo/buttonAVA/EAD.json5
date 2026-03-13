@@ -26,16 +26,15 @@
       "titulo": "Bibliotecas e Periódicos",
       "url": "https://ava.fametro.edu.br/mod/page/view.php?id=18400",
       "icone": "fa-duotone fa-solid fa-books"
-    }/*,
-    {
-      "titulo": "Nivelamento",
-      "url": "https://ava.fametro.edu.br/mod/page/view.php?id=28458",
-      "icone": "fa-duotone fa-solid fa-objects-align-bottom"
-    }*/
-
-    
+    }//,
+    //{
+    //  "titulo": "Nivelamento",
+    //  "url": "https://ava.fametro.edu.br/mod/page/view.php?id=28458",
+    //  "icone": "fa-duotone fa-solid fa-objects-align-bottom"
+    //}    
   ]
 }
+
 
 
 
