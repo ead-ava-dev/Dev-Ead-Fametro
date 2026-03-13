@@ -267,7 +267,7 @@
     }
 
     // ---------- Monta os slides ----------
-    const renderSlide = (slide) => {
+    /*const renderSlide = (slide) => {
       const link = escapeUrl(slide.link);
       const desktop = escapeSrc(slide.desktop) || "";
       const mobile = escapeSrc(slide.mobile) || desktop;
@@ -280,7 +280,57 @@
           '</picture>' +
         '</a></div>'
       );
-    };
+    };*/
+
+    const renderSlide = (slide) => {
+
+  const rawLink = (slide.link || "").trim().toLowerCase();
+
+  const isDead =
+    rawLink === "" ||
+    rawLink === "#" ||
+    rawLink === "/#" ||
+    rawLink === "/linksemdestino" ||
+    rawLink === "javascript:void(0)" ||
+    rawLink === "javascript:;";
+
+  const desktop = escapeSrc(slide.desktop) || "";
+  const mobile = escapeSrc(slide.mobile) || desktop;
+  const alt = escapeHtml(slide.alt || "");
+
+  let html;
+
+  if (isDead) {
+
+    html = `
+      <div>
+        <picture>
+          <source media="(min-width:600px)" srcset="${desktop}">
+          <img src="${mobile}" alt="${alt}">
+        </picture>
+      </div>
+    `;
+
+  } else {
+
+    const link = escapeUrl(slide.link);
+
+    html = `
+      <div>
+        <a href="${link}" target="_blank" rel="noopener">
+          <picture>
+            <source media="(min-width:600px)" srcset="${desktop}">
+            <img src="${mobile}" alt="${alt}">
+          </picture>
+        </a>
+      </div>
+    `;
+
+  }
+
+  slickEl.insertAdjacentHTML("beforeend", html);
+
+};
 
     // Se houver apenas um slide, não carrega slick/jQuery: banner estático
     if (slides.length === 1) {
