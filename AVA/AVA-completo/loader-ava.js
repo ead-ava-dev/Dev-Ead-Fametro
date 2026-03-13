@@ -267,21 +267,6 @@
     }
 
     // ---------- Monta os slides ----------
-    /*const renderSlide = (slide) => {
-      const link = escapeUrl(slide.link);
-      const desktop = escapeSrc(slide.desktop) || "";
-      const mobile = escapeSrc(slide.mobile) || desktop;
-      const alt = escapeHtml(slide.alt || "");
-      slickEl.insertAdjacentHTML("beforeend",
-        '<div><a href="' + link + '" target="_blank" rel="noopener">' +
-          '<picture>' +
-            '<source media="(min-width:600px)" srcset="' + desktop + '">' +
-            '<img src="' + mobile + '" alt="' + alt + '">' +
-          '</picture>' +
-        '</a></div>'
-      );
-    };*/
-
     const renderSlide = (slide) => {
 
   const rawLink = (slide.link || "").trim().toLowerCase();
