@@ -118,40 +118,33 @@
     });
   }
 
-  let _json5Loaded = false;
+async function fetchJSON(url) {
 
-  async function ensureJSON5() {
-    if (_json5Loaded) return;
+  const r = await fetch(url, { cache: "no-store" });
 
-    await loadJS(
-      "https://cdn.jsdelivr.net/npm/json5@2/dist/index.min.js",
-      () => window.JSON5
-    );
+  if (!r.ok) throw new Error("Erro ao carregar JSON: " + url);
 
-    _json5Loaded = true;
+  let text = await r.text();
+
+  // remove comentários //
+  text = text.replace(/\/\/.*$/gm, "");
+
+  // remove comentários /* */
+  text = text.replace(/\/\*[\s\S]*?\*\//g, "");
+
+  // remove vírgulas finais
+  text = text.replace(/,\s*([}\]])/g, "$1");
+
+  try {
+    return JSON.parse(text);
+  } catch (err) {
+
+    console.error("Erro ao parsear JSON:", url);
+    console.error(text);
+
+    throw err;
   }
-
-  async function fetchJSON(url) {
-
-    const r = await fetch(url + "?v=" + Date.now());
-
-    if (!r.ok) throw new Error("Erro ao carregar JSON: " + url);
-
-    const text = await r.text();
-
-    try {
-
-      return JSON.parse(text);
-
-    } catch (e) {
-
-      await ensureJSON5();
-
-      return JSON5.parse(text);
-
-    }
-
-  }
+}
 
   async function fetchText(url) {
     const r = await fetch(url);
