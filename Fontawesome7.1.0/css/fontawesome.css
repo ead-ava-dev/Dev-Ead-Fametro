@@ -12142,38 +12142,46 @@
 }
 
 @font-face {
-  font-family: "Font Awesome 5 Brands";
+  font-family: "Font Awesome 7 Brands";
   font-display: block;
   font-weight: 400;
   src: url(https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/webfonts/fa-brands-400.woff2) format("woff2")
 }
 
 @font-face {
-  font-family: "Font Awesome 5 Pro";
+  font-family: "Font Awesome 7 Pro";
   font-display: block;
   font-weight: 900;
   src: url(https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/webfonts/fa-solid-900.woff2) format("woff2")
 }
 
 @font-face {
-  font-family: "Font Awesome 5 Pro";
+  font-family: "Font Awesome 7 Pro";
   font-display: block;
   font-weight: 400;
   src: url(https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/webfonts/fa-regular-400.woff2) format("woff2")
 }
 
 @font-face {
-  font-family: "Font Awesome 5 Pro";
+  font-family: "Font Awesome 7 Pro";
   font-display: block;
   font-weight: 300;
   src: url(https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/webfonts/fa-light-300.woff2) format("woff2")
 }
 
 @font-face {
-  font-family: "Font Awesome 5 Duotone";
+  font-family: "Font Awesome 7 Duotone";
   font-display: block;
   font-weight: 900;
   src: url(https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/webfonts/fa-duotone-900.woff2) format("woff2")
+}
+
+@font-face {
+    font-family: "Font Awesome 7 Duotone";
+    font-style: normal;
+    font-weight: 100;
+    font-display: block;
+    src: url(https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/webfonts/fa-duotone-thin-100.woff2)
 }
 
 @font-face {
@@ -12187,6 +12195,9 @@
   font-display: block;
   src: url(https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/webfonts/fa-brands-400.woff2) format("woff2")
 }
+
+
+
 
 @font-face {
   font-family: "FontAwesome";
