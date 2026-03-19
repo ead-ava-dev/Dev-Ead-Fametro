@@ -3,4 +3,30 @@
  * License - https://fontawesome.com/license (Commercial License)
  * Copyright 2026 Fonticons, Inc.
  */
-:host,:root{--fa-family-graphite:"Font Awesome 7 Graphite";--fa-font-graphite-thin:normal 100 1em/1 var(--fa-family-graphite);--fa-style-family-graphite:var(--fa-family-graphite)}@font-face{font-family:"Font Awesome 7 Graphite";font-style:normal;font-weight:100;font-display:block;src:url(../webfonts/fa-graphite-thin-100.woff2)}.fagt{--fa-style:100}.fa-graphite,.fagt{--fa-family:var(--fa-family-graphite)}.fa-thin{--fa-style:100}
+:host,
+:root {
+    --fa-family-graphite: "Font Awesome 7 Graphite";
+    --fa-font-graphite-thin: normal 100 1em/1 var(--fa-family-graphite);
+    --fa-style-family-graphite: var(--fa-family-graphite)
+}
+
+@font-face {
+    font-family: "Font Awesome 7 Graphite";
+    font-style: normal;
+    font-weight: 100;
+    font-display: block;
+    src: url(https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/webfonts/fa-graphite-thin-100.woff2)
+}
+
+.fagt {
+    --fa-style: 100
+}
+
+.fa-graphite,
+.fagt {
+    --fa-family: var(--fa-family-graphite)
+}
+
+.fa-thin {
+    --fa-style: 100
+}
