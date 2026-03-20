@@ -1,54 +1,36 @@
 /**
- * Script para UNIFICAR e INJETAR todos arquivos CSS do Font Awesome Pro no Moodle via DOM Javascript.
- * 
- * Os arquivos CSS originais:
- *  - chisel-regular.css
- *  - duotone.css
- *  - duotone-light.css
- *  - duotone-regular.css
- *  - duotone-thin.css
- *  - etch-solid.css
- *  - fontawesome.css
- *  - graphite-thin.css
- *  - jelly-duo-regular.css
- *  - jelly-fill-regular.css
- *  - jelly-regular.css
- *  - light.css
- *  - notdog-duo-solid.css
- *  - notdog-solid.css
- *  - regular.css
- *  - sharp-duotone-light.css
- *  - sharp-duotone-regular.css
- *  - sharp-duotone-solid.css
- *  - sharp-duotone-thin.css
- *  - sharp-light.css
- *  - sharp-regular.css
- *  - sharp-solid.css
- *  - sharp-thin.css
- *  - slab-press-regular.css
- *  - slab-regular.css
- *  - solid.css
- *  - svg.css
- *  - svg-with-js.css
- *  - thin.css
- *  - thumbprint-light.css
- *  - utility-duo-semibold.css
- *  - utility-fill-semibold.css
- *  - utility-semibold.css
- *  - whiteboard-semibold.css
- *  - brands.css
+ * Script para INJETAR todos os arquivos CSS do Font Awesome Pro no Moodle usando <link>,
+ * garantindo que as fontes web (woff2, woff) funcionem corretamente.
  *
- * Esta abordagem cria uma tag <style> no <head> com todos CSSs colados, para facilitar uso em plugins ou HTML extra do Moodle.
- * 
- * ATENÇÃO:
- *  - Garanta que todos os arquivos estejam no mesmo diretório do arquivo HTML que executa este JS, ou ajuste os caminhos.
- *  - Recomendado utilizar a versão minificada/unificada dos CSS caso precise otimizar performance.
+ * Todas as fontes (.woff2, .woff, etc.) estão no caminho:
+ *   https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/webfonts/
+ * Os CSS estão em:
+ *   https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/
  *
- * Exemplo: Cole o conteúdo deste script JS direto no HTML ou no campo de JS extra do tema Moodle/HTML block.
+ * Certifique-se de que os arquivos CSS fazem referência ao diretório correto das fontes em seus @font-face.
+ *
+ * Exemplo de estrutura:
+ *   # Fontawesome7.1.0
+ *     |- webfonts/
+ *     |- css/
+ *     |- js/
+ *         |- todos.js (este arquivo)
+ *
+ * ================================================
+ * O QUE ESSE SCRIPT FAZ:
+ * - Para cada arquivo CSS do Font Awesome, adiciona uma tag <link rel="stylesheet">
+ * - Isso garante que os @font-face do Font Awesome funcionem (as fontes são carregadas)
+ * - Adiciona uma classe fa-pro-css-injected na <html> ao terminar a injeção
+ * - Se executado mais de uma vez, não adiciona links duplicados
+ * - Exporte a função: window.injectAllFontAwesomeLinks()
+ *
+ * PARA FUNCIONAR:
+ * - Todos os arquivos CSS e fontes devem estar acessíveis via os caminhos acima.
+ * ================================================
  */
 
 (function() {
-  // Caminhos do CSS
+  // Lista de arquivos CSS do Font Awesome a serem inseridos (1 <link> por arquivo)
   const cssFiles = [
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/brands.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/chisel-regular.css',
@@ -77,6 +59,8 @@
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/slab-press-regular.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/slab-regular.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/solid.css',
+    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/svg.css',
+    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/svg-with-js.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/thin.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/thumbprint-light.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/utility-duo-semibold.css',
@@ -86,33 +70,26 @@
   ];
 
   /**
-   * Carrega e concatena todos os CSSs listados e injeta no <head>
+   * Injeta todos os <link rel="stylesheet"> do FontAwesome no <head>.
+   * Os @font-face nos CSS devem apontar para /webfonts corretamente.
    */
-  function injectAllFontAwesomeCSS(cssPath = './') {
-    const requests = cssFiles.map(file => fetch(cssPath + file).then(r => r.text()));
-
-    Promise.all(requests).then(cssList => {
-      const style = document.createElement('style');
-      style.type = 'text/css';
-
-      // Separa cada arquivo com comentário de origem
-      style.textContent = cssList.map((css, i) =>
-        `/* ===== ${cssFiles[i]} ===== */\n${css}\n`
-      ).join('\n');
-
-      document.head.appendChild(style);
-      // Opcional: Adicione uma classe/meta para identificar que já foi injetado
-      document.documentElement.classList.add('fa-pro-css-injected');
-    })
-    .catch(err => {
-      console.error('Falha ao carregar algum CSS do Font Awesome Pro:', err);
+  function injectAllFontAwesomeLinks() {
+    cssFiles.forEach(cssFile => {
+      const href = cssFile;
+      if (![...document.querySelectorAll('link[rel="stylesheet"]')].some(link => link.href === href)) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.crossOrigin = 'anonymous';
+        document.head.appendChild(link);
+      }
     });
+    document.documentElement.classList.add('fa-pro-css-injected');
   }
 
-  // Injete automaticamente assim que possível (por ex, em bloco HTML/JS extra do Moodle)
-  injectAllFontAwesomeCSS('./'); // Ajuste o caminho se necessário
+  // Executa automaticamente ao carregar para garantir que tudo é injetado:
+  injectAllFontAwesomeLinks();
 
-  // Exporte para uso manual se necessário
-  window.injectAllFontAwesomeCSS = injectAllFontAwesomeCSS;
-
+  // Exporta para uso manual, se necessário
+  window.injectAllFontAwesomeLinks = injectAllFontAwesomeLinks;
 })();
