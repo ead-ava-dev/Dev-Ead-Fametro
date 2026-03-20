@@ -7,7 +7,7 @@
   }
 }(this, function () {
   'use strict';
-  
+
   // ================ BASE URL ===================
   function detectBaseURL() {
     let script = document.currentScript;
@@ -269,53 +269,53 @@
     // ---------- Monta os slides ----------
     const renderSlide = (slide) => {
 
-  const rawLink = (slide.link || "").trim().toLowerCase();
+      const rawLink = (slide.link || "").trim().toLowerCase();
 
-  const isDead =
-    rawLink === "" ||
-    rawLink === "#" ||
-    rawLink === "/#" ||
-    rawLink === "/linksemdestino" ||
-    rawLink === "javascript:void(0)" ||
-    rawLink === "javascript:;";
+      const isDead =
+        rawLink === "" ||
+        rawLink === "#" ||
+        rawLink === "/#" ||
+        rawLink === "/linksemdestino" ||
+        rawLink === "javascript:void(0)" ||
+        rawLink === "javascript:;";
 
-  const desktop = escapeSrc(slide.desktop) || "";
-  const mobile = escapeSrc(slide.mobile) || desktop;
-  const alt = escapeHtml(slide.alt || "");
+      const desktop = escapeSrc(slide.desktop) || "";
+      const mobile = escapeSrc(slide.mobile) || desktop;
+      const alt = escapeHtml(slide.alt || "");
 
-  let html;
+      let html;
 
-  if (isDead) {
+      if (isDead) {
 
-    html = `
-      <div>
-        <picture>
-          <source media="(min-width:600px)" srcset="${desktop}">
-          <img src="${mobile}" alt="${alt}">
-        </picture>
-      </div>
-    `;
+        html = `
+          <div>
+            <picture>
+              <source media="(min-width:600px)" srcset="${desktop}">
+              <img src="${mobile}" alt="${alt}">
+            </picture>
+          </div>
+        `;
 
-  } else {
+      } else {
 
-    const link = escapeUrl(slide.link);
+        const link = escapeUrl(slide.link);
 
-    html = `
-      <div>
-        <a href="${link}" target="_blank" rel="noopener">
-          <picture>
-            <source media="(min-width:600px)" srcset="${desktop}">
-            <img src="${mobile}" alt="${alt}">
-          </picture>
-        </a>
-      </div>
-    `;
+        html = `
+          <div>
+            <a href="${link}" target="_blank" rel="noopener">
+              <picture>
+                <source media="(min-width:600px)" srcset="${desktop}">
+                <img src="${mobile}" alt="${alt}">
+              </picture>
+            </a>
+          </div>
+        `;
 
-  }
+      }
 
-  slickEl.insertAdjacentHTML("beforeend", html);
+      slickEl.insertAdjacentHTML("beforeend", html);
 
-};
+    };
 
     // Se houver apenas um slide, não carrega slick/jQuery: banner estático
     if (slides.length === 1) {
@@ -360,82 +360,113 @@
   }
 
   // Inicializa botões customizados
-// Inicializa botões customizados
-async function initButtons(container, configName) {
-  if (!BASE_URL) {
-    console.error("AVA Loader: BASE_URL vazia.");
-    return;
-  }
+  async function initButtons(container, configName) {
+    if (!BASE_URL) {
+      console.error("AVA Loader: BASE_URL vazia.");
+      return;
+    }
 
-  const componentPath = BASE_URL + "buttonAVA/";
+    const componentPath = BASE_URL + "buttonAVA/";
 
-  // Carrega CSS
-  await ensureButtonAVACssLoaded();
+    // Carrega CSS
+    await ensureButtonAVACssLoaded();
 
-  let data;
-  try {
-    data = await fetchJSON(componentPath + configName + ".json?v=" + Date.now());
-    if (!data) throw new Error("JSON vazio");
-  } catch (e) {
-    console.error("Erro ao carregar config dos botões:", e);
-    container.innerHTML = "";
-    return;
-  }
+    let data;
+    try {
+      data = await fetchJSON(componentPath + configName + ".json?v=" + Date.now());
+      if (!data) throw new Error("JSON vazio");
+    } catch (e) {
+      console.error("Erro ao carregar config dos botões:", e);
+      container.innerHTML = "";
+      return;
+    }
 
-  // ================= APLICA TEMA DINÂMICO =================
-  if (data.theme && typeof data.theme === "object") {
-    Object.entries(data.theme).forEach(([key, value]) => {
-      if (key.startsWith("--")) {
-        container.style.setProperty(key, value);
+    // ================= APLICA TEMA DINÂMICO =================
+    if (data.theme && typeof data.theme === "object") {
+      Object.entries(data.theme).forEach(([key, value]) => {
+        if (key.startsWith("--")) {
+          container.style.setProperty(key, value);
+        }
+      });
+    }
+    // ========================================================
+
+    const botoes = data.botoes || [];
+
+    // Lógica de dead link igual bannerAVA
+    function isDeadLink(rawLink) {
+      const link = (rawLink || "").trim().toLowerCase();
+      return (
+        link === "" ||
+        link === "#" ||
+        link === "/#" ||
+        link === "/linksemdestino" ||
+        link === "javascript:void(0)" ||
+        link === "javascript:;"
+      );
+    }
+
+    const buttonsHtml = botoes.map(btn => {
+      const icon = escapeHtml(btn.icone);
+      const titulo = escapeHtml(btn.titulo);
+      const rawUrl = btn.url || "";
+      const dead = isDeadLink(rawUrl);
+
+      if (dead) {
+        return `
+          <div class="btn-card btn-ava btn-ava-disabled" tabindex="0" aria-disabled="true" style="cursor: default;">
+            <div class="icon-container">
+              <i class="${icon}"></i>
+            </div>
+            <span class="btn-text">${titulo}</span>
+          </div>
+        `;
+      } else {
+        const url = escapeUrl(btn.url);
+        return `
+          <a href="${url}" class="btn-card btn-ava">
+            <div class="icon-container">
+              <i class="${icon}"></i>
+            </div>
+            <span class="btn-text">${titulo}</span>
+          </a>
+        `;
       }
-    });
+    }).join("");
+
+    container.innerHTML =
+      `<div class="buttonava-wrapper">
+        <div class="buttonava-grid">
+          ${buttonsHtml}
+        </div>
+      </div>`;
   }
-  // ========================================================
-
-  const botoes = data.botoes || [];
-
-  const buttonsHtml = botoes.map(btn => `
-    <a href="${escapeUrl(btn.url)}" class="btn-card btn-ava">
-      <div class="icon-container">
-        <i class="${escapeHtml(btn.icone)}"></i>
-      </div>
-      <span class="btn-text">${escapeHtml(btn.titulo)}</span>
-    </a>
-  `).join("");
-
-  container.innerHTML =
-    `<div class="buttonava-wrapper">
-      <div class="buttonava-grid">
-        ${buttonsHtml}
-      </div>
-    </div>`;
-}
 
   // ================ INICIALIZAÇÃO GERAL ===================
   let _initDone = false;
 
-async function init() {
+  async function init() {
 
-  document.addEventListener("click", function(e) {
-    const link = e.target.closest("a");
+    document.addEventListener("click", function(e) {
+      const link = e.target.closest("a");
 
-    if (!link) return;
+      if (!link) return;
 
-    const href = (link.getAttribute("href") || "").toLowerCase();
+      const href = (link.getAttribute("href") || "").toLowerCase();
 
-    if (href.includes("/#")) {
-      e.preventDefault();
-      e.stopPropagation();
-      link.style.cursor = "default";
-    }
-  });
+      if (href.includes("/#")) {
+        e.preventDefault();
+        e.stopPropagation();
+        link.style.cursor = "default";
+      }
+    });
 
-  if (_initDone) return;
-  _initDone = true;
+    if (_initDone) return;
+    _initDone = true;
 
-  parsePlaceholders();
-  await initComponents();
-}
+    parsePlaceholders();
+    await initComponents();
+  }
 
   function resetInit() {
     _initDone = false;
