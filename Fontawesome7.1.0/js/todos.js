@@ -77,8 +77,6 @@
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/slab-press-regular.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/slab-regular.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/solid.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/svg.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/svg-with-js.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/thin.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/thumbprint-light.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/utility-duo-semibold.css',
