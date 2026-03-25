@@ -32,7 +32,8 @@
 (function() {
   // Lista de arquivos CSS do Font Awesome a serem inseridos (1 <link> por arquivo)
   const cssFiles = [
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/all.css',
+    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/all2.css'
+    /*'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/all.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/brands.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/chisel-regular.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/duotone.css',
@@ -67,7 +68,7 @@
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/utility-duo-semibold.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/utility-fill-semibold.css',
     'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/utility-semibold.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/whiteboard-semibold.css'
+    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/whiteboard-semibold.css'*/
   ];
 
   /**
