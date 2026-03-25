@@ -3,9 +3,9 @@
  * garantindo que as fontes web (woff2, woff) funcionem corretamente.
  *
  * Todas as fontes (.woff2, .woff, etc.) estão no caminho:
- *   https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/webfonts/
+ *   https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/webfonts/
  * Os CSS estão em:
- *   https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/
+ *   https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/
  *
  * Certifique-se de que os arquivos CSS fazem referência ao diretório correto das fontes em seus @font-face.
  *
@@ -32,43 +32,43 @@
 (function() {
   // Lista de arquivos CSS do Font Awesome a serem inseridos (1 <link> por arquivo)
   const cssFiles = [
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/all2.css'
-    /*'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/all.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/brands.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/chisel-regular.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/duotone.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/duotone-light.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/duotone-regular.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/duotone-thin.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/etch-solid.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/fontawesome.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/graphite-thin.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/jelly-duo-regular.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/jelly-fill-regular.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/jelly-regular.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/light.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/notdog-duo-solid.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/notdog-solid.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/regular.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/sharp-duotone-light.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/sharp-duotone-regular.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/sharp-duotone-solid.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/sharp-duotone-thin.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/sharp-light.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/sharp-regular.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/sharp-solid.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/sharp-thin.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/slab-press-regular.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/slab-regular.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/solid.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/svg.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/svg-with-js.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/thin.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/thumbprint-light.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/utility-duo-semibold.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/utility-fill-semibold.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/utility-semibold.css',
-    'https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/css/whiteboard-semibold.css'*/
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/all2.css'
+    /*'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/all.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/brands.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/chisel-regular.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/duotone.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/duotone-light.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/duotone-regular.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/duotone-thin.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/etch-solid.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/fontawesome.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/graphite-thin.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/jelly-duo-regular.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/jelly-fill-regular.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/jelly-regular.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/light.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/notdog-duo-solid.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/notdog-solid.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/regular.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/sharp-duotone-light.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/sharp-duotone-regular.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/sharp-duotone-solid.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/sharp-duotone-thin.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/sharp-light.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/sharp-regular.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/sharp-solid.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/sharp-thin.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/slab-press-regular.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/slab-regular.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/solid.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/svg.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/svg-with-js.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/thin.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/thumbprint-light.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/utility-duo-semibold.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/utility-fill-semibold.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/utility-semibold.css',
+    'https://cdn.jsdelivr.net/gh/ead-ava-dev/Dev-Ead-Fametro@ava/Fontawesome7.1.0/css/whiteboard-semibold.css'*/
   ];
 
   /**
