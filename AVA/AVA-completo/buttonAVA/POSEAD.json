@@ -16,6 +16,11 @@
       "titulo": "Tutoria Online",
       "url": "https://ava.fametro.edu.br/course/view.php?id=652",
       "icone": "fa-duotone fa-regular fa-user-message"
+    },    
+    {
+      "titulo": "Bibliotecas Virtuais",
+      "url": "https://ava.fametro.edu.br/mod/page/view.php?id=18400",
+      "icone": "fa-duotone fa-solid fa-books"
     }
   ]
 }
