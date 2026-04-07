@@ -2,7 +2,23 @@
   "autoplay": true,
   "tempo": 8000,
   "slides": [
-   {
+          {
+      "desktop": "https://lh3.googleusercontent.com/d/1NVxuth-UesJDOk5HzQcQEu4QFq27Jwdl-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1mXOzrbAU0hY7Ck56XXThkvtrkJXfBpLX-rw",
+      "link": "https://youtube.com/live/yHHeW8i4nik",
+      "alt": "Banner 1",
+      "inicio": "2026-02-05",
+      "fim": "2026-03-12"
+    },
+           {
+      "desktop": "https://lh3.googleusercontent.com/d/1W6iKluqyZzd7uJ8igCSAYfK0fGsU1oC3-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1wvzu-T3-QJiT7b2Tcr1wNW1XKh0OhLY5-rw",
+      "link": "https://youtube.com/live/yHHeW8i4nik",
+      "alt": "Banner 1",
+      "inicio": "2026-02-05",
+      "fim": "2026-03-12"
+    },    
+    {
       "desktop": "https://lh3.googleusercontent.com/d/1CoxdZTt25KIRFsSfuIImpNYdjjcwcEMt=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1bsjpZbTxtWdDF-yQfVeDtQPhEiXPTIt_=s1500-rw",
       "link": "https://ava.fametro.edu.br/mod/page/view.php?id=18348",
@@ -18,14 +34,6 @@
       "inicio": "2026-03-03",
       "fim": "2026-05-30"
     }, 
-    {
-      "desktop": "https://lh3.googleusercontent.com/d/1PR25Qy3V947DloACBmeikX6v5bXpL2m4=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1p-11J5El8MincOngXbrlnSQycyjXffus=s1500-rw",
-      "link": "https://qr.codes/zJn4vu",
-      "alt": "Banner 1",
-      "inicio": "2026-02-05",
-      "fim": "2026-02-28"
-    },
     {
       "desktop": "https://lh3.googleusercontent.com/d/1ZfUBGjpmT7-mMrKf81nEFJzRJ6WJh6zW=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1dcizdSRu_yq0riNG0KB43n5lCCeDU2Jo=s1500-rw",
