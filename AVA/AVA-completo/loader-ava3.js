@@ -253,7 +253,38 @@
         if (!btn.titulo) errors.push(`botoes[${i}]: campo "titulo" ausente`);
       });
     }
+    // campo theme é opcional — valida apenas se presente
+    if (data.theme !== undefined && (typeof data.theme !== 'object' || data.theme === null)) {
+      errors.push('Campo "theme" deve ser um objeto de variáveis CSS');
+    }
     return { valid: errors.length === 0, errors };
+  }
+
+  // Propriedades CSS permitidas no theme — evita injeção de propriedades arbitrárias
+  const ALLOWED_THEME_VARS = new Set([
+    '--text-color',
+    '--hover-blue',
+    '--text-color-hover',
+    '--bg-card',
+  ]);
+
+  /**
+   * Aplica as variáveis CSS do theme no container, com escopo isolado.
+   * Só aplica propriedades da allowlist para evitar injeção CSS.
+   * @param {HTMLElement} container
+   * @param {object} theme
+   */
+  function applyTheme(container, theme) {
+    if (!theme || typeof theme !== 'object') return;
+    Object.entries(theme).forEach(([key, value]) => {
+      if (!ALLOWED_THEME_VARS.has(key)) {
+        console.warn(`[AVA Loader] Variável de tema ignorada (não permitida): "${key}"`);
+        return;
+      }
+      // Sanitiza o valor: remove quebras de linha, ponto-e-vírgula e chaves
+      const safeValue = String(value).replace(/[;\{\}\n\r]/g, '').trim();
+      container.style.setProperty(key, safeValue);
+    });
   }
 
   // ─── PARSE DE PLACEHOLDERS ──────────────────────────────────────────────────
@@ -558,6 +589,9 @@
       return;
     }
 
+
+    // Aplica variáveis de tema no container (escopo isolado por instância)
+    applyTheme(container, data.theme);
     const botoes = data.botoes || [];
 
     const buttonsHtml = botoes.map(btn => {
