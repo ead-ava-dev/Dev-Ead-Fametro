@@ -2,6 +2,14 @@
   "autoplay": true,
   "tempo": 8000,
   "slides": [
+        {
+      "desktop": "https://lh3.googleusercontent.com/d/1-55n9vzM6ayLGt-b3vamUdo7Rl5gS2UB=s1500-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1-3XJ6zzTGgAUm8DgWYWi884sYiMrftXl=s1500-rw",
+      "link": "https://drive.google.com/file/d/13NHM_LsxN-Ym7U9D2NcjLxYvgH4-1lVS/view",
+      "alt": "Banner 1",
+      "inicio": "2026-03-03",
+      "fim": "2026-05-30"
+    }, 
     {
       "desktop": "https://lh3.googleusercontent.com/d/1qgIIVhEMBbSN86BpM2DCgKRRCBpESRF6=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1u43VDqGSFC_V5WgUXRYFWlghDX5_D1H_=s1500-rw",
