@@ -2,6 +2,15 @@
   "autoplay": true,
   "tempo": 8000,
   "slides": [
+
+                {
+      "desktop": "https://lh3.googleusercontent.com/d/1RlVMqTSxMsYuVj6yEjzKQPq21avrAnJR=s1500-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1unBHo5raVPE1WGLWcArsptK8IO2ZeSlQ=s1500-rw",
+          "link": "https://sistemas.portaledu.com.br/FrameHTML/web/app/edu/PortalEducacional/login/",
+      "alt": "Banner 2",
+      "inicio": "2026-02-05",
+      "fim": "2026-06-30"
+    },
             {
       "desktop": "https://lh3.googleusercontent.com/d/16rGQkUVwVeRbOdmCZAY7zzUMyTBvtZ0C=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1CtmO0FmCbhS51eLfRemTluSzHq7wLKTv=s1500-rw",
