@@ -1,0 +1,16 @@
+{
+  "autoplay": true,
+  "tempo": 8000,
+  "slides": [
+  
+       {
+      "desktop": "https://lh3.googleusercontent.com/d/1c5xHRrYVCka0KF-PqQxvZDFKFY-rXT4V=s1500-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1KR6A-OTOPmgbndMytnlReOTTCCJN5mtJ=s1500-rw",
+      "link": "https://drive.google.com/file/d/1z2BoAutWarSK9LHCbbMumHA0gnzLdlFK/view",
+      "alt": "Curso Extra",
+      "inicio": "2026-02-05",
+      "fim": "2026-06-30"
+    }
+  ]
+
+}
