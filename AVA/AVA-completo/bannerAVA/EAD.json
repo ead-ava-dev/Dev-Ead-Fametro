@@ -3,14 +3,7 @@
   "tempo": 8000,
   "slides": [
 
-           {
-      "desktop": "https://lh3.googleusercontent.com/d/1-55n9vzM6ayLGt-b3vamUdo7Rl5gS2UB=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1-3XJ6zzTGgAUm8DgWYWi884sYiMrftXl=s1500-rw",
-      "link": "https://drive.google.com/file/d/1-7xPy4mvSeccCZCmVoaa5Gczn9urP7z8/view",
-      "alt": "Composição de Notas",
-      "inicio": "2026-02-05",
-      "fim": "2026-06-30"
-    },
+
   
        {
       "desktop": "https://lh3.googleusercontent.com/d/1c5xHRrYVCka0KF-PqQxvZDFKFY-rXT4V=s1500-rw",
@@ -18,48 +11,7 @@
       "link": "https://drive.google.com/file/d/1z2BoAutWarSK9LHCbbMumHA0gnzLdlFK/view",
       "alt": "Curso Extra",
       "inicio": "2026-02-05",
-      "fim": "2026-06-30"
-    },
-    
-    {
-      "desktop": "https://lh3.googleusercontent.com/d/1Yi7Tooc51B2wCHx6Q_szTuQhyq1dM9OA=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1KR6A-OTOPmgbndMytnlReOTTCCJN5mtJ=s1500-rw",
-      "link": "https://ava.fametro.edu.br/course/section.php?id=12433",
-      "alt": "Dúvida Tutor",
-      "inicio": "2026-02-05",
-      "fim": "2026-06-16"
-    },
-
-                {
-      "desktop": "https://lh3.googleusercontent.com/d/1RlVMqTSxMsYuVj6yEjzKQPq21avrAnJR=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1unBHo5raVPE1WGLWcArsptK8IO2ZeSlQ=s1500-rw",
-      "link": "https://sistemas.portaledu.com.br/FrameHTML/web/app/edu/PortalEducacional/login/",
-      "alt": "CPA",
-      "inicio": "2026-02-05",
-      "fim": "2026-06-16"
-    },
-            {
-      "desktop": "https://lh3.googleusercontent.com/d/16rGQkUVwVeRbOdmCZAY7zzUMyTBvtZ0C=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1CtmO0FmCbhS51eLfRemTluSzHq7wLKTv=s1500-rw",
-      "link": "https://www.youtube.com/live/JlVWt_ZirYo",
-      "alt": "ENADE",
-      "inicio": "2026-02-05",
-      "fim": "2026-05-30"
-    },
-    {
-      "desktop": "https://lh3.googleusercontent.com/d/1NgqrYrCGt19eLHQEIMksQEWlO_8aTMe9=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1PBmyj-i9sLlzYwgWbxAuZTUD-kfMfuaD=s1500-rw",
-      "alt": "MUDANÇA AV3",
-      "inicio": "2026-02-05",
-      "fim": "2026-05-30"
-    },
-   {
-      "desktop": "https://lh3.googleusercontent.com/d/1HJPof9t3_xqu8X8bu8vo2wHAkU_IrPrN=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1bQ1wuNk28QZhYbQy_WWJHtl9LCqepJkY=s1500-rw",
-      "link": "https://ava.fametro.edu.br/course/section.php?id=3492",
-      "alt": "DIÁRIO DE APRENDIZAGEM",
-      "inicio": "2026-03-03",
-      "fim": "2026-06-30"
+      "fim": "2026-07-30"
     },
 
     {
@@ -68,17 +20,25 @@
       "link": "https://drive.google.com/open?id=1-7xPy4mvSeccCZCmVoaa5Gczn9urP7z8&usp=drive_fs",
       "alt": "CÁLCULO DE NOTAS",
       "inicio": "2026-03-03",
-      "fim": "2026-05-30"
+      "fim": "2026-07-30"
     }, 
 
     {
-      "desktop": "https://lh3.googleusercontent.com/d/1ZfUBGjpmT7-mMrKf81nEFJzRJ6WJh6zW=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1dcizdSRu_yq0riNG0KB43n5lCCeDU2Jo=s1500-rw",
+      "desktop": "https://lh3.googleusercontent.com/d/1Gj7Q9BftF3Sg2DvDf8phd0f4NackdGfm=s1500-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1WX5IC5kTqPKEuuY7duwi1Cb1tGEyqBIC=s1500-rw",
       "link": "https://drive.google.com/file/d/1ryBmDXGummWYEpw4KxeLuaRdynSoXw9A/view",
       "alt": "CALENDÁRIO",
       "inicio": "2026-02-05",
-      "fim": "2026-06-30"
-    }
+      "fim": "2026-07-30"
+    },
+               {
+      "desktop": "https://lh3.googleusercontent.com/d/1-55n9vzM6ayLGt-b3vamUdo7Rl5gS2UB=s1500-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1-3XJ6zzTGgAUm8DgWYWi884sYiMrftXl=s1500-rw",
+      "link": "https://drive.google.com/file/d/1-7xPy4mvSeccCZCmVoaa5Gczn9urP7z8/view",
+      "alt": "Composição de Notas",
+      "inicio": "2026-02-05",
+      "fim": "2026-07-30"
+    },
   ]
 
 }
