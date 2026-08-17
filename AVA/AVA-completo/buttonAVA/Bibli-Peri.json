@@ -10,12 +10,12 @@
   "botoes": [ 
     { 
       "titulo": "Bibliotecas", 
-      "url": "https://ava.fametro.edu.br/mod/page/view.php?id=94381", 
+      "url": "https://ava.fametro.edu.br/mod/page/view.php?id=18400", 
       "icone": "fa-duotone fa-regular fa-books" 
     }, 
     { 
       "titulo": "Periódicos", 
-      "url": "https://ava.fametro.edu.br/mod/page/view.php?id=18400", 
+      "url": "https://ava.fametro.edu.br/mod/page/view.php?id=18400https://ava.fametro.edu.br/mod/page/view.php?id=94381", 
       "icone": "fa-regular fa-newspaper" 
     }     
   ] 
