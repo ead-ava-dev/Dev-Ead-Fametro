@@ -17,6 +17,11 @@
       "titulo": "Periódicos", 
       "url": "https://ava.fametro.edu.br/mod/page/view.php?id=94381", 
       "icone": "fa-regular fa-newspaper" 
+    }, 
+    { 
+      "titulo": "Medline", 
+      "url": "https://ava.fametro.edu.br/mod/page/view.php?id=94385", 
+      "icone": "fa-duotone fa-regular fa-label" 
     }     
   ] 
 }
