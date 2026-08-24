@@ -2,7 +2,15 @@
   "autoplay": true,
   "tempo": 8000,
   "slides": [
-       {
+        {
+      "desktop": "https://lh3.googleusercontent.com/d/1Bsj7Ym2yBfnoueeNWTBK-PRRQyViC07P=s1500-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1WNmyRfHPjt8YzicqXq_DxHBJ6ijX15G5=s1500-rw",
+      "link": "https://ava.fametro.edu.br/my/courses.php",
+      "alt": "Fóruns AV1",
+      "inicio": "2026-02-05",
+      "fim": "2026-08-30"
+    },
+    {
       "desktop": "https://lh3.googleusercontent.com/d/19Bidk-rrYd2ANGCQI_WqfqfEUp0h-6cI=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1erXwtyECftzYmTbVPL5EbVg3CgEA27V9=s1500-rw",
       "link": "https://ava.fametro.edu.br/mod/page/view.php?id=18348&forceview=1",
@@ -25,14 +33,6 @@
       "alt": "ORIENTAÇÕES - FALE COM O PROFESSOR MP",
       "inicio": "2026-02-05",
       "fim": "2026-12-30"
-    },
-   {
-      "desktop": "https://lh3.googleusercontent.com/d/1CrVxGodTUFD8swkMETpcSuKQDu1NMhlA=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1keqk000SuZvlsPLx7kj270F0K7EnxSWq=s1500-rw",
-      "link": "https://drive.google.com/file/d/1xaI8nK8N7WUu9m4ZXWcHZ-JaES7haBDk/view",
-      "alt": "Ambientação",
-      "inicio": "2026-02-05",
-      "fim": "2026-08-30"
     },
     {
       "desktop": "https://lh3.googleusercontent.com/d/1FAkHPWmzRsqFmTCSmuZY2A4BNs9p0Rxz=s1500-rw",
