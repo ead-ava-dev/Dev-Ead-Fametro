@@ -1,3 +1,4 @@
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://kenwheeler.github.io/slick/slick/slick.css">
@@ -104,7 +105,40 @@
 
 </style>
 
+<script>
 
+$(document).ready(function () {
+
+    $('.Slick-Principal').slick({
+        dots: true,
+        arrows: true,
+        infinite: true,
+
+        slidesToShow: 1,
+        slidesToScroll: 1,
+
+        speed: 800,
+
+        autoplay: true,
+        autoplaySpeed: 5000,
+
+        /* IMPORTANTE:
+           evita o Slick ficar recalculando a altura
+           enquanto as imagens carregam */
+        adaptiveHeight: false,
+
+        /* Evita carregamento estranho das imagens */
+        lazyLoad: false,
+
+        mobileFirst: true
+    });
+
+});
+
+</script>
+
+
+   
 </head>
 
 <body>
@@ -825,26 +859,5 @@
     
     </div>
     
-<script>
-$(document).ready(function () {
-
-    $('.Slick-Principal').slick({
-        dots: true,
-        arrows: true,
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        speed: 800,
-        autoplay: true,
-        autoplaySpeed: 5000,
-        adaptiveHeight: false,
-        lazyLoad: false,
-        mobileFirst: true
-    });
-
-});
-</script>
-    <link rel="stylesheet" href="https://kenwheeler.github.io/slick/slick/slick.css"/>
-    <link rel="stylesheet" href="https://kenwheeler.github.io/slick/slick/slick-theme.css"/>
 </body>
 </html>
