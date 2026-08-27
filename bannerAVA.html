@@ -11,90 +11,99 @@
 <script src="https://ead-ava-dev.github.io/Dev-Ead-Fametro/Fontawesome7.1.0/js/todos.js"></script>
 
 <style>
-    #bannerAVA img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    .slick-prev:before,
-    .slick-next:before {
-        color: #9a17bb !important;
+
+/* =========================================================
+   SLICK PRINCIPAL
+   ========================================================= */
+
+.Slick-Principal {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Impede qualquer slide vizinho de aparecer */
+.Slick-Principal .slick-list {
+    overflow: hidden !important;
+    width: 100%;
+}
+
+/* Track do Slick */
+.Slick-Principal .slick-track {
+    display: flex !important;
+    align-items: flex-start;
+}
+
+/* Cada slide */
+.Slick-Principal .slick-slide {
+    height: auto !important;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Conteúdo interno do slide */
+.Slick-Principal .slick-slide > div {
+    width: 100%;
+}
+
+/* Section */
+.Slick-Principal section {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Imagens dos banners */
+.Slick-Principal section img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+}
+
+/* Picture */
+.Slick-Principal section picture {
+    display: block;
+    width: 100%;
+}
+
+/* Setas */
+.Slick-Principal .slick-prev,
+.Slick-Principal .slick-next {
+    z-index: 10 !important;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 599px) {
+
+    .Slick-Principal .slick-list {
+        overflow: hidden !important;
     }
 
-    .slick-prev,
-    .slick-next {
-        z-index: 3 !important;
+    .Slick-Principal .slick-slide {
+        overflow: hidden !important;
     }
 
-    .slick-prev {left: 4px !important;}
-    .slick-next {right: 4px !important;}
-
-    .slick-slide {
-        height: auto !important;
+    .Slick-Principal section {
+        overflow: hidden !important;
     }
+
+    .Slick-Principal section img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+}
+
 </style>
 
-
-<div id="bannerAVA"></div>
-
-<script>
-
-const htmlURL = "https://raw.githubusercontent.com/ead-ava-dev/Dev-Ead-Fametro/main/bannerAVA.html";
-const jsonURL = "https://raw.githubusercontent.com/ead-ava-dev/Dev-Ead-Fametro/main/banners.json";
-
-Promise.all([
-  fetch(htmlURL).then(r => r.text()),
-  fetch(jsonURL).then(r => r.json())
-])
-
-.then(([html, config]) => {
-
-  document.getElementById("bannerAVA").innerHTML = html;
-
-  const container = document.querySelector(".slick-banner");
-
-  config.slides.forEach(slide => {
-
-    const div = document.createElement("div");
-
-    div.innerHTML = `
-      <a href="${slide.link}" target="_blank">
-        <picture>
-          <source media="(min-width: 600px)" srcset="${slide.desktop}">
-          <img src="${slide.mobile}" alt="${slide.alt}">
-        </picture>
-      </a>
-    `;
-
-    container.appendChild(div);
-
-  });
-
-  $('.slick-banner').slick({
-    dots: true,
-    arrows: true,
-    autoplay: config.autoplay,
-    autoplaySpeed: config.tempo,
-    lazyLoad: 'ondemand',
-    dots: true,
-    arrows: true,
-    infinite: true,
-    speed: 800,
-    slidesToShow: 1,
-    adaptiveHeight: true,
-    autoplay: config.autoplay,
-    autoplaySpeed: config.tempo,
-  });
-
-})
-
-.catch(err => console.error("Erro banner JSON:", err));
-
-</script>
-
-
-
-</style>
 
 </head>
 
@@ -795,38 +804,46 @@ Promise.all([
 </div>
         </section>
          
-        <section>
-            <picture>
+        <section> 
+            <picture> 
                 <source media="(min-width: 600px)" srcset="https://png.pngtree.com/thumb_back/fh260/background/20240522/pngtree-abstract-cloudy-background-beautiful-natural-streaks-of-sky-and-clouds-red-image_15684333.jpg">
-                <img src="https://png.pngtree.com/thumb_back/fw800/background/20241016/pngtree-sunset-sky-with-warm-orange-hues-and-sunbeams-breaking-through-clouds-image_16405380.jpg" ..alt="Banner">
-            </picture>
+                <img src="https://png.pngtree.com/thumb_back/fw800/background/20241016/pngtree-sunset-sky-with-warm-orange-hues-and-sunbeams-breaking-through-clouds-image_16405380.jpg" alt="Banner"> 
+            </picture> 
         </section>
-        <section>
-            <picture>
+        <section> 
+            <picture> 
                 <source media="(min-width: 600px)" srcset="https://png.pngtree.com/thumb_back/fh260/background/20240522/pngtree-abstract-cloudy-background-beautiful-natural-streaks-of-sky-and-clouds-red-image_15684333.jpg">
-                <img src="https://png.pngtree.com/thumb_back/fw800/background/20241016/pngtree-sunset-sky-with-warm-orange-hues-and-sunbeams-breaking-through-clouds-image_16405380.jpg" ..alt="Banner">
-            </picture>
+                <img src="https://png.pngtree.com/thumb_back/fw800/background/20241016/pngtree-sunset-sky-with-warm-orange-hues-and-sunbeams-breaking-through-clouds-image_16405380.jpg" alt="Banner"> 
+            </picture> 
         </section>
-        <section>
-            <picture>
+        <section> 
+            <picture> 
                 <source media="(min-width: 600px)" srcset="https://png.pngtree.com/thumb_back/fh260/background/20240522/pngtree-abstract-cloudy-background-beautiful-natural-streaks-of-sky-and-clouds-red-image_15684333.jpg">
-                <img src="https://png.pngtree.com/thumb_back/fw800/background/20241016/pngtree-sunset-sky-with-warm-orange-hues-and-sunbeams-breaking-through-clouds-image_16405380.jpg" ..alt="Banner">
-            </picture>
+                <img src="https://png.pngtree.com/thumb_back/fw800/background/20241016/pngtree-sunset-sky-with-warm-orange-hues-and-sunbeams-breaking-through-clouds-image_16405380.jpg" alt="Banner"> 
+            </picture> 
         </section>
     
     </div>
     
-    <script>
+<script>
+$(document).ready(function () {
+
     $('.Slick-Principal').slick({
         dots: true,
+        arrows: true,
         infinite: true,
-        speed: 800,
         slidesToShow: 1,
-        adaptiveHeight: true,
+        slidesToScroll: 1,
+        speed: 800,
         autoplay: true,
         autoplaySpeed: 5000,
+        adaptiveHeight: false,
+        lazyLoad: false,
+        mobileFirst: true
     });
-    </script>
+
+});
+</script>
     <link rel="stylesheet" href="https://kenwheeler.github.io/slick/slick/slick.css"/>
     <link rel="stylesheet" href="https://kenwheeler.github.io/slick/slick/slick-theme.css"/>
 </body>
