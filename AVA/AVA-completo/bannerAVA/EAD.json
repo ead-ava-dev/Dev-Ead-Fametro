@@ -2,14 +2,6 @@
   "autoplay": true,
   "tempo": 8000,
   "slides": [
-        {
-      "desktop": "https://lh3.googleusercontent.com/d/1Bsj7Ym2yBfnoueeNWTBK-PRRQyViC07P=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1WNmyRfHPjt8YzicqXq_DxHBJ6ijX15G5=s1500-rw",
-      "link": "https://ava.fametro.edu.br/my/courses.php",
-      "alt": "Fóruns AV1",
-      "inicio": "2026-02-05",
-      "fim": "2026-09-20"
-    },
     {
       "desktop": "https://lh3.googleusercontent.com/d/19Bidk-rrYd2ANGCQI_WqfqfEUp0h-6cI=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1erXwtyECftzYmTbVPL5EbVg3CgEA27V9=s1500-rw",
@@ -31,14 +23,6 @@
       "mobile": "https://lh3.googleusercontent.com/d/1KR6A-OTOPmgbndMytnlReOTTCCJN5mtJ=s1500-rw",
       "link": "https://ava.fametro.edu.br/course/section.php?id=27597",
       "alt": "ORIENTAÇÕES - FALE COM O PROFESSOR MP",
-      "inicio": "2026-02-05",
-      "fim": "2026-12-30"
-    },
-    {
-      "desktop": "https://lh3.googleusercontent.com/d/1FAkHPWmzRsqFmTCSmuZY2A4BNs9p0Rxz=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1EyrmMIPRwResG5-PFVpxGl4QS2CHibTP=s1500-rw",
-      "link": "https://ava.fametro.edu.br/course/view.php?id=4359",
-      "alt": "Tour no AVA",
       "inicio": "2026-02-05",
       "fim": "2026-12-30"
     },
