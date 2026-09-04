@@ -2,6 +2,14 @@
   "autoplay": true,
   "tempo": 8000,
   "slides": [
+        {
+      "desktop": "https://lh3.googleusercontent.com/d/1FGzlB4cD0BR9tZSTbg2Na1GrQESbdA5_=s1500-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1GHvZfF5GUQYLRlPi0sHN-q9t3FQWshs-=s1500-rw",
+      "link": "https://ava.fametro.edu.br/mod/page/view.php?id=18348&forceview=1",
+      "alt": "SETEMBRO AMARELO",
+      "inicio": "2026-02-05",
+      "fim": "2026-09-30"
+    },
     {
       "desktop": "https://lh3.googleusercontent.com/d/19Bidk-rrYd2ANGCQI_WqfqfEUp0h-6cI=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1erXwtyECftzYmTbVPL5EbVg3CgEA27V9=s1500-rw",
