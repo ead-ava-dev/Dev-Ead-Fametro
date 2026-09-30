@@ -166,22 +166,23 @@
     return JSON.parse(out);
   }
 
-  // Aceita "EAD", "EAD.json" ou "EAD.json5"
+  // Aceita "EAD", "EAD.json", "EAD.json5" ou "EAD.jsonc"
+  // Sem extensão, tenta nesta ordem: .json5 -> .jsonc -> .json
   async function fetchConfig(name) {
     const v = "?v=" + Date.now();
 
     // Extensão explícita: busca exatamente esse arquivo
-    if (/\.json5?$/i.test(name)) {
+    if (/\.(json5?|jsonc)$/i.test(name)) {
       const r = await fetch(name + v, { cache: 'reload' });
       if (!r.ok) throw new Error("Erro ao carregar config: " + name);
       return parseJSON5(await r.text());
     }
 
-    // Sem extensão: tenta .json5 e depois .json
-    let r = await fetch(name + ".json5" + v, { cache: 'reload' });
-    if (!r.ok) r = await fetch(name + ".json" + v, { cache: 'reload' });
-    if (!r.ok) throw new Error("Erro ao carregar config: " + name);
-    return parseJSON5(await r.text());
+    for (const ext of [".json5", ".jsonc", ".json"]) {
+      const r = await fetch(name + ext + v, { cache: 'reload' });
+      if (r.ok) return parseJSON5(await r.text());
+    }
+    throw new Error("Erro ao carregar config: " + name);
   }
 
   async function fetchText(url) {
