@@ -21,7 +21,7 @@
     if (typeof document !== 'undefined' && document.location) {
       const href = document.location.href;
       const path = document.location.pathname || '';
-      if (/\/buttonAVA\/|\/buttonAVA\//.test(path)) {
+      if (/\/buttonAVA\//.test(path)) {
         return href.replace(/\/[^/]*$/, '/').replace(/[^/]+\/$/, '../');
       }
       return href.replace(/\/[^/]*$/, '/');
@@ -89,6 +89,10 @@
     try { return JSON.parse(src); } catch (_) { /* cai no parser JSON5 */ }
 
     const n = src.length;
+    const pos = (k) => {
+      const linhas = src.slice(0, k).split('\n');
+      return 'linha ' + linhas.length + ', coluna ' + (linhas[linhas.length - 1].length + 1);
+    };
     const ESC = { n: '\n', t: '\t', r: '\r', b: '\b', f: '\f', v: '\v', '0': '\0' };
     let out = '', i = 0, comma = false;
 
@@ -115,6 +119,7 @@
 
       if (c === '"' || c === "'") {
         let str = '';
+        const inicioStr = i;
         i++;
         while (i < n && src[i] !== c) {
           if (src[i] === '\\') {
@@ -129,6 +134,7 @@
             str += src[i++];
           }
         }
+        if (i >= n) throw new SyntaxError('string não fechada (começa na ' + pos(inicioStr) + ')');
         i++; // fecha aspas
         emit(JSON.stringify(str));
         continue;
@@ -160,10 +166,23 @@
         continue;
       }
 
-      throw new SyntaxError('JSON5 inválido na posição ' + i + ': "' + c + '"');
+      throw new SyntaxError('caractere inesperado "' + c + '" (' + pos(i) + ')');
     }
 
-    return JSON.parse(out);
+    try {
+      return JSON.parse(out);
+    } catch (e) {
+      throw new SyntaxError('estrutura inválida, verifique vírgulas, chaves e colchetes faltando (' + e.message + ')');
+    }
+  }
+
+  async function lerConfig(resp, url) {
+    const texto = await resp.text();
+    try {
+      return parseJSON5(texto);
+    } catch (e) {
+      throw new Error('Sintaxe inválida em ' + url.split('?')[0] + ': ' + e.message);
+    }
   }
 
   // Aceita "EAD", "EAD.json", "EAD.json5" ou "EAD.jsonc"
@@ -174,15 +193,16 @@
     // Extensão explícita: busca exatamente esse arquivo
     if (/\.(json5?|jsonc)$/i.test(name)) {
       const r = await fetch(name + v, { cache: 'reload' });
-      if (!r.ok) throw new Error("Erro ao carregar config: " + name);
-      return parseJSON5(await r.text());
+      if (!r.ok) throw new Error('Arquivo não encontrado (HTTP ' + r.status + '): ' + name);
+      return lerConfig(r, name + v);
     }
 
-    for (const ext of [".json5", ".jsonc", ".json"]) {
+    const exts = [".json5", ".jsonc", ".json"];
+    for (const ext of exts) {
       const r = await fetch(name + ext + v, { cache: 'reload' });
-      if (r.ok) return parseJSON5(await r.text());
+      if (r.ok) return lerConfig(r, name + ext + v);
     }
-    throw new Error("Erro ao carregar config: " + name);
+    throw new Error('Nenhum arquivo de config encontrado: ' + name + '{' + exts.join(',') + '}');
   }
 
   async function fetchText(url) {
@@ -196,7 +216,14 @@
     const walker = document.createTreeWalker(
       document.body,
       NodeFilter.SHOW_TEXT,
-      null,
+      {
+        acceptNode: function (n) {
+          if (!n.nodeValue || n.nodeValue.indexOf('{{') === -1) return NodeFilter.FILTER_REJECT;
+          const parent = n.parentNode && n.parentNode.nodeName;
+          if (/^(SCRIPT|STYLE|TEXTAREA|NOSCRIPT|TEMPLATE)$/.test(parent)) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      },
       false
     );
 
@@ -411,7 +438,7 @@
       }, 0); // Não espera nada, só agenda para tick seguinte
 
     }).catch(e => {
-      console.error("Erro ao carregar config do banner:", e);
+      console.error("AVA Loader (banner):", e.message || e);
       container.innerHTML = "";
     });
   }
@@ -501,18 +528,21 @@
           </div>`;
       })
       .catch(e => {
-        console.error("Erro ao carregar config dos botões:", e);
+        console.error("AVA Loader (botões):", e.message || e);
         container.innerHTML = "";
       });
   }
 
   // ================ INICIALIZAÇÃO GERAL ===================
   let _initDone = false;
+  let _clickBound = false;
 
   function init() {
     if (_initDone) return;
     _initDone = true;
 
+    if (!_clickBound) {
+    _clickBound = true;
     document.addEventListener("click", function(e) {
       const link = e.target.closest("a");
       if (!link) return;
@@ -523,6 +553,7 @@
         link.style.cursor = "default";
       }
     });
+    }
 
     // Rapidez: marca placeholders, depois já renderiza componentes (tudo não bloqueante pelo JS principal)
     parsePlaceholders();
