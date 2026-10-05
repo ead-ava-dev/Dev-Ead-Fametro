@@ -2,7 +2,15 @@
   "autoplay": true,
   "tempo": 8000,
   "slides": [
-            {
+     {
+      "desktop": "https://lh3.googleusercontent.com/d/1HtnY3rmkdnnX9OqEbUVo8HBE8sOAAupV=s1500-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1O1zm1FKeG-ll1HNxw-9E80b50ZXaCKEK=s1500-rw",
+      "link": "https://ava.fametro.edu.br/course/section.php?id=33832",
+      "alt": "Outubro Rosa",
+      "inicio": "2026-03-03",
+      "fim": "2026-10-30"
+    },           
+{
       "desktop": "https://lh3.googleusercontent.com/d/1RGTePGO2gwBJJy8P0eJsHXwQJd1BXIcE=s1500-rw",// comentário
       "mobile": "https://lh3.googleusercontent.com/d/14f6z7ZdE3sBIVesi7e-9JM8Iq4pgcY5Z=s1500-rw",
       "link": "https://sistemas.portaledu.com.br/FrameHTML/web/app/edu/PortalEducacional/login/",
@@ -10,14 +18,7 @@
       "inicio": "2026-02-05",
       "fim": "2026-10-30"
     },
-     {
-      "desktop": "https://lh3.googleusercontent.com/d/1HtnY3rmkdnnX9OqEbUVo8HBE8sOAAupV=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1O1zm1FKeG-ll1HNxw-9E80b50ZXaCKEK=s1500-rw",
-      "link": "https://youtube.com/live/xunR4jegS2M",
-      "alt": "Outubro Rosa",
-      "inicio": "2026-03-03",
-      "fim": "2026-10-30"
-    },
+
     {
       "desktop": "https://lh3.googleusercontent.com/d/19Bidk-rrYd2ANGCQI_WqfqfEUp0h-6cI=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1erXwtyECftzYmTbVPL5EbVg3CgEA27V9=s1500-rw",
