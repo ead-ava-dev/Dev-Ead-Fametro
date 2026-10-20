@@ -2,7 +2,15 @@
   "autoplay": true,
   "tempo": 8000,
   "slides": [
-     {
+       {
+      "desktop": "https://lh3.googleusercontent.com/d/1-55n9vzM6ayLGt-b3vamUdo7Rl5gS2UB=s1500-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1-3XJ6zzTGgAUm8DgWYWi884sYiMrftXl=s1500-rw",
+      "link": "https://ava.fametro.edu.br/mod/page/view.php?id=106412&forceview=1",
+      "alt": "Cálculo de Notas",
+      "inicio": "2026-03-03",
+      "fim": "2026-12-30"
+     }
+{
       "desktop": "https://lh3.googleusercontent.com/d/17w99K9jt3-RDFqFB7J0b7fA6f6gFcnZe=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1CSxDJ939g4XRPOunDXztTQnvJGKOYSSC=s1500-rw",
       "link": "https://ava.fametro.edu.br/course/section.php?id=28121",
@@ -58,14 +66,6 @@
       "alt": "Calendário",
       "inicio": "2026-02-05",
       "fim": "2026-12-30"
-    },
-    {
-      "desktop": "https://lh3.googleusercontent.com/d/1-55n9vzM6ayLGt-b3vamUdo7Rl5gS2UB=s1500-rw",
-      "mobile": "https://lh3.googleusercontent.com/d/1-3XJ6zzTGgAUm8DgWYWi884sYiMrftXl=s1500-rw",
-      "link": "https://drive.google.com/file/d/1-7xPy4mvSeccCZCmVoaa5Gczn9urP7z8/view",
-      "alt": "Cálculo de Notas",
-      "inicio": "2026-03-03",
-      "fim": "2026-12-30"
-     }
+    }
   ]
 }
