@@ -1,7 +1,15 @@
 {
   "autoplay": true,
-  "tempo": 8000,
+  "tempo": 15000,
   "slides": [
+       {
+      "desktop": "https://lh3.googleusercontent.com/d/16d3g4WD_-vU4BJIH9EvDhW29P2mRiszM=s1500-rw",
+      "mobile": "https://lh3.googleusercontent.com/d/1evqDgHBM_tpENxy0APfsNT13breFAWYg=s1500-rw",
+      "link": "https://ava.fametro.edu.br/mod/page/view.php?id=106412&forceview=1",
+      "alt": "Cálculo de Notas",
+      "inicio": "2026-03-03",
+      "fim": "2026-12-30"
+     },
        {
       "desktop": "https://lh3.googleusercontent.com/d/1-55n9vzM6ayLGt-b3vamUdo7Rl5gS2UB=s1500-rw",
       "mobile": "https://lh3.googleusercontent.com/d/1-3XJ6zzTGgAUm8DgWYWi884sYiMrftXl=s1500-rw",
